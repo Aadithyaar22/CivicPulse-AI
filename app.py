@@ -255,7 +255,7 @@ def render_actions(actions: list) -> None:
 
 # ---------------------------------------------------------------- tabs
 tab_overview, tab_ask, tab_anom, tab_reco, tab_about = st.tabs(
-    ["📊 Overview", "💬 Ask AI", "🚨 Anomalies", "✅ Recommendations", "ℹ️ About / Demo"]
+    ["📊 Overview", "💬 Ask AI", "🚨 Anomalies", "✅ Recommendations", "ℹ️ About"]
 )
 
 
@@ -517,10 +517,4 @@ concrete next steps.
 - Local sample data — no database required
 - Cloud Run scales to zero when idle
         """
-    )
-    st.markdown("#### Demo flow (under 3 minutes)")
-    st.markdown(
-        "1. Load demo dataset → 2. Show Community Snapshot & Scoreboard → "
-        "3. Ask *\"What should we prioritize this week?\"* → 4. Open Anomalies → "
-        "5. Generate the **Executive Brief** and download the memo."
     )

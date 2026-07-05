@@ -66,8 +66,6 @@ civicpulse-ai/
 │   ├── citizen_complaints.csv   # ~370 realistic rows (bundled demo)
 │   ├── citizen_complaints.json
 │   └── generate_sample.py       # regenerate the dataset
-├── assets/                 # screenshots / diagrams for the deck
-├── docs/                   # PPT outline, demo script, deployment checklist
 ├── requirements.txt
 ├── Dockerfile              # slim container for Cloud Run
 ├── cloudbuild.yaml         # Cloud Build → Cloud Run pipeline
@@ -83,7 +81,7 @@ civicpulse-ai/
 
 ```bash
 # 1. Clone & enter
-git clone https://github.com/<your-username>/civicpulse-ai.git
+git clone https://github.com/Yadu080/CivicPulse-AI.git
 cd civicpulse-ai
 
 # 2. (optional) virtualenv
@@ -146,7 +144,7 @@ gcloud run deploy civicpulse-ai \
 ```
 
 When it finishes it prints your **public URL** (e.g.
-`https://civicpulse-ai-xxxxxxxx-uc.a.run.app`). That's your live demo link. 🎉
+`https://civicpulse-ai-xxxxxxxx-uc.a.run.app`).
 
 > **Vertex AI note:** grant the Cloud Run service account the
 > `roles/aiplatform.user` role so it can call Gemini:
@@ -171,7 +169,7 @@ When it finishes it prints your **public URL** (e.g.
 
 ---
 
-## 💰 Cost design (built for a hackathon budget)
+## 💰 Cost design
 
 - **One Gemini call per meaningful action** (brief / question), never per keystroke.
 - **Flash-lite model tier** — the cheapest Gemini option.
@@ -194,15 +192,6 @@ reliably shows trends, hotspots, anomalies, and actions. Regenerate with:
 ```bash
 python sample_data/generate_sample.py
 ```
-
----
-
-## 📚 Docs & submission assets
-
-- [`docs/PROJECT_DESCRIPTION.md`](docs/PROJECT_DESCRIPTION.md) — elevator pitch
-- [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) — 3-minute demo video script
-- [`docs/PPT_OUTLINE.md`](docs/PPT_OUTLINE.md) — 6-slide deck outline
-- [`docs/DEPLOYMENT_CHECKLIST.md`](docs/DEPLOYMENT_CHECKLIST.md) — go-live checklist
 
 ---
 
