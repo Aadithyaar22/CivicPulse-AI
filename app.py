@@ -38,33 +38,125 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ---------------------------------------------------------------- styling
-CSS = """
+# ---------------------------------------------------------------- civic-blueprint theme
+# Matches the landing page's visual identity: ink-navy background, architectural
+# blueprint grid, cyan/amber accents, Bricolage Grotesque + IBM Plex Mono type.
+import plotly.io as pio
+import plotly.graph_objects as go
+
+INK_NAVY = "#080F1A"
+PANEL_BLUE = "#12283F"
+GRID_CYAN = "#2FA7B9"
+SIGNAL_AMBER = "#E8A33D"
+ALERT_CORAL = "#E4572E"
+VIOLET_GLOW = "#6B5CE0"
+PAPER = "#EDE9DE"
+TEXT_DIM = "#8FA3B8"
+LINE = "rgba(47,167,185,0.18)"
+
+pio.templates["civicpulse"] = go.layout.Template(
+    layout=go.Layout(
+        paper_bgcolor=PANEL_BLUE,
+        plot_bgcolor=PANEL_BLUE,
+        font=dict(family="Inter, sans-serif", color=PAPER, size=12),
+        title=dict(font=dict(family="Bricolage Grotesque, sans-serif", color=PAPER, size=16)),
+        colorway=[GRID_CYAN, SIGNAL_AMBER, ALERT_CORAL, VIOLET_GLOW, "#4FC3D9", "#F2C879"],
+        xaxis=dict(gridcolor=LINE, zerolinecolor=LINE, linecolor=LINE, tickfont=dict(color=TEXT_DIM)),
+        yaxis=dict(gridcolor=LINE, zerolinecolor=LINE, linecolor=LINE, tickfont=dict(color=TEXT_DIM)),
+        legend=dict(font=dict(color=PAPER)),
+        hoverlabel=dict(bgcolor=INK_NAVY, font=dict(color=PAPER, family="IBM Plex Mono, monospace")),
+    )
+)
+pio.templates.default = "civicpulse"
+
+CSS = f"""
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-    .block-container { padding-top: 2rem; padding-bottom: 3rem; }
-    .cp-hero {
-        background: linear-gradient(120deg, #0f766e 0%, #0e7490 55%, #1d4ed8 100%);
-        color: #fff; padding: 1.4rem 1.6rem; border-radius: 16px; margin-bottom: 1.2rem;
-        box-shadow: 0 10px 30px rgba(13,110,110,0.25);
-    }
-    .cp-hero h1 { margin: 0; font-size: 1.9rem; letter-spacing: -0.5px; }
-    .cp-hero p { margin: .3rem 0 0; opacity: .92; font-size: .98rem; }
-    .cp-badge {
-        display:inline-block; background: rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35);
-        padding: 2px 10px; border-radius: 999px; font-size:.72rem; margin-right:6px; margin-top:.5rem;
-    }
-    .cp-card {
-        background: #ffffff; border: 1px solid #e6e9ef; border-radius: 14px;
+    :root {{
+        --ink-navy: {INK_NAVY}; --panel-blue: {PANEL_BLUE}; --grid-cyan: {GRID_CYAN};
+        --signal-amber: {SIGNAL_AMBER}; --alert-coral: {ALERT_CORAL}; --paper: {PAPER};
+        --text-dim: {TEXT_DIM}; --line: {LINE};
+    }}
+
+    .stApp {{
+        background:
+            linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 44px 44px,
+            linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 44px 44px,
+            var(--ink-navy);
+    }}
+    html, body, [class*="css"] {{ font-family: 'Inter', sans-serif; color: var(--paper); }}
+    h1, h2, h3, h4 {{ font-family: 'Bricolage Grotesque', sans-serif !important; letter-spacing: -0.01em; }}
+    .block-container {{ padding-top: 2rem; padding-bottom: 3rem; }}
+
+    /* sidebar */
+    section[data-testid="stSidebar"] {{
+        background: var(--panel-blue); border-right: 1px solid var(--line);
+    }}
+    section[data-testid="stSidebar"] * {{ color: var(--paper); }}
+
+    /* hero */
+    .cp-hero {{
+        position: relative; overflow: hidden;
+        background: linear-gradient(135deg, var(--panel-blue) 0%, var(--ink-navy) 100%);
+        border: 1px solid var(--line);
+        color: var(--paper); padding: 1.6rem 1.8rem; border-radius: 14px; margin-bottom: 1.2rem;
+        box-shadow: 0 20px 50px -20px rgba(47,167,185,0.25);
+    }}
+    .cp-hero h1 {{ margin: 0; font-size: 2rem; letter-spacing: -0.02em; font-weight: 700; }}
+    .cp-hero p {{ margin: .4rem 0 0; color: var(--text-dim); font-size: .98rem; }}
+    .cp-badge {{
+        display:inline-block; background: rgba(47,167,185,.12); border:1px solid var(--line);
+        color: var(--grid-cyan); font-family: 'IBM Plex Mono', monospace; text-transform: uppercase;
+        letter-spacing: .04em; padding: 3px 12px; border-radius: 20px; font-size:.68rem;
+        margin-right:6px; margin-top:.6rem;
+    }}
+
+    /* cards */
+    .cp-card {{
+        background: rgba(18,40,63,0.6); backdrop-filter: blur(10px);
+        border: 1px solid var(--line); border-radius: 12px;
         padding: 1rem 1.1rem; height: 100%;
-        box-shadow: 0 2px 10px rgba(16,24,40,0.04);
-    }
-    .cp-card .lbl { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:#667085; margin:0; }
-    .cp-card .val { font-size:1.35rem; font-weight:700; color:#101828; margin:.15rem 0 0; }
-    .cp-card .sub { font-size:.8rem; color:#475467; margin:.2rem 0 0; }
-    .cp-pill { border-radius:12px; padding:.9rem 1rem; color:#fff; text-align:center; }
-    .cp-section-title { font-weight:700; font-size:1.05rem; margin:.2rem 0 .6rem; color:#101828; }
-    .stTabs [data-baseweb="tab-list"] { gap: 4px; }
-    .stTabs [data-baseweb="tab"] { padding: 8px 16px; }
+        transition: border-color .2s ease, transform .2s ease;
+    }}
+    .cp-card:hover {{ border-color: var(--grid-cyan); transform: translateY(-2px); }}
+    .cp-card .lbl {{ font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color: var(--text-dim); margin:0; font-family:'IBM Plex Mono',monospace; }}
+    .cp-card .val {{ font-size:1.4rem; font-weight:700; color: var(--paper); margin:.2rem 0 0; font-family:'Bricolage Grotesque',sans-serif; }}
+    .cp-card .sub {{ font-size:.8rem; color: var(--text-dim); margin:.2rem 0 0; }}
+
+    /* score pills */
+    .cp-pill {{ border-radius:12px; padding:.9rem 1rem; color: var(--ink-navy); text-align:center; font-family:'IBM Plex Mono',monospace; }}
+    .cp-section-title {{ font-weight:700; font-size:1.1rem; margin:.2rem 0 .6rem; color: var(--paper); font-family:'Bricolage Grotesque',sans-serif; }}
+
+    /* tabs */
+    .stTabs [data-baseweb="tab-list"] {{ gap: 4px; border-bottom: 1px solid var(--line); }}
+    .stTabs [data-baseweb="tab"] {{ padding: 8px 16px; color: var(--text-dim); font-family:'IBM Plex Mono',monospace; font-size: .85rem; }}
+    .stTabs [aria-selected="true"] {{ color: var(--signal-amber) !important; }}
+
+    /* buttons */
+    .stButton>button, .stDownloadButton>button {{
+        background: var(--signal-amber); color: var(--ink-navy); border: none;
+        font-weight: 600; border-radius: 6px; transition: box-shadow .2s ease, transform .2s ease;
+    }}
+    .stButton>button:hover, .stDownloadButton>button:hover {{
+        box-shadow: 0 0 22px rgba(232,163,61,0.4); transform: translateY(-1px);
+    }}
+
+    /* inputs, expanders, containers */
+    .stTextInput input, .stTextArea textarea, .stSelectbox [data-baseweb="select"] {{
+        background: rgba(18,40,63,0.6) !important; color: var(--paper) !important; border-color: var(--line) !important;
+    }}
+    div[data-testid="stExpander"] {{ background: rgba(18,40,63,0.4); border: 1px solid var(--line); border-radius: 10px; }}
+    div[data-testid="stVerticalBlockBorderWrapper"] {{ border-color: var(--line) !important; background: rgba(18,40,63,0.3); }}
+    .stAlert {{ background: rgba(18,40,63,0.6); border: 1px solid var(--line); }}
+    .stDataFrame {{ border: 1px solid var(--line); border-radius: 8px; }}
+
+    /* metric widgets */
+    div[data-testid="stMetric"] {{
+        background: rgba(18,40,63,0.5); border: 1px solid var(--line); border-radius: 10px; padding: .8rem 1rem;
+    }}
+    div[data-testid="stMetricValue"] {{ color: var(--signal-amber) !important; font-family:'IBM Plex Mono',monospace; }}
+    div[data-testid="stMetricLabel"] {{ color: var(--text-dim) !important; }}
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
