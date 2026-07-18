@@ -21,3 +21,10 @@ env/
 # Build
 build/
 dist/
+
+# Local submission assets (not for repo)
+*.pptx
+fill_deck.py
+.env
+venv/
+__pycache__/
