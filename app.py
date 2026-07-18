@@ -14,7 +14,6 @@ from pathlib import Path
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-import streamlit.components.v1 as components
 
 from src.analytics import compute_insights, filter_dataframe
 from src.data_loader import LoadResult, load_sample, load_text, load_uploaded_file
@@ -39,125 +38,33 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ---------------------------------------------------------------- civic-blueprint theme
-# Matches the landing page's visual identity: ink-navy background, architectural
-# blueprint grid, cyan/amber accents, Bricolage Grotesque + IBM Plex Mono type.
-import plotly.io as pio
-import plotly.graph_objects as go
-
-INK_NAVY = "#080F1A"
-PANEL_BLUE = "#12283F"
-GRID_CYAN = "#2FA7B9"
-SIGNAL_AMBER = "#E8A33D"
-ALERT_CORAL = "#E4572E"
-VIOLET_GLOW = "#6B5CE0"
-PAPER = "#EDE9DE"
-TEXT_DIM = "#8FA3B8"
-LINE = "rgba(47,167,185,0.18)"
-
-pio.templates["civicpulse"] = go.layout.Template(
-    layout=go.Layout(
-        paper_bgcolor=PANEL_BLUE,
-        plot_bgcolor=PANEL_BLUE,
-        font=dict(family="Inter, sans-serif", color=PAPER, size=12),
-        title=dict(font=dict(family="Bricolage Grotesque, sans-serif", color=PAPER, size=16)),
-        colorway=[GRID_CYAN, SIGNAL_AMBER, ALERT_CORAL, VIOLET_GLOW, "#4FC3D9", "#F2C879"],
-        xaxis=dict(gridcolor=LINE, zerolinecolor=LINE, linecolor=LINE, tickfont=dict(color=TEXT_DIM)),
-        yaxis=dict(gridcolor=LINE, zerolinecolor=LINE, linecolor=LINE, tickfont=dict(color=TEXT_DIM)),
-        legend=dict(font=dict(color=PAPER)),
-        hoverlabel=dict(bgcolor=INK_NAVY, font=dict(color=PAPER, family="IBM Plex Mono, monospace")),
-    )
-)
-pio.templates.default = "civicpulse"
-
-CSS = f"""
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+# ---------------------------------------------------------------- styling
+CSS = """
 <style>
-    :root {{
-        --ink-navy: {INK_NAVY}; --panel-blue: {PANEL_BLUE}; --grid-cyan: {GRID_CYAN};
-        --signal-amber: {SIGNAL_AMBER}; --alert-coral: {ALERT_CORAL}; --paper: {PAPER};
-        --text-dim: {TEXT_DIM}; --line: {LINE};
-    }}
-
-    .stApp {{
-        background:
-            linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 44px 44px,
-            linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 44px 44px,
-            var(--ink-navy);
-    }}
-    html, body, [class*="css"] {{ font-family: 'Inter', sans-serif; color: var(--paper); }}
-    h1, h2, h3, h4 {{ font-family: 'Bricolage Grotesque', sans-serif !important; letter-spacing: -0.01em; }}
-    .block-container {{ padding-top: 2rem; padding-bottom: 3rem; }}
-
-    /* sidebar */
-    section[data-testid="stSidebar"] {{
-        background: var(--panel-blue); border-right: 1px solid var(--line);
-    }}
-    section[data-testid="stSidebar"] * {{ color: var(--paper); }}
-
-    /* hero */
-    .cp-hero {{
-        position: relative; overflow: hidden;
-        background: linear-gradient(135deg, var(--panel-blue) 0%, var(--ink-navy) 100%);
-        border: 1px solid var(--line);
-        color: var(--paper); padding: 1.6rem 1.8rem; border-radius: 14px; margin-bottom: 1.2rem;
-        box-shadow: 0 20px 50px -20px rgba(47,167,185,0.25);
-    }}
-    .cp-hero h1 {{ margin: 0; font-size: 2rem; letter-spacing: -0.02em; font-weight: 700; }}
-    .cp-hero p {{ margin: .4rem 0 0; color: var(--text-dim); font-size: .98rem; }}
-    .cp-badge {{
-        display:inline-block; background: rgba(47,167,185,.12); border:1px solid var(--line);
-        color: var(--grid-cyan); font-family: 'IBM Plex Mono', monospace; text-transform: uppercase;
-        letter-spacing: .04em; padding: 3px 12px; border-radius: 20px; font-size:.68rem;
-        margin-right:6px; margin-top:.6rem;
-    }}
-
-    /* cards */
-    .cp-card {{
-        background: rgba(18,40,63,0.6); backdrop-filter: blur(10px);
-        border: 1px solid var(--line); border-radius: 12px;
+    .block-container { padding-top: 2rem; padding-bottom: 3rem; }
+    .cp-hero {
+        background: linear-gradient(120deg, #0f766e 0%, #0e7490 55%, #1d4ed8 100%);
+        color: #fff; padding: 1.4rem 1.6rem; border-radius: 16px; margin-bottom: 1.2rem;
+        box-shadow: 0 10px 30px rgba(13,110,110,0.25);
+    }
+    .cp-hero h1 { margin: 0; font-size: 1.9rem; letter-spacing: -0.5px; }
+    .cp-hero p { margin: .3rem 0 0; opacity: .92; font-size: .98rem; }
+    .cp-badge {
+        display:inline-block; background: rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35);
+        padding: 2px 10px; border-radius: 999px; font-size:.72rem; margin-right:6px; margin-top:.5rem;
+    }
+    .cp-card {
+        background: #ffffff; border: 1px solid #e6e9ef; border-radius: 14px;
         padding: 1rem 1.1rem; height: 100%;
-        transition: border-color .2s ease, transform .2s ease;
-    }}
-    .cp-card:hover {{ border-color: var(--grid-cyan); transform: translateY(-2px); }}
-    .cp-card .lbl {{ font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color: var(--text-dim); margin:0; font-family:'IBM Plex Mono',monospace; }}
-    .cp-card .val {{ font-size:1.4rem; font-weight:700; color: var(--paper); margin:.2rem 0 0; font-family:'Bricolage Grotesque',sans-serif; }}
-    .cp-card .sub {{ font-size:.8rem; color: var(--text-dim); margin:.2rem 0 0; }}
-
-    /* score pills */
-    .cp-pill {{ border-radius:12px; padding:.9rem 1rem; color: var(--ink-navy); text-align:center; font-family:'IBM Plex Mono',monospace; }}
-    .cp-section-title {{ font-weight:700; font-size:1.1rem; margin:.2rem 0 .6rem; color: var(--paper); font-family:'Bricolage Grotesque',sans-serif; }}
-
-    /* tabs */
-    .stTabs [data-baseweb="tab-list"] {{ gap: 4px; border-bottom: 1px solid var(--line); }}
-    .stTabs [data-baseweb="tab"] {{ padding: 8px 16px; color: var(--text-dim); font-family:'IBM Plex Mono',monospace; font-size: .85rem; }}
-    .stTabs [aria-selected="true"] {{ color: var(--signal-amber) !important; }}
-
-    /* buttons */
-    .stButton>button, .stDownloadButton>button {{
-        background: var(--signal-amber); color: var(--ink-navy); border: none;
-        font-weight: 600; border-radius: 6px; transition: box-shadow .2s ease, transform .2s ease;
-    }}
-    .stButton>button:hover, .stDownloadButton>button:hover {{
-        box-shadow: 0 0 22px rgba(232,163,61,0.4); transform: translateY(-1px);
-    }}
-
-    /* inputs, expanders, containers */
-    .stTextInput input, .stTextArea textarea, .stSelectbox [data-baseweb="select"] {{
-        background: rgba(18,40,63,0.6) !important; color: var(--paper) !important; border-color: var(--line) !important;
-    }}
-    div[data-testid="stExpander"] {{ background: rgba(18,40,63,0.4); border: 1px solid var(--line); border-radius: 10px; }}
-    div[data-testid="stVerticalBlockBorderWrapper"] {{ border-color: var(--line) !important; background: rgba(18,40,63,0.3); }}
-    .stAlert {{ background: rgba(18,40,63,0.6); border: 1px solid var(--line); }}
-    .stDataFrame {{ border: 1px solid var(--line); border-radius: 8px; }}
-
-    /* metric widgets */
-    div[data-testid="stMetric"] {{
-        background: rgba(18,40,63,0.5); border: 1px solid var(--line); border-radius: 10px; padding: .8rem 1rem;
-    }}
-    div[data-testid="stMetricValue"] {{ color: var(--signal-amber) !important; font-family:'IBM Plex Mono',monospace; }}
-    div[data-testid="stMetricLabel"] {{ color: var(--text-dim) !important; }}
+        box-shadow: 0 2px 10px rgba(16,24,40,0.04);
+    }
+    .cp-card .lbl { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:#667085; margin:0; }
+    .cp-card .val { font-size:1.35rem; font-weight:700; color:#101828; margin:.15rem 0 0; }
+    .cp-card .sub { font-size:.8rem; color:#475467; margin:.2rem 0 0; }
+    .cp-pill { border-radius:12px; padding:.9rem 1rem; color:#fff; text-align:center; }
+    .cp-section-title { font-weight:700; font-size:1.05rem; margin:.2rem 0 .6rem; color:#101828; }
+    .stTabs [data-baseweb="tab-list"] { gap: 4px; }
+    .stTabs [data-baseweb="tab"] { padding: 8px 16px; }
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
@@ -254,75 +161,23 @@ with st.sidebar:
 
 
 # ---------------------------------------------------------------- hero
+st.markdown(
+    """
+    <div class="cp-hero">
+        <h1>🏙️ CivicPulse AI</h1>
+        <p>Ask your community data anything — get patterns, anomalies, and decisions.
+        <b>Not just answers — better decisions.</b></p>
+        <span class="cp-badge">Natural-language analytics</span>
+        <span class="cp-badge">Anomaly detection</span>
+        <span class="cp-badge">Action generator</span>
+        <span class="cp-badge">Gemini-powered</span>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 load_result: LoadResult | None = st.session_state.load_result
 insights = st.session_state.insights
-
-if insights is not None and insights.total_records:
-    _d = insights.to_dict()
-    _records = f"{_d['total_records']:,}"
-    _hotspot = humanize(_d.get("hotspot_area") or "—")
-    _category = humanize(_d.get("top_category") or "—")
-    _trend = _d.get("trend_direction", "flat").title()
-else:
-    _records, _hotspot, _category, _trend = "0", "—", "—", "—"
-
-HERO_HTML = f"""
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  * {{ box-sizing:border-box; margin:0; padding:0; }}
-  body {{ background:#080F1A; font-family:'Inter',sans-serif; overflow:hidden; }}
-  .hero {{ position:relative; padding:44px 40px; overflow:hidden; border-radius:16px;
-           background:linear-gradient(135deg,#0F2136 0%,#080F1A 100%); border:1px solid rgba(47,167,185,0.18); }}
-  .aurora {{ position:absolute; inset:0; overflow:hidden; z-index:0; pointer-events:none; }}
-  .blob {{ position:absolute; border-radius:50%; filter:blur(70px); opacity:.28; animation:drift 20s ease-in-out infinite; }}
-  .b1 {{ width:320px; height:320px; background:#2FA7B9; top:-140px; left:-80px; }}
-  .b2 {{ width:280px; height:280px; background:#6B5CE0; top:-40px; right:-100px; animation-delay:-6s; }}
-  .b3 {{ width:240px; height:240px; background:#E8A33D; bottom:-140px; left:40%; opacity:.18; animation-delay:-12s; }}
-  @keyframes drift {{ 0%,100%{{transform:translate(0,0);}} 50%{{transform:translate(30px,-20px);}} }}
-  .grid {{ position:absolute; inset:0; z-index:0;
-           background-image:linear-gradient(rgba(47,167,185,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(47,167,185,.16) 1px,transparent 1px);
-           background-size:36px 36px; mask-image:radial-gradient(ellipse 80% 70% at 30% 30%, black 30%, transparent 90%); }}
-  .content {{ position:relative; z-index:2; }}
-  .eyebrow {{ display:inline-flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:11px;
-              letter-spacing:.08em; color:#2FA7B9; border:1px solid rgba(47,167,185,.18); padding:5px 12px; border-radius:20px;
-              margin-bottom:16px; text-transform:uppercase; background:rgba(47,167,185,.05); }}
-  .dot {{ width:6px; height:6px; border-radius:50%; background:#E8A33D; box-shadow:0 0 8px #E8A33D; animation:pulse 1.8s infinite; }}
-  @keyframes pulse {{ 0%,100%{{opacity:1;}} 50%{{opacity:.25;}} }}
-  h1 {{ font-family:'Bricolage Grotesque',sans-serif; font-size:30px; font-weight:700; color:#EDE9DE; line-height:1.1; margin-bottom:6px; }}
-  h1 em {{ font-style:normal; color:#E8A33D; }}
-  .thisis {{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:#8FA3B8; letter-spacing:.05em; display:block; margin-top:6px; }}
-  .big {{ font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:52px; line-height:1;
-          background:linear-gradient(100deg,#EDE9DE 0%,#2FA7B9 45%,#EDE9DE 80%); background-size:200% 100%;
-          -webkit-background-clip:text; background-clip:text; color:transparent; animation:shine 6s ease-in-out infinite; margin:2px 0 16px; display:inline-block; }}
-  @keyframes shine {{ 0%,100%{{background-position:0% 0;}} 50%{{background-position:100% 0;}} }}
-  p.lede {{ color:#8FA3B8; font-size:14.5px; max-width:520px; margin-bottom:20px; }}
-  .ledger {{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(47,167,185,.18);
-             border:1px solid rgba(47,167,185,.18); border-radius:8px; overflow:hidden; }}
-  .cell {{ background:rgba(18,40,63,.6); padding:14px 16px; }}
-  .num {{ font-family:'IBM Plex Mono',monospace; font-size:19px; font-weight:600; color:#E8A33D; }}
-  .lbl {{ font-size:11px; color:#8FA3B8; margin-top:2px; }}
-</style>
-<div class="hero">
-  <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
-  <div class="grid"></div>
-  <div class="content">
-    <div class="eyebrow"><span class="dot"></span> {"LIVE DATA LOADED" if insights is not None and insights.total_records else "NO DATA LOADED YET"}</div>
-    <h1>Not just answers. <em>Better decisions.</em></h1>
-    <span class="thisis">This is</span>
-    <div class="big">CIVICPULSE</div>
-    <p class="lede">Ask your community data anything — patterns, anomalies, forecasts, and decisions, grounded in numbers computed before any AI call.</p>
-    <div class="ledger">
-      <div class="cell"><div class="num">{_records}</div><div class="lbl">Records loaded</div></div>
-      <div class="cell"><div class="num">{_hotspot}</div><div class="lbl">Top hotspot</div></div>
-      <div class="cell"><div class="num">{_category}</div><div class="lbl">Leading issue</div></div>
-      <div class="cell"><div class="num">{_trend}</div><div class="lbl">Weekly trend</div></div>
-    </div>
-  </div>
-</div>
-"""
-
-components.html(HERO_HTML, height=420, scrolling=False)
 
 if load_result is None:
     st.info(
@@ -491,8 +346,7 @@ with tab_overview:
                 },
                 size_max=32, zoom=10, mapbox_style="carto-positron",
             )
-            # Auto-fit the view to the actual data instead of a fixed zoom level,
-            # so it centers correctly whether this is Bengaluru or another city's data.
+            # Auto-fit the view to the actual data instead of a fixed zoom level.
             lat_span = geo_df["lat"].max() - geo_df["lat"].min()
             lon_span = geo_df["lon"].max() - geo_df["lon"].min()
             span = max(lat_span, lon_span, 0.01)
@@ -738,7 +592,7 @@ concrete next steps.
 - A Decision Scoreboard (urgency · impact · confidence) tells teams what to act on.
 
 **Google Cloud stack**
-- 🤖 **Gemini** (`gemini-3.1-flash-lite` by default) via Vertex AI or Gemini API
+- 🤖 **Gemini** (`gemini-2.5-flash-lite` by default) via Vertex AI or Gemini API
 - 🚀 **Cloud Run** for serverless, scale-to-zero hosting (very low cost)
 - 🛠️ **`gcloud` CLI** + Cloud Build for one-command deploys
 
