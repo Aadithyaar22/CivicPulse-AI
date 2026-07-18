@@ -21,20 +21,28 @@ CANONICAL_COLUMNS = [
 
 # Common aliases -> canonical name. Keeps the app forgiving about messy CSVs.
 COLUMN_ALIASES = {
-    "date": ["date", "reported_on", "created_at", "timestamp", "day", "logged_date"],
-    "area": ["area", "neighborhood", "neighbourhood", "ward", "zone", "region", "locality", "district"],
+    "date": ["date", "reported_on", "created_at", "timestamp", "day", "logged_date",
+             "grievance date", "complaint date", "reported date", "date reported"],
+    "area": ["area", "neighborhood", "neighbourhood", "ward", "zone", "region", "locality",
+             "district", "ward name", "ward_name"],
     "category": ["category", "type", "service", "domain", "service_type"],
-    "complaint_type": ["complaint_type", "issue", "issue_type", "problem", "subtype", "description_type"],
+    "complaint_type": ["complaint_type", "issue", "issue_type", "problem", "subtype",
+                        "description_type", "sub category", "subcategory", "sub_category"],
     "severity": ["severity", "priority", "urgency", "level"],
-    "status": ["status", "state", "resolution", "stage"],
+    "status": ["status", "state", "resolution", "stage", "grievance status", "complaint status"],
     "department": ["department", "dept", "agency", "team", "owner"],
-    "notes": ["notes", "note", "comment", "comments", "remark", "remarks", "details"],
+    "notes": ["notes", "note", "comment", "comments", "remark", "remarks", "details",
+              "staff remarks", "staff_remarks"],
 }
 
 SEVERITY_ORDER = ["low", "medium", "high", "critical"]
 SEVERITY_WEIGHTS = {"low": 1, "medium": 2, "high": 3, "critical": 4}
 
-OPEN_STATUSES = {"open", "pending", "in progress", "in_progress", "new", "unresolved", "escalated"}
+OPEN_STATUSES = {
+    "open", "pending", "in progress", "in_progress", "new", "unresolved", "escalated",
+    "registered", "reopen", "re-open", "re opened", "assigned", "under process",
+    "long term solution", "field verification",
+}
 
 
 def normalize_text(value: Any) -> str:

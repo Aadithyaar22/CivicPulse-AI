@@ -114,7 +114,7 @@ with st.sidebar:
             st.error("Sample file missing. Run sample_data/generate_sample.py.")
 
     uploaded = st.file_uploader(
-        "Upload CSV / JSON / PDF / Excel", type=["csv", "json", "pdf", "xlsx", "xls"], accept_multiple_files=False
+        "Upload CSV / JSON / PDF", type=["csv", "json", "pdf"], accept_multiple_files=False
     )
     if uploaded is not None:
         if st.button("Analyze uploaded file", use_container_width=True):
@@ -126,14 +126,6 @@ with st.sidebar:
         if st.button("Analyze pasted text", use_container_width=True) and pasted.strip():
             _set_data(load_text(pasted))
             st.success("Text captured.")
-
-    _lr = st.session_state.load_result
-    if _lr is not None and getattr(_lr, "column_matches", None):
-        with st.expander("🔍 Detected columns"):
-            for m in _lr.column_matches:
-                icon = {"exact": "✅", "token": "🟢", "fuzzy": "🟡", "content": "🔵"}.get(m.method, "⚪")
-                label = "value-based" if m.method == "content" else f"{m.score:.0%} match"
-                st.caption(f"{icon} **{m.source_column}** → `{m.canonical}` ({label})")
 
     st.markdown("#### 2. Domain framing")
     st.session_state.domain = st.selectbox(
@@ -314,55 +306,6 @@ with tab_overview:
         s3.markdown(score_pill("Confidence", scores["confidence"], "#0e7490"), unsafe_allow_html=True)
         s4.markdown(score_pill("Severity", scores["severity_index"], "#7c3aed"), unsafe_allow_html=True)
         st.caption(f"Open/unresolved case rate: **{d['open_rate_pct']}%**")
-        cb = scores.get("confidence_breakdown")
-        if cb:
-            with st.expander("Why this confidence score?"):
-                st.caption(
-                    f"Sample size: **{cb['sample_size_score']:.0f}**/40 · "
-                    f"Recency: **{cb['recency_score']:.0f}**/30 · "
-                    f"Stability: **{cb['stability_score']:.0f}**/30 "
-                    "— more reports, more recent data, and a steadier day-to-day pattern "
-                    "all raise confidence."
-                )
-
-        st.write("")
-        st.markdown("<div class='cp-section-title'>🗺️ Hotspot map</div>", unsafe_allow_html=True)
-        st.caption("Blends volume, severity, and unresolved backlog into one score per area.")
-        if d.get("geo_summary"):
-            geo_df = pd.DataFrame(d["geo_summary"])
-            fig_map = px.scatter_mapbox(
-                geo_df, lat="lat", lon="lon", size="hotspot_score", color="hotspot_score",
-                hover_name="area",
-                hover_data={"total_complaints": True, "open_rate_pct": True, "high_severity_rate_pct": True,
-                            "lat": False, "lon": False, "hotspot_score": ":.1f"},
-                color_continuous_scale="OrRd", size_max=32, zoom=10,
-                mapbox_style="carto-positron",
-            )
-            fig_map.update_layout(height=380, margin=dict(l=0, r=0, t=10, b=0))
-            st.plotly_chart(fig_map, use_container_width=True)
-            st.caption(
-                "📍 Area coordinates are placeholder positions (deterministic per area name) "
-                "for demo purposes — swap in real ward/neighborhood geocoding for production."
-            )
-        else:
-            st.info("Not enough area data to build a hotspot map.")
-
-        st.write("")
-        st.markdown("<div class='cp-section-title'>📈 7-day forecast</div>", unsafe_allow_html=True)
-        st.caption("Trend-aware forecasting (Holt's linear method) — predicts likely spikes before they happen, not just after.")
-        if d.get("forecasts"):
-            fc_df = pd.DataFrame(d["forecasts"])
-            for _, row in fc_df.iterrows():
-                icon = "🔴" if row["will_likely_spike"] else "🟢"
-                fc1, fc2, fc3 = st.columns([2, 2, 1])
-                with fc1:
-                    st.markdown(f"{icon} **{humanize(row['area'])}**")
-                with fc2:
-                    st.caption(f"{row['last_7day_avg']:.1f}/day → {row['forecast_7day_avg']:.1f}/day predicted")
-                with fc3:
-                    st.markdown(f"**{row['pct_change']:+.1f}%**")
-        else:
-            st.info("Not enough daily history yet to forecast (needs 7+ days of dated records).")
 
         st.write("")
         df = load_result.df

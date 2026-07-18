@@ -13,7 +13,6 @@ from dataclasses import dataclass, field
 import pandas as pd
 
 from .utils import COLUMN_ALIASES, normalize_text
-from .column_matcher import detect_columns
 
 
 @dataclass
@@ -24,26 +23,28 @@ class LoadResult:
     source_type: str
     warnings: list[str] = field(default_factory=list)
     raw_text: str | None = None  # for pasted text / PDF, keep the original
-    column_matches: list = field(default_factory=list)  # list[ColumnMatch], for UI transparency
 
 
-def _map_columns(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str], list]:
-    """Rename incoming columns onto canonical names using generalized detection.
-
-    Works on unseen datasets, not just a hardcoded alias table: exact alias
-    matches are tried first, then token/substring overlap, then fuzzy string
-    similarity, then (for date/status specifically) sniffing actual values.
-    See column_matcher.py for the full scoring logic.
-    """
-    mapping, matches = detect_columns(df)
-    df = df.rename(columns=mapping)
-
+def _map_columns(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
+    """Rename incoming columns onto canonical names using the alias table."""
     warnings: list[str] = []
+    lower_map = {normalize_text(c): c for c in df.columns}
+    rename: dict[str, str] = {}
+
+    for canonical, aliases in COLUMN_ALIASES.items():
+        for alias in aliases:
+            if alias in lower_map:
+                rename[lower_map[alias]] = canonical
+                break
+
+    df = df.rename(columns=rename)
+
+    # Ensure we at least have something to group on.
     if "area" not in df.columns and "category" not in df.columns:
         warnings.append(
             "No 'area' or 'category' column detected. Analytics will be limited."
         )
-    return df, warnings, matches
+    return df, warnings
 
 
 def _coerce_types(df: pd.DataFrame) -> pd.DataFrame:
@@ -58,9 +59,9 @@ def _coerce_types(df: pd.DataFrame) -> pd.DataFrame:
 
 def load_csv(file_or_buffer) -> LoadResult:
     df = pd.read_csv(file_or_buffer)
-    df, warnings, matches = _map_columns(df)
+    df, warnings = _map_columns(df)
     df = _coerce_types(df)
-    return LoadResult(df=df, source_type="csv", warnings=warnings, column_matches=matches)
+    return LoadResult(df=df, source_type="csv", warnings=warnings)
 
 
 def load_json(file_or_buffer) -> LoadResult:
@@ -76,9 +77,9 @@ def load_json(file_or_buffer) -> LoadResult:
                 data = data[key]
                 break
     df = pd.json_normalize(data)
-    df, warnings, matches = _map_columns(df)
+    df, warnings = _map_columns(df)
     df = _coerce_types(df)
-    return LoadResult(df=df, source_type="json", warnings=warnings, column_matches=matches)
+    return LoadResult(df=df, source_type="json", warnings=warnings)
 
 
 def load_pdf(file_or_buffer) -> LoadResult:
@@ -106,36 +107,6 @@ def load_text(text: str) -> LoadResult:
     return LoadResult(df=pd.DataFrame(), source_type="text", warnings=[], raw_text=text)
 
 
-def load_excel(file_or_buffer) -> LoadResult:
-    """Loads the first sheet of an .xlsx/.xls file through the same pipeline as CSV.
-
-    If the workbook has multiple sheets, only the first is used -- multi-sheet
-    handling would need a sheet picker in the UI, which is a reasonable next
-    step but out of scope for a drop-in loader.
-    """
-    warnings: list[str] = []
-    try:
-        sheets = pd.read_excel(file_or_buffer, sheet_name=None)
-    except ImportError:
-        return LoadResult(
-            df=pd.DataFrame(),
-            source_type="xlsx",
-            warnings=["openpyxl not installed; cannot read Excel files."],
-        )
-
-    first_sheet_name = next(iter(sheets))
-    df = sheets[first_sheet_name]
-
-    if len(sheets) > 1:
-        warnings.append(
-            f"Workbook has {len(sheets)} sheets; only the first ('{first_sheet_name}') was used."
-        )
-
-    df, mapping_warnings, matches = _map_columns(df)
-    df = _coerce_types(df)
-    return LoadResult(df=df, source_type="xlsx", warnings=warnings + mapping_warnings, column_matches=matches)
-
-
 def load_uploaded_file(uploaded_file) -> LoadResult:
     """Dispatch a Streamlit UploadedFile to the right loader by extension."""
     name = getattr(uploaded_file, "name", "").lower()
@@ -145,8 +116,6 @@ def load_uploaded_file(uploaded_file) -> LoadResult:
         return load_json(uploaded_file)
     if name.endswith(".pdf"):
         return load_pdf(uploaded_file)
-    if name.endswith((".xlsx", ".xls")):
-        return load_excel(uploaded_file)
     # Fallback: try CSV, then treat as plain text.
     try:
         uploaded_file.seek(0)

@@ -19,7 +19,6 @@ from .utils import (
     humanize,
     normalize_text,
 )
-from . import forecasting, geo
 
 
 @dataclass
@@ -50,8 +49,6 @@ class Insights:
     top_category: str | None = None
     anomalies: list[dict[str, Any]] = field(default_factory=list)
     scores: dict[str, float] = field(default_factory=dict)
-    forecasts: list[dict[str, Any]] = field(default_factory=list)
-    geo_summary: list[dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -182,46 +179,6 @@ def _severity_index(df: pd.DataFrame) -> float:
     return clamp((weights.mean() / 4.0) * 100.0)
 
 
-def _calibrated_confidence(df: pd.DataFrame, recency_window_days: int = 14) -> dict[str, float]:
-    """Confidence built from three real signals instead of a flat heuristic.
-
-    - sample_size_score: more reports = statistically sturdier (saturates ~100)
-    - recency_score: more of the data is recent = more relevant right now
-    - stability_score: lower day-to-day variance = a consistent pattern, not noise
-    """
-    n = len(df)
-    if n == 0:
-        return {"confidence": 0.0, "sample_size_score": 0.0, "recency_score": 0.0, "stability_score": 0.0}
-
-    sample_size_score = clamp(min(n / 100.0, 1.0) * 40.0)
-
-    if "date" in df.columns and not df["date"].isna().all():
-        valid_dates = df["date"].dropna()
-        cutoff = valid_dates.max() - pd.Timedelta(days=recency_window_days)
-        recent_frac = (valid_dates >= cutoff).mean()
-        recency_score = clamp(float(recent_frac) * 30.0)
-
-        daily_counts = valid_dates.dt.floor("D").value_counts()
-        if len(daily_counts) > 1 and daily_counts.mean() > 0:
-            cv = daily_counts.std() / daily_counts.mean()
-            stability_score = clamp((1.0 - min(cv, 1.0)) * 30.0)
-        else:
-            stability_score = 15.0  # neutral -- not enough days to judge variance
-    else:
-        # No date column: fall back to a neutral midpoint for time-based signals.
-        recency_score = 15.0
-        stability_score = 15.0
-
-    confidence = clamp(sample_size_score + recency_score + stability_score)
-
-    return {
-        "confidence": round(float(confidence), 1),
-        "sample_size_score": round(float(sample_size_score), 1),
-        "recency_score": round(float(recency_score), 1),
-        "stability_score": round(float(stability_score), 1),
-    }
-
-
 def _scores(df: pd.DataFrame, anomalies: list[Anomaly], trend: str, open_rate: float) -> dict[str, float]:
     """Decision Scoreboard: urgency, impact, confidence (all 0-100)."""
     severity_index = _severity_index(df)
@@ -239,15 +196,15 @@ def _scores(df: pd.DataFrame, anomalies: list[Anomaly], trend: str, open_rate: f
         concentration = clamp(top_share)
     impact = clamp(0.6 * volume_score + 0.4 * concentration)
 
-    # Confidence: calibrated from sample size, recency, and stability (see above),
-    # rather than a flat volume/completeness heuristic.
-    confidence_detail = _calibrated_confidence(df)
+    # Confidence scales with data volume and field completeness.
+    key_cols = [c for c in ("date", "area", "category", "severity") if c in df.columns]
+    completeness = (len(key_cols) / 4.0) * 100.0
+    confidence = clamp(0.5 * completeness + 0.5 * volume_score)
 
     return {
         "urgency": round(float(urgency), 1),
         "impact": round(float(impact), 1),
-        "confidence": confidence_detail["confidence"],
-        "confidence_breakdown": confidence_detail,
+        "confidence": round(float(confidence), 1),
         "severity_index": round(float(severity_index), 1),
     }
 
@@ -290,8 +247,6 @@ def compute_insights(df: pd.DataFrame) -> Insights:
         top_category=next(iter(by_category), None),
         anomalies=[asdict(a) for a in anomalies],
         scores=_scores(df, anomalies, trend_direction, open_rate),
-        forecasts=forecasting.forecast_all_areas(df),
-        geo_summary=geo.build_geo_summary(df),
     )
 
 
