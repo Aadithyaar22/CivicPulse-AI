@@ -346,8 +346,24 @@ with tab_overview:
                 },
                 size_max=32, zoom=10, mapbox_style="carto-positron",
             )
-            fig_map.update_layout(height=380, margin=dict(l=0, r=0, t=10, b=0), legend_title_text="")
-            st.plotly_chart(fig_map, use_container_width=True)
+            # Auto-fit the view to the actual data instead of a fixed zoom level,
+            # so it centers correctly whether this is Bengaluru or another city's data.
+            lat_span = geo_df["lat"].max() - geo_df["lat"].min()
+            lon_span = geo_df["lon"].max() - geo_df["lon"].min()
+            span = max(lat_span, lon_span, 0.01)
+            auto_zoom = 12 if span < 0.05 else (10 if span < 0.15 else (8 if span < 0.5 else 6))
+            fig_map.update_layout(
+                height=520, margin=dict(l=0, r=0, t=10, b=0), legend_title_text="",
+                mapbox=dict(
+                    center=dict(lat=float(geo_df["lat"].mean()), lon=float(geo_df["lon"].mean())),
+                    zoom=auto_zoom,
+                ),
+            )
+            st.plotly_chart(
+                fig_map, use_container_width=True,
+                config={"scrollZoom": True, "displayModeBar": True, "displaylogo": False},
+            )
+            st.caption("🖱️ Scroll or pinch to zoom, drag to pan, click a legend item to filter by coordinate source.")
 
             n_real = int((geo_df["coord_source"] == "real_ward").sum())
             n_placeholder = int((geo_df["coord_source"] == "placeholder").sum())
