@@ -330,19 +330,32 @@ with tab_overview:
         st.caption("Blends volume, severity, and unresolved backlog into one score per area.")
         if d.get("geo_summary"):
             geo_df = pd.DataFrame(d["geo_summary"])
+            geo_df["coord_label"] = geo_df["coord_source"].map({
+                "real_ward": "Real BBMP ward location", "provided": "Provided coordinates",
+                "placeholder": "Placeholder (unmatched)",
+            })
             fig_map = px.scatter_mapbox(
-                geo_df, lat="lat", lon="lon", size="hotspot_score", color="hotspot_score",
+                geo_df, lat="lat", lon="lon", size="hotspot_score", color="coord_label",
                 hover_name="area",
                 hover_data={"total_complaints": True, "open_rate_pct": True, "high_severity_rate_pct": True,
-                            "lat": False, "lon": False, "hotspot_score": ":.1f"},
-                color_continuous_scale="OrRd", size_max=32, zoom=10,
-                mapbox_style="carto-positron",
+                            "lat": False, "lon": False, "hotspot_score": ":.1f", "coord_label": False},
+                color_discrete_map={
+                    "Real BBMP ward location": "#0e7490",
+                    "Provided coordinates": "#1d4ed8",
+                    "Placeholder (unmatched)": "#d97706",
+                },
+                size_max=32, zoom=10, mapbox_style="carto-positron",
             )
-            fig_map.update_layout(height=380, margin=dict(l=0, r=0, t=10, b=0))
+            fig_map.update_layout(height=380, margin=dict(l=0, r=0, t=10, b=0), legend_title_text="")
             st.plotly_chart(fig_map, use_container_width=True)
+
+            n_real = int((geo_df["coord_source"] == "real_ward").sum())
+            n_placeholder = int((geo_df["coord_source"] == "placeholder").sum())
+            n_total = len(geo_df)
             st.caption(
-                "📍 Area coordinates are placeholder positions (deterministic per area name) "
-                "for demo purposes — swap in real ward/neighborhood geocoding for production."
+                f"📍 {n_real}/{n_total} areas use real BBMP ward coordinates "
+                f"(OpenCity ward office dataset). {n_placeholder} unmatched area(s) use a "
+                "deterministic placeholder position instead of a guess."
             )
         else:
             st.info("Not enough area data to build a hotspot map.")

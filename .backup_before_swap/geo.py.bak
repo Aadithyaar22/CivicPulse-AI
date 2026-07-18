@@ -1,54 +1,31 @@
 """Geographic intelligence for CivicPulse AI.
 
-Turns the "area" column into a hotspot map instead of a text label.
+Turns the "area" column into a hotspot map instead of a text label. Area
+names in community datasets (ward names, neighborhoods) rarely come with
+coordinates attached, so this module deterministically derives a stable
+lat/lon per area name (placeholder positions arranged around a city
+center) so the map renders consistently across runs.
 
-Coordinate resolution, in order of trust:
-  1. An explicit area_coords mapping passed in by the caller.
-  2. Real Bengaluru ward coordinates (src/bengaluru_wards.py, 163 wards
-     sourced from OpenCity's BBMP ward office dataset) -- matched by exact
-     name, then fuzzy string similarity to absorb spelling variants between
-     datasets (e.g. "H.S.R.Layout" vs "HSR Layout").
-  3. A deterministic placeholder position (hash-seeded, so the same area
-     name always lands in the same spot) for anything not covered above --
-     e.g. areas outside Bengaluru, or wards not in the source dataset.
+In a real city deployment, replace `_placeholder_coords` with a lookup
+against an actual ward/neighborhood geocoding table -- wards don't move,
+so this is a one-time mapping to maintain, not a per-request geocode call.
 """
 
 from __future__ import annotations
 
 import hashlib
-from difflib import SequenceMatcher
 from typing import Any
 
 import numpy as np
 import pandas as pd
 
-from .bengaluru_wards import BENGALURU_WARD_COORDS
-
 DEFAULT_CENTER_LAT = 12.9716
 DEFAULT_CENTER_LON = 77.5946
 SPREAD_DEGREES = 0.09
 
-FUZZY_MATCH_THRESHOLD = 0.82
-
-_WARD_KEYS_NORM = {k.strip().lower(): k for k in BENGALURU_WARD_COORDS}
-
-
-def _real_ward_coords(area: str) -> tuple[float, float] | None:
-    norm = area.strip().lower()
-    if norm in _WARD_KEYS_NORM:
-        return BENGALURU_WARD_COORDS[_WARD_KEYS_NORM[norm]]
-
-    best_score, best_key = 0.0, None
-    for candidate_norm, original_key in _WARD_KEYS_NORM.items():
-        score = SequenceMatcher(None, norm, candidate_norm).ratio()
-        if score > best_score:
-            best_score, best_key = score, original_key
-    if best_score >= FUZZY_MATCH_THRESHOLD:
-        return BENGALURU_WARD_COORDS[best_key]
-    return None
-
 
 def _placeholder_coords(area: str, center_lat: float, center_lon: float) -> tuple[float, float]:
+    """Deterministically maps an area name to a stable point near the center."""
     h = int(hashlib.sha256(area.encode()).hexdigest(), 16)
     rng = np.random.RandomState(h % (2**32))
     dlat, dlon = rng.uniform(-1, 1, size=2) * SPREAD_DEGREES
@@ -59,8 +36,8 @@ def build_geo_summary(
     df: pd.DataFrame,
     area_coords: dict[str, tuple[float, float]] | None = None,
     center: tuple[float, float] = (DEFAULT_CENTER_LAT, DEFAULT_CENTER_LON),
-    use_real_wards: bool = True,
 ) -> list[dict[str, Any]]:
+    """Aggregates complaints per area into a hotspot score ready for a map layer."""
     if df is None or df.empty or "area" not in df.columns:
         return []
 
@@ -70,17 +47,9 @@ def build_geo_summary(
 
     summary = []
     for area, group in df.groupby(df["area"].astype(str)):
-        lat = lon = None
-        source = "placeholder"
         if area in area_coords:
             lat, lon = area_coords[area]
-            source = "provided"
-        elif use_real_wards:
-            found = _real_ward_coords(area)
-            if found:
-                lat, lon = found
-                source = "real_ward"
-        if lat is None:
+        else:
             lat, lon = _placeholder_coords(area, *center)
 
         total = len(group)
@@ -106,7 +75,6 @@ def build_geo_summary(
             "area": area,
             "lat": round(float(lat), 5),
             "lon": round(float(lon), 5),
-            "coord_source": source,
             "total_complaints": int(total),
             "open_rate_pct": round(float(open_rate) * 100, 1),
             "high_severity_rate_pct": round(float(high_sev_rate) * 100, 1),
