@@ -507,7 +507,7 @@ concrete next steps.
 - A Decision Scoreboard (urgency · impact · confidence) tells teams what to act on.
 
 **Google Cloud stack**
-- 🤖 **Gemini** (`gemini-2.5-flash-lite` by default) via Vertex AI or Gemini API
+- 🤖 **Gemini** (`gemini-3.1-flash-lite` by default) via Vertex AI or Gemini API
 - 🚀 **Cloud Run** for serverless, scale-to-zero hosting (very low cost)
 - 🛠️ **`gcloud` CLI** + Cloud Build for one-command deploys
 

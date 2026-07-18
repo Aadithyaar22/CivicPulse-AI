@@ -25,7 +25,7 @@ from .prompt_templates import (
 from .utils import extract_json, humanize
 
 # Smaller / cheaper Gemini tier by default. Override with GEMINI_MODEL.
-DEFAULT_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash-lite")
+DEFAULT_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
 MAX_RETRIES = 2
 RETRY_BACKOFF_SEC = 1.5
 

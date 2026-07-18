@@ -9,7 +9,7 @@ set -euo pipefail
 PROJECT_ID="${1:-}"
 REGION="${2:-us-central1}"
 SERVICE="${3:-civicpulse-ai}"
-MODEL="${GEMINI_MODEL:-gemini-2.5-flash-lite}"
+MODEL="${GEMINI_MODEL:-gemini-3.1-flash-lite}"
 
 if [[ -z "${PROJECT_ID}" ]]; then
   echo "Usage: ./deploy.sh YOUR_PROJECT_ID [REGION] [SERVICE_NAME]"

@@ -9,7 +9,7 @@ sanitation, water, roads, noise, public health) and instantly get **patterns,
 anomalies, a decision scoreboard, and an auto-generated action memo**.
 
 It is **not** a generic chatbot. It computes real analytics in Python first, then
-uses a **small, low-cost Gemini model** (`gemini-2.5-flash-lite`) to explain the
+uses a **small, low-cost Gemini model** (`gemini-3.1-flash-lite`) to explain the
 numbers and recommend concrete next steps — so the AI never hallucinates
 statistics.
 
@@ -140,7 +140,7 @@ Under the hood `deploy.sh` runs:
 gcloud run deploy civicpulse-ai \
   --source . --region us-central1 --allow-unauthenticated \
   --memory 512Mi --cpu 1 --min-instances 0 --max-instances 3 \
-  --set-env-vars GEMINI_MODEL=gemini-2.5-flash-lite,GOOGLE_GENAI_USE_VERTEXAI=true,...
+  --set-env-vars GEMINI_MODEL=gemini-3.1-flash-lite,GOOGLE_GENAI_USE_VERTEXAI=true,...
 ```
 
 When it finishes it prints your **public URL** (e.g.
@@ -162,7 +162,7 @@ When it finishes it prints your **public URL** (e.g.
 - **Wrapper:** `src/gemini_client.py` — auto-detects Vertex AI vs. Gemini API,
   requests JSON output, retries transient errors twice, and falls back to a
   deterministic offline report if the model is unreachable.
-- **Model:** `gemini-2.5-flash-lite` by default (smallest/cheapest tier). Override
+- **Model:** `gemini-3.1-flash-lite` by default (smallest/cheapest tier). Override
   with the `GEMINI_MODEL` env var.
 - **Grounding:** every prompt embeds the computed analytics JSON and instructs the
   model to *use only the provided numbers* — see `src/prompt_templates.py`.
