@@ -14,6 +14,7 @@ from pathlib import Path
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+import streamlit.components.v1 as components
 
 from src.analytics import compute_insights, filter_dataframe
 from src.data_loader import LoadResult, load_sample, load_text, load_uploaded_file
@@ -253,23 +254,75 @@ with st.sidebar:
 
 
 # ---------------------------------------------------------------- hero
-st.markdown(
-    """
-    <div class="cp-hero">
-        <h1>🏙️ CivicPulse AI</h1>
-        <p>Ask your community data anything — get patterns, anomalies, and decisions.
-        <b>Not just answers — better decisions.</b></p>
-        <span class="cp-badge">Natural-language analytics</span>
-        <span class="cp-badge">Anomaly detection</span>
-        <span class="cp-badge">Action generator</span>
-        <span class="cp-badge">Gemini-powered</span>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
 load_result: LoadResult | None = st.session_state.load_result
 insights = st.session_state.insights
+
+if insights is not None and insights.total_records:
+    _d = insights.to_dict()
+    _records = f"{_d['total_records']:,}"
+    _hotspot = humanize(_d.get("hotspot_area") or "—")
+    _category = humanize(_d.get("top_category") or "—")
+    _trend = _d.get("trend_direction", "flat").title()
+else:
+    _records, _hotspot, _category, _trend = "0", "—", "—", "—"
+
+HERO_HTML = f"""
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * {{ box-sizing:border-box; margin:0; padding:0; }}
+  body {{ background:#080F1A; font-family:'Inter',sans-serif; overflow:hidden; }}
+  .hero {{ position:relative; padding:44px 40px; overflow:hidden; border-radius:16px;
+           background:linear-gradient(135deg,#0F2136 0%,#080F1A 100%); border:1px solid rgba(47,167,185,0.18); }}
+  .aurora {{ position:absolute; inset:0; overflow:hidden; z-index:0; pointer-events:none; }}
+  .blob {{ position:absolute; border-radius:50%; filter:blur(70px); opacity:.28; animation:drift 20s ease-in-out infinite; }}
+  .b1 {{ width:320px; height:320px; background:#2FA7B9; top:-140px; left:-80px; }}
+  .b2 {{ width:280px; height:280px; background:#6B5CE0; top:-40px; right:-100px; animation-delay:-6s; }}
+  .b3 {{ width:240px; height:240px; background:#E8A33D; bottom:-140px; left:40%; opacity:.18; animation-delay:-12s; }}
+  @keyframes drift {{ 0%,100%{{transform:translate(0,0);}} 50%{{transform:translate(30px,-20px);}} }}
+  .grid {{ position:absolute; inset:0; z-index:0;
+           background-image:linear-gradient(rgba(47,167,185,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(47,167,185,.16) 1px,transparent 1px);
+           background-size:36px 36px; mask-image:radial-gradient(ellipse 80% 70% at 30% 30%, black 30%, transparent 90%); }}
+  .content {{ position:relative; z-index:2; }}
+  .eyebrow {{ display:inline-flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:11px;
+              letter-spacing:.08em; color:#2FA7B9; border:1px solid rgba(47,167,185,.18); padding:5px 12px; border-radius:20px;
+              margin-bottom:16px; text-transform:uppercase; background:rgba(47,167,185,.05); }}
+  .dot {{ width:6px; height:6px; border-radius:50%; background:#E8A33D; box-shadow:0 0 8px #E8A33D; animation:pulse 1.8s infinite; }}
+  @keyframes pulse {{ 0%,100%{{opacity:1;}} 50%{{opacity:.25;}} }}
+  h1 {{ font-family:'Bricolage Grotesque',sans-serif; font-size:30px; font-weight:700; color:#EDE9DE; line-height:1.1; margin-bottom:6px; }}
+  h1 em {{ font-style:normal; color:#E8A33D; }}
+  .thisis {{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:#8FA3B8; letter-spacing:.05em; display:block; margin-top:6px; }}
+  .big {{ font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:52px; line-height:1;
+          background:linear-gradient(100deg,#EDE9DE 0%,#2FA7B9 45%,#EDE9DE 80%); background-size:200% 100%;
+          -webkit-background-clip:text; background-clip:text; color:transparent; animation:shine 6s ease-in-out infinite; margin:2px 0 16px; display:inline-block; }}
+  @keyframes shine {{ 0%,100%{{background-position:0% 0;}} 50%{{background-position:100% 0;}} }}
+  p.lede {{ color:#8FA3B8; font-size:14.5px; max-width:520px; margin-bottom:20px; }}
+  .ledger {{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(47,167,185,.18);
+             border:1px solid rgba(47,167,185,.18); border-radius:8px; overflow:hidden; }}
+  .cell {{ background:rgba(18,40,63,.6); padding:14px 16px; }}
+  .num {{ font-family:'IBM Plex Mono',monospace; font-size:19px; font-weight:600; color:#E8A33D; }}
+  .lbl {{ font-size:11px; color:#8FA3B8; margin-top:2px; }}
+</style>
+<div class="hero">
+  <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+  <div class="grid"></div>
+  <div class="content">
+    <div class="eyebrow"><span class="dot"></span> {"LIVE DATA LOADED" if insights is not None and insights.total_records else "NO DATA LOADED YET"}</div>
+    <h1>Not just answers. <em>Better decisions.</em></h1>
+    <span class="thisis">This is</span>
+    <div class="big">CIVICPULSE</div>
+    <p class="lede">Ask your community data anything — patterns, anomalies, forecasts, and decisions, grounded in numbers computed before any AI call.</p>
+    <div class="ledger">
+      <div class="cell"><div class="num">{_records}</div><div class="lbl">Records loaded</div></div>
+      <div class="cell"><div class="num">{_hotspot}</div><div class="lbl">Top hotspot</div></div>
+      <div class="cell"><div class="num">{_category}</div><div class="lbl">Leading issue</div></div>
+      <div class="cell"><div class="num">{_trend}</div><div class="lbl">Weekly trend</div></div>
+    </div>
+  </div>
+</div>
+"""
+
+components.html(HERO_HTML, height=420, scrolling=False)
 
 if load_result is None:
     st.info(
