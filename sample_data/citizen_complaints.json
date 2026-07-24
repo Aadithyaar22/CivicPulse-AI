@@ -1,2148 +1,2148 @@
 {
   "records": [
     {
-      "date": "2026-06-15",
-      "area": "Lakeside",
-      "category": "Roads",
-      "complaint_type": "Broken streetlight",
-      "severity": "high",
-      "status": "Open",
-      "department": "Public Works",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-07",
-      "area": "Green Valley",
-      "category": "Public Health",
-      "complaint_type": "Food safety",
-      "severity": "critical",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-12",
-      "area": "Riverside",
-      "category": "Sanitation",
-      "complaint_type": "Blocked sewer",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-06-29",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Mosquito breeding",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-21",
-      "area": "Green Valley",
-      "category": "Sanitation",
-      "complaint_type": "Public toilet issue",
-      "severity": "low",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-13",
-      "area": "Green Valley",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-05-19",
-      "area": "Harbor District",
-      "category": "Sanitation",
-      "complaint_type": "Stagnant water",
-      "severity": "critical",
-      "status": "Escalated",
-      "department": "Sanitation Dept",
-      "notes": ""
-    },
-    {
       "date": "2026-07-04",
-      "area": "Riverside",
-      "category": "Noise",
-      "complaint_type": "Loud construction",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Environment Cell",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-05-27",
-      "area": "Lakeside",
-      "category": "Public Health",
-      "complaint_type": "Food safety",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-21",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-29",
-      "area": "Harbor District",
-      "category": "Public Health",
-      "complaint_type": "Mosquito breeding",
-      "severity": "low",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-07-03",
-      "area": "Oak Hill",
-      "category": "Water Supply",
-      "complaint_type": "Contaminated water",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Water Board",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-07",
-      "area": "Harbor District",
-      "category": "Public Health",
-      "complaint_type": "Mosquito breeding",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-05-16",
-      "area": "Green Valley",
-      "category": "Roads",
-      "complaint_type": "Pothole",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Public Works",
-      "notes": ""
-    },
-    {
-      "date": "2026-05-31",
-      "area": "Harbor District",
-      "category": "Sanitation",
-      "complaint_type": "Stagnant water",
-      "severity": "low",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-05-24",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "Contaminated water",
-      "severity": "low",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-28",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Missed pickup",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-05-28",
-      "area": "Harbor District",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Water Board",
-      "notes": ""
-    },
-    {
-      "date": "2026-05-17",
-      "area": "Oak Hill",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-22",
-      "area": "Old Town",
-      "category": "Public Health",
-      "complaint_type": "Food safety",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-05-19",
-      "area": "Midtown",
-      "category": "Waste Collection",
-      "complaint_type": "Missed pickup",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-01",
-      "area": "Oak Hill",
-      "category": "Sanitation",
-      "complaint_type": "Blocked sewer",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-05-27",
-      "area": "Harbor District",
-      "category": "Noise",
-      "complaint_type": "Loud construction",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Environment Cell",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-30",
-      "area": "Green Valley",
-      "category": "Sanitation",
-      "complaint_type": "Stagnant water",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-05-28",
-      "area": "Harbor District",
-      "category": "Noise",
-      "complaint_type": "Traffic noise",
-      "severity": "high",
-      "status": "Open",
-      "department": "Environment Cell",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-11",
-      "area": "Midtown",
-      "category": "Roads",
-      "complaint_type": "Blocked drain",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Public Works",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-25",
-      "area": "Oak Hill",
-      "category": "Roads",
-      "complaint_type": "Blocked drain",
-      "severity": "low",
-      "status": "Escalated",
-      "department": "Public Works",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-05-12",
-      "area": "Riverside",
+      "area": "BTM Layout",
       "category": "Roads",
       "complaint_type": "Broken streetlight",
       "severity": "high",
       "status": "Open",
       "department": "Public Works",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-06",
-      "area": "Harbor District",
-      "category": "Noise",
-      "complaint_type": "Industrial noise",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-05-19",
-      "area": "Midtown",
-      "category": "Roads",
-      "complaint_type": "Broken streetlight",
-      "severity": "low",
-      "status": "Open",
-      "department": "Public Works",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-15",
-      "area": "Lakeside",
-      "category": "Water Supply",
-      "complaint_type": "Leak",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-07-04",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Recurring issue during monsoon."
+      "notes": "Third complaint from the same street."
     },
     {
       "date": "2026-06-26",
-      "area": "North Gate",
-      "category": "Sanitation",
-      "complaint_type": "Public toilet issue",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-07-03",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
+      "area": "Basavanagudi",
+      "category": "Public Health",
+      "complaint_type": "Food safety",
+      "severity": "critical",
       "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Photo evidence attached by citizen."
+      "department": "Health Dept",
+      "notes": "Recurring issue during monsoon."
     },
     {
       "date": "2026-07-01",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
+      "area": "Koramangala",
+      "category": "Sanitation",
+      "complaint_type": "Blocked sewer",
       "severity": "high",
-      "status": "Resolved",
+      "status": "Open",
       "department": "Sanitation Dept",
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-06-30",
-      "area": "North Gate",
-      "category": "Waste Collection",
-      "complaint_type": "Illegal dumping",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-19",
-      "area": "Old Town",
-      "category": "Roads",
-      "complaint_type": "Pothole",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Public Works",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-03",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Missed pickup",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-29",
-      "area": "Riverside",
+      "date": "2026-07-18",
+      "area": "Koramangala",
       "category": "Public Health",
-      "complaint_type": "Stray animals",
-      "severity": "high",
-      "status": "Open",
+      "complaint_type": "Mosquito breeding",
+      "severity": "medium",
+      "status": "Resolved",
       "department": "Health Dept",
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-06-28",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
-      "severity": "high",
-      "status": "In Progress",
+      "date": "2026-07-10",
+      "area": "Basavanagudi",
+      "category": "Sanitation",
+      "complaint_type": "Public toilet issue",
+      "severity": "low",
+      "status": "Open",
       "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
+      "notes": "Photo evidence attached by citizen."
     },
     {
-      "date": "2026-05-14",
-      "area": "Old Town",
+      "date": "2026-07-02",
+      "area": "Basavanagudi",
       "category": "Water Supply",
       "complaint_type": "Low pressure",
-      "severity": "low",
-      "status": "Resolved",
+      "severity": "medium",
+      "status": "Open",
       "department": "Water Board",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-11",
-      "area": "Midtown",
-      "category": "Roads",
-      "complaint_type": "Broken streetlight",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Public Works",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-15",
-      "area": "North Gate",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-10",
-      "area": "North Gate",
-      "category": "Noise",
-      "complaint_type": "Late-night party",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-23",
-      "area": "Old Town",
-      "category": "Roads",
-      "complaint_type": "Pothole",
-      "severity": "low",
-      "status": "Open",
-      "department": "Public Works",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-02",
-      "area": "Lakeside",
-      "category": "Waste Collection",
-      "complaint_type": "Illegal dumping",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-05-30",
-      "area": "Harbor District",
-      "category": "Sanitation",
-      "complaint_type": "Foul smell",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-07-04",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-21",
-      "area": "Midtown",
-      "category": "Public Health",
-      "complaint_type": "Food safety",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-29",
-      "area": "Riverside",
-      "category": "Noise",
-      "complaint_type": "Traffic noise",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Environment Cell",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-05-14",
-      "area": "North Gate",
-      "category": "Noise",
-      "complaint_type": "Industrial noise",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-02",
-      "area": "Lakeside",
-      "category": "Public Health",
-      "complaint_type": "Food safety",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-27",
-      "area": "North Gate",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": "Flagged by community volunteer."
+      "notes": "Third complaint from the same street."
     },
     {
       "date": "2026-06-07",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-05-18",
-      "area": "Old Town",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "Open",
+      "area": "Malleshwaram",
+      "category": "Sanitation",
+      "complaint_type": "Stagnant water",
+      "severity": "critical",
+      "status": "Escalated",
       "department": "Sanitation Dept",
       "notes": ""
     },
     {
-      "date": "2026-05-29",
-      "area": "Green Valley",
-      "category": "Sanitation",
-      "complaint_type": "Foul smell",
+      "date": "2026-07-23",
+      "area": "Koramangala",
+      "category": "Noise",
+      "complaint_type": "Loud construction",
       "severity": "low",
       "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-06-12",
-      "area": "Harbor District",
-      "category": "Water Supply",
-      "complaint_type": "No supply",
-      "severity": "low",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-07-03",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
+      "department": "Environment Cell",
       "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-29",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Illegal dumping",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-05-14",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "low",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-16",
-      "area": "Oak Hill",
-      "category": "Water Supply",
-      "complaint_type": "Leak",
-      "severity": "high",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-28",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-05",
-      "area": "Old Town",
-      "category": "Sanitation",
-      "complaint_type": "Blocked sewer",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-06-18",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Food safety",
-      "severity": "high",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-29",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "No supply",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Water Board",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-06",
-      "area": "Green Valley",
-      "category": "Public Health",
-      "complaint_type": "Food safety",
-      "severity": "high",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": ""
     },
     {
       "date": "2026-06-15",
-      "area": "Old Town",
-      "category": "Waste Collection",
-      "complaint_type": "Illegal dumping",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-12",
-      "area": "Riverside",
-      "category": "Sanitation",
-      "complaint_type": "Blocked sewer",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-18",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "medium",
-      "status": "Escalated",
-      "department": "Health Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-13",
-      "area": "Midtown",
-      "category": "Sanitation",
-      "complaint_type": "Stagnant water",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-05-15",
-      "area": "Lakeside",
-      "category": "Waste Collection",
-      "complaint_type": "Missed pickup",
-      "severity": "low",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-05-23",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "Contaminated water",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Water Board",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-18",
-      "area": "Harbor District",
-      "category": "Noise",
-      "complaint_type": "Industrial noise",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-04",
-      "area": "Old Town",
-      "category": "Roads",
-      "complaint_type": "Pothole",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Public Works",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-28",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-05-11",
-      "area": "Old Town",
-      "category": "Sanitation",
-      "complaint_type": "Stagnant water",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-25",
-      "area": "North Gate",
-      "category": "Water Supply",
-      "complaint_type": "No supply",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Water Board",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-05-19",
-      "area": "Oak Hill",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-05-30",
-      "area": "Harbor District",
-      "category": "Noise",
-      "complaint_type": "Industrial noise",
-      "severity": "high",
-      "status": "Open",
-      "department": "Environment Cell",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-07-02",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Missed pickup",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-07-04",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Illegal dumping",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-28",
-      "area": "Old Town",
-      "category": "Water Supply",
-      "complaint_type": "Contaminated water",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": ""
-    },
-    {
-      "date": "2026-05-17",
-      "area": "Green Valley",
-      "category": "Roads",
-      "complaint_type": "Broken streetlight",
-      "severity": "critical",
-      "status": "Open",
-      "department": "Public Works",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-29",
-      "area": "Oak Hill",
-      "category": "Water Supply",
-      "complaint_type": "No supply",
-      "severity": "low",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-17",
-      "area": "Lakeside",
-      "category": "Sanitation",
-      "complaint_type": "Stagnant water",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-16",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-05-11",
-      "area": "Green Valley",
-      "category": "Roads",
-      "complaint_type": "Broken streetlight",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Public Works",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-05-27",
-      "area": "Riverside",
-      "category": "Sanitation",
-      "complaint_type": "Public toilet issue",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-05-11",
-      "area": "Old Town",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-06-05",
-      "area": "Midtown",
-      "category": "Water Supply",
-      "complaint_type": "Contaminated water",
-      "severity": "low",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-05-22",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Mosquito breeding",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-13",
-      "area": "North Gate",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-25",
-      "area": "Riverside",
-      "category": "Sanitation",
-      "complaint_type": "Public toilet issue",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-07-03",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-07-01",
-      "area": "Old Town",
-      "category": "Noise",
-      "complaint_type": "Industrial noise",
-      "severity": "low",
-      "status": "Open",
-      "department": "Environment Cell",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-06",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-12",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Mosquito breeding",
-      "severity": "low",
-      "status": "Escalated",
-      "department": "Health Dept",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-27",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "Leak",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-07",
-      "area": "Harbor District",
-      "category": "Roads",
-      "complaint_type": "Pothole",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Public Works",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-05-10",
-      "area": "Midtown",
-      "category": "Roads",
-      "complaint_type": "Damaged signage",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Public Works",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-22",
-      "area": "Old Town",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-07-03",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Illegal dumping",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-07-01",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Illegal dumping",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-05-22",
-      "area": "Oak Hill",
-      "category": "Water Supply",
-      "complaint_type": "No supply",
-      "severity": "high",
-      "status": "Escalated",
-      "department": "Water Board",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-05-27",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Stray animals",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-23",
-      "area": "North Gate",
-      "category": "Roads",
-      "complaint_type": "Blocked drain",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Public Works",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-07-01",
-      "area": "North Gate",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-05-16",
-      "area": "Harbor District",
-      "category": "Waste Collection",
-      "complaint_type": "Illegal dumping",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-05-19",
-      "area": "Harbor District",
+      "area": "BTM Layout",
       "category": "Public Health",
       "complaint_type": "Food safety",
-      "severity": "critical",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-22",
-      "area": "Riverside",
-      "category": "Sanitation",
-      "complaint_type": "Foul smell",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-11",
-      "area": "Lakeside",
-      "category": "Sanitation",
-      "complaint_type": "Blocked sewer",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-09",
-      "area": "Riverside",
-      "category": "Roads",
-      "complaint_type": "Blocked drain",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Public Works",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-03",
-      "area": "Old Town",
-      "category": "Sanitation",
-      "complaint_type": "Stagnant water",
-      "severity": "critical",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-03",
-      "area": "Harbor District",
-      "category": "Public Health",
-      "complaint_type": "Stray animals",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-05-19",
-      "area": "Midtown",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "high",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-07-02",
-      "area": "Riverside",
-      "category": "Roads",
-      "complaint_type": "Broken streetlight",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Public Works",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-17",
-      "area": "Old Town",
-      "category": "Roads",
-      "complaint_type": "Blocked drain",
-      "severity": "medium",
-      "status": "Escalated",
-      "department": "Public Works",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-28",
-      "area": "Harbor District",
-      "category": "Noise",
-      "complaint_type": "Late-night party",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-06-30",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-07-03",
-      "area": "Midtown",
-      "category": "Roads",
-      "complaint_type": "Pothole",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Public Works",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-05",
-      "area": "Riverside",
-      "category": "Sanitation",
-      "complaint_type": "Stagnant water",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-06-28",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-05-11",
-      "area": "Lakeside",
-      "category": "Water Supply",
-      "complaint_type": "Contaminated water",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-05-14",
-      "area": "Green Valley",
-      "category": "Public Health",
-      "complaint_type": "Stray animals",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-20",
-      "area": "Midtown",
-      "category": "Noise",
-      "complaint_type": "Loud construction",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-21",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-16",
-      "area": "Oak Hill",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Water Board",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-05-30",
-      "area": "Midtown",
-      "category": "Noise",
-      "complaint_type": "Industrial noise",
-      "severity": "low",
-      "status": "Open",
-      "department": "Environment Cell",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-05-13",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-07-01",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Illegal dumping",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-06-18",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Food safety",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-05-30",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "Contaminated water",
-      "severity": "low",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-28",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-03",
-      "area": "Harbor District",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-07-03",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-17",
-      "area": "North Gate",
-      "category": "Waste Collection",
-      "complaint_type": "Illegal dumping",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-28",
-      "area": "Oak Hill",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-10",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
       "severity": "low",
       "status": "Resolved",
       "department": "Health Dept",
       "notes": "Third complaint from the same street."
     },
     {
-      "date": "2026-06-25",
-      "area": "Green Valley",
-      "category": "Noise",
-      "complaint_type": "Loud construction",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-06",
-      "area": "Green Valley",
-      "category": "Water Supply",
-      "complaint_type": "No supply",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-05",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": ""
-    },
-    {
-      "date": "2026-05-23",
-      "area": "Oak Hill",
-      "category": "Sanitation",
-      "complaint_type": "Stagnant water",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-05-27",
-      "area": "Harbor District",
-      "category": "Noise",
-      "complaint_type": "Traffic noise",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Environment Cell",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-05-15",
-      "area": "North Gate",
-      "category": "Roads",
-      "complaint_type": "Blocked drain",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Public Works",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-28",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-27",
-      "area": "Harbor District",
+      "date": "2026-07-10",
+      "area": "Koramangala",
       "category": "Public Health",
       "complaint_type": "Open garbage",
       "severity": "low",
-      "status": "Open",
+      "status": "Resolved",
       "department": "Health Dept",
-      "notes": "Photo evidence attached by citizen."
+      "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-06-30",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-23",
-      "area": "Oak Hill",
+      "date": "2026-07-18",
+      "area": "Malleshwaram",
       "category": "Public Health",
       "complaint_type": "Mosquito breeding",
       "severity": "low",
       "status": "Open",
       "department": "Health Dept",
-      "notes": "Third complaint from the same street."
+      "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-06-09",
-      "area": "North Gate",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "high",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-07-02",
-      "area": "North Gate",
-      "category": "Sanitation",
-      "complaint_type": "Stagnant water",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-05-15",
-      "area": "Midtown",
-      "category": "Public Health",
-      "complaint_type": "Stray animals",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-07-01",
-      "area": "Lakeside",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-05-29",
-      "area": "Lakeside",
-      "category": "Roads",
-      "complaint_type": "Pothole",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Public Works",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-29",
-      "area": "North Gate",
-      "category": "Roads",
-      "complaint_type": "Broken streetlight",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Public Works",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-23",
-      "area": "North Gate",
-      "category": "Noise",
-      "complaint_type": "Late-night party",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-05-14",
-      "area": "Riverside",
-      "category": "Roads",
-      "complaint_type": "Blocked drain",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Public Works",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-16",
-      "area": "Oak Hill",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Water Board",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-24",
-      "area": "Green Valley",
-      "category": "Water Supply",
-      "complaint_type": "Contaminated water",
-      "severity": "low",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-25",
-      "area": "Old Town",
-      "category": "Sanitation",
-      "complaint_type": "Foul smell",
-      "severity": "low",
-      "status": "Escalated",
-      "department": "Sanitation Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-05-12",
-      "area": "Midtown",
-      "category": "Roads",
-      "complaint_type": "Broken streetlight",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Public Works",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-25",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "low",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-03",
-      "area": "Green Valley",
-      "category": "Sanitation",
-      "complaint_type": "Blocked sewer",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-03",
-      "area": "Riverside",
-      "category": "Sanitation",
-      "complaint_type": "Foul smell",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-06",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-06",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Stray animals",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-07-02",
-      "area": "Lakeside",
-      "category": "Roads",
-      "complaint_type": "Blocked drain",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Public Works",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-17",
-      "area": "Lakeside",
-      "category": "Noise",
-      "complaint_type": "Traffic noise",
-      "severity": "high",
-      "status": "Open",
-      "department": "Environment Cell",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-22",
-      "area": "Riverside",
-      "category": "Roads",
-      "complaint_type": "Broken streetlight",
-      "severity": "high",
-      "status": "Open",
-      "department": "Public Works",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-06",
-      "area": "Harbor District",
-      "category": "Public Health",
-      "complaint_type": "Stray animals",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-05-16",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Food safety",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-29",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-05-31",
-      "area": "Green Valley",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-24",
-      "area": "Riverside",
-      "category": "Sanitation",
-      "complaint_type": "Stagnant water",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-09",
-      "area": "Midtown",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "low",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-24",
-      "area": "Midtown",
-      "category": "Noise",
-      "complaint_type": "Late-night party",
-      "severity": "low",
-      "status": "Open",
-      "department": "Environment Cell",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-05-19",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-22",
-      "area": "Oak Hill",
-      "category": "Roads",
-      "complaint_type": "Broken streetlight",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Public Works",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-14",
-      "area": "Green Valley",
-      "category": "Roads",
-      "complaint_type": "Pothole",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Public Works",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-05-20",
-      "area": "North Gate",
-      "category": "Water Supply",
-      "complaint_type": "No supply",
-      "severity": "low",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-05",
-      "area": "Green Valley",
+      "date": "2026-07-22",
+      "area": "Jayanagar",
       "category": "Water Supply",
       "complaint_type": "Contaminated water",
       "severity": "medium",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-09",
-      "area": "Riverside",
-      "category": "Sanitation",
-      "complaint_type": "Blocked sewer",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-05-31",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Stray animals",
-      "severity": "critical",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-05-14",
-      "area": "Midtown",
-      "category": "Roads",
-      "complaint_type": "Pothole",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Public Works",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-07-01",
-      "area": "Old Town",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-19",
-      "area": "Midtown",
-      "category": "Public Health",
-      "complaint_type": "Mosquito breeding",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-21",
-      "area": "Oak Hill",
-      "category": "Noise",
-      "complaint_type": "Loud construction",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-05-21",
-      "area": "North Gate",
-      "category": "Public Health",
-      "complaint_type": "Stray animals",
-      "severity": "low",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-07-01",
-      "area": "Riverside",
-      "category": "Roads",
-      "complaint_type": "Blocked drain",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Public Works",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-07-03",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Missed pickup",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-19",
-      "area": "Oak Hill",
-      "category": "Noise",
-      "complaint_type": "Late-night party",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Environment Cell",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-30",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Missed pickup",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-08",
-      "area": "Harbor District",
-      "category": "Public Health",
-      "complaint_type": "Mosquito breeding",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-07-03",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Missed pickup",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-07-02",
-      "area": "Old Town",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-07-02",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-07-02",
-      "area": "Harbor District",
-      "category": "Waste Collection",
-      "complaint_type": "Missed pickup",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-16",
-      "area": "Oak Hill",
-      "category": "Sanitation",
-      "complaint_type": "Public toilet issue",
-      "severity": "high",
-      "status": "Escalated",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-06-11",
-      "area": "Harbor District",
-      "category": "Water Supply",
-      "complaint_type": "Leak",
-      "severity": "low",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-05-11",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-05-29",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "No supply",
-      "severity": "medium",
       "status": "Resolved",
       "department": "Water Board",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-03",
-      "area": "Harbor District",
-      "category": "Noise",
-      "complaint_type": "Traffic noise",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Environment Cell",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-06-19",
-      "area": "Old Town",
-      "category": "Noise",
-      "complaint_type": "Traffic noise",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Environment Cell",
       "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-24",
-      "area": "Harbor District",
-      "category": "Noise",
-      "complaint_type": "Industrial noise",
-      "severity": "low",
-      "status": "Open",
-      "department": "Environment Cell",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-05-26",
-      "area": "Old Town",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "low",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-07-01",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Missed pickup",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-05-19",
-      "area": "North Gate",
-      "category": "Sanitation",
-      "complaint_type": "Blocked sewer",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-06-20",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Mosquito breeding",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-06-13",
-      "area": "Riverside",
-      "category": "Sanitation",
-      "complaint_type": "Blocked sewer",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-06-04",
-      "area": "Midtown",
-      "category": "Roads",
-      "complaint_type": "Blocked drain",
-      "severity": "high",
-      "status": "Open",
-      "department": "Public Works",
-      "notes": ""
-    },
-    {
-      "date": "2026-07-04",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-20",
-      "area": "Green Valley",
-      "category": "Roads",
-      "complaint_type": "Blocked drain",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Public Works",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-06-19",
-      "area": "Harbor District",
-      "category": "Waste Collection",
-      "complaint_type": "Illegal dumping",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-23",
-      "area": "Midtown",
-      "category": "Sanitation",
-      "complaint_type": "Blocked sewer",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-05-26",
-      "area": "Lakeside",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": ""
     },
     {
       "date": "2026-06-26",
-      "area": "North Gate",
+      "area": "Malleshwaram",
+      "category": "Public Health",
+      "complaint_type": "Mosquito breeding",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-06-04",
+      "area": "Basavanagudi",
+      "category": "Roads",
+      "complaint_type": "Pothole",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Public Works",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-19",
+      "area": "Malleshwaram",
+      "category": "Sanitation",
+      "complaint_type": "Stagnant water",
+      "severity": "low",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-12",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "Contaminated water",
+      "severity": "low",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-17",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Missed pickup",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-06-16",
+      "area": "Malleshwaram",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Water Board",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-05",
+      "area": "Jayanagar",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-07-11",
+      "area": "Domlur",
+      "category": "Public Health",
+      "complaint_type": "Food safety",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-06-07",
+      "area": "Rajajinagar",
+      "category": "Waste Collection",
+      "complaint_type": "Missed pickup",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-20",
+      "area": "Jayanagar",
+      "category": "Sanitation",
+      "complaint_type": "Blocked sewer",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-06-15",
+      "area": "Malleshwaram",
+      "category": "Noise",
+      "complaint_type": "Loud construction",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Environment Cell",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-07-19",
+      "area": "Basavanagudi",
+      "category": "Sanitation",
+      "complaint_type": "Stagnant water",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-06-16",
+      "area": "Malleshwaram",
+      "category": "Noise",
+      "complaint_type": "Traffic noise",
+      "severity": "high",
+      "status": "Open",
+      "department": "Environment Cell",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-06-30",
+      "area": "Rajajinagar",
+      "category": "Roads",
+      "complaint_type": "Blocked drain",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Public Works",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-07-14",
+      "area": "Jayanagar",
+      "category": "Roads",
+      "complaint_type": "Blocked drain",
+      "severity": "low",
+      "status": "Escalated",
+      "department": "Public Works",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-05-31",
+      "area": "Koramangala",
+      "category": "Roads",
+      "complaint_type": "Broken streetlight",
+      "severity": "high",
+      "status": "Open",
+      "department": "Public Works",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-06-25",
+      "area": "Malleshwaram",
+      "category": "Noise",
+      "complaint_type": "Industrial noise",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Environment Cell",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-06-07",
+      "area": "Rajajinagar",
+      "category": "Roads",
+      "complaint_type": "Broken streetlight",
+      "severity": "low",
+      "status": "Open",
+      "department": "Public Works",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-07-04",
+      "area": "BTM Layout",
+      "category": "Water Supply",
+      "complaint_type": "Leak",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-23",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-07-15",
+      "area": "Vijayanagar",
+      "category": "Sanitation",
+      "complaint_type": "Public toilet issue",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-22",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-20",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-19",
+      "area": "Vijayanagar",
+      "category": "Waste Collection",
+      "complaint_type": "Illegal dumping",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-08",
+      "area": "Domlur",
+      "category": "Roads",
+      "complaint_type": "Pothole",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Public Works",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-06-22",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Missed pickup",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-18",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Stray animals",
+      "severity": "high",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-07-17",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-02",
+      "area": "Domlur",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Water Board",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-06-30",
+      "area": "Rajajinagar",
+      "category": "Roads",
+      "complaint_type": "Broken streetlight",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Public Works",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-07-04",
+      "area": "Vijayanagar",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-29",
+      "area": "Vijayanagar",
+      "category": "Noise",
+      "complaint_type": "Late-night party",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Environment Cell",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-12",
+      "area": "Domlur",
+      "category": "Roads",
+      "complaint_type": "Pothole",
+      "severity": "low",
+      "status": "Open",
+      "department": "Public Works",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-21",
+      "area": "BTM Layout",
+      "category": "Waste Collection",
+      "complaint_type": "Illegal dumping",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-06-18",
+      "area": "Malleshwaram",
+      "category": "Sanitation",
+      "complaint_type": "Foul smell",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-23",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-10",
+      "area": "Rajajinagar",
+      "category": "Public Health",
+      "complaint_type": "Food safety",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-18",
+      "area": "Koramangala",
+      "category": "Noise",
+      "complaint_type": "Traffic noise",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Environment Cell",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-02",
+      "area": "Vijayanagar",
+      "category": "Noise",
+      "complaint_type": "Industrial noise",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Environment Cell",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-06-21",
+      "area": "BTM Layout",
+      "category": "Public Health",
+      "complaint_type": "Food safety",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-16",
+      "area": "Vijayanagar",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-26",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-06-06",
+      "area": "Domlur",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-17",
+      "area": "Basavanagudi",
+      "category": "Sanitation",
+      "complaint_type": "Foul smell",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-01",
+      "area": "Malleshwaram",
+      "category": "Water Supply",
+      "complaint_type": "No supply",
+      "severity": "low",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-22",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-18",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Illegal dumping",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-06-02",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "low",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-07-05",
+      "area": "Jayanagar",
+      "category": "Water Supply",
+      "complaint_type": "Leak",
+      "severity": "high",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-07-17",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-24",
+      "area": "Domlur",
+      "category": "Sanitation",
+      "complaint_type": "Blocked sewer",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-07",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Food safety",
+      "severity": "high",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-07-18",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "No supply",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Water Board",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-06-25",
+      "area": "Basavanagudi",
+      "category": "Public Health",
+      "complaint_type": "Food safety",
+      "severity": "high",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-04",
+      "area": "Domlur",
+      "category": "Waste Collection",
+      "complaint_type": "Illegal dumping",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-01",
+      "area": "Koramangala",
+      "category": "Sanitation",
+      "complaint_type": "Blocked sewer",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-07",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "medium",
+      "status": "Escalated",
+      "department": "Health Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-07-02",
+      "area": "Rajajinagar",
+      "category": "Sanitation",
+      "complaint_type": "Stagnant water",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-03",
+      "area": "BTM Layout",
+      "category": "Waste Collection",
+      "complaint_type": "Missed pickup",
+      "severity": "low",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-06-11",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "Contaminated water",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Water Board",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-07",
+      "area": "Malleshwaram",
+      "category": "Noise",
+      "complaint_type": "Industrial noise",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Environment Cell",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-06-23",
+      "area": "Domlur",
+      "category": "Roads",
+      "complaint_type": "Pothole",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Public Works",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-17",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-05-30",
+      "area": "Domlur",
+      "category": "Sanitation",
+      "complaint_type": "Stagnant water",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-07-14",
+      "area": "Vijayanagar",
+      "category": "Water Supply",
+      "complaint_type": "No supply",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Water Board",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-07",
+      "area": "Jayanagar",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-06-18",
+      "area": "Malleshwaram",
+      "category": "Noise",
+      "complaint_type": "Industrial noise",
+      "severity": "high",
+      "status": "Open",
+      "department": "Environment Cell",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-07-21",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Missed pickup",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-07-23",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Illegal dumping",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-17",
+      "area": "Domlur",
+      "category": "Water Supply",
+      "complaint_type": "Contaminated water",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-05",
+      "area": "Basavanagudi",
+      "category": "Roads",
+      "complaint_type": "Broken streetlight",
+      "severity": "critical",
+      "status": "Open",
+      "department": "Public Works",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-07-18",
+      "area": "Jayanagar",
+      "category": "Water Supply",
+      "complaint_type": "No supply",
+      "severity": "low",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-06",
+      "area": "BTM Layout",
+      "category": "Sanitation",
+      "complaint_type": "Stagnant water",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-07-05",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-05-30",
+      "area": "Basavanagudi",
+      "category": "Roads",
+      "complaint_type": "Broken streetlight",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Public Works",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-06-15",
+      "area": "Koramangala",
+      "category": "Sanitation",
+      "complaint_type": "Public toilet issue",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-05-30",
+      "area": "Domlur",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-06-24",
+      "area": "Rajajinagar",
+      "category": "Water Supply",
+      "complaint_type": "Contaminated water",
+      "severity": "low",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-06-10",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Mosquito breeding",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-07-02",
+      "area": "Vijayanagar",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-07-14",
+      "area": "Koramangala",
+      "category": "Sanitation",
+      "complaint_type": "Public toilet issue",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-22",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-20",
+      "area": "Domlur",
+      "category": "Noise",
+      "complaint_type": "Industrial noise",
+      "severity": "low",
+      "status": "Open",
+      "department": "Environment Cell",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-06-25",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-01",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Mosquito breeding",
+      "severity": "low",
+      "status": "Escalated",
+      "department": "Health Dept",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-16",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "Leak",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-26",
+      "area": "Malleshwaram",
+      "category": "Roads",
+      "complaint_type": "Pothole",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Public Works",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-05-29",
+      "area": "Rajajinagar",
+      "category": "Roads",
+      "complaint_type": "Damaged signage",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Public Works",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-11",
+      "area": "Domlur",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-22",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Illegal dumping",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-20",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Illegal dumping",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-10",
+      "area": "Jayanagar",
+      "category": "Water Supply",
+      "complaint_type": "No supply",
+      "severity": "high",
+      "status": "Escalated",
+      "department": "Water Board",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-06-15",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Stray animals",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-07-12",
+      "area": "Vijayanagar",
+      "category": "Roads",
+      "complaint_type": "Blocked drain",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Public Works",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-20",
+      "area": "Vijayanagar",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-06-04",
+      "area": "Malleshwaram",
+      "category": "Waste Collection",
+      "complaint_type": "Illegal dumping",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-07",
+      "area": "Malleshwaram",
+      "category": "Public Health",
+      "complaint_type": "Food safety",
+      "severity": "critical",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-11",
+      "area": "Koramangala",
+      "category": "Sanitation",
+      "complaint_type": "Foul smell",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-30",
+      "area": "BTM Layout",
+      "category": "Sanitation",
+      "complaint_type": "Blocked sewer",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-28",
+      "area": "Koramangala",
+      "category": "Roads",
+      "complaint_type": "Blocked drain",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Public Works",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-22",
+      "area": "Domlur",
+      "category": "Sanitation",
+      "complaint_type": "Stagnant water",
+      "severity": "critical",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-06-22",
+      "area": "Malleshwaram",
+      "category": "Public Health",
+      "complaint_type": "Stray animals",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-07",
+      "area": "Rajajinagar",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "high",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-07-21",
+      "area": "Koramangala",
+      "category": "Roads",
+      "complaint_type": "Broken streetlight",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Public Works",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-07-06",
+      "area": "Domlur",
+      "category": "Roads",
+      "complaint_type": "Blocked drain",
+      "severity": "medium",
+      "status": "Escalated",
+      "department": "Public Works",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-17",
+      "area": "Malleshwaram",
+      "category": "Noise",
+      "complaint_type": "Late-night party",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Environment Cell",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-19",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-22",
+      "area": "Rajajinagar",
+      "category": "Roads",
+      "complaint_type": "Pothole",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Public Works",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-06-24",
+      "area": "Koramangala",
+      "category": "Sanitation",
+      "complaint_type": "Stagnant water",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-17",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-05-30",
+      "area": "BTM Layout",
+      "category": "Water Supply",
+      "complaint_type": "Contaminated water",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-02",
+      "area": "Basavanagudi",
+      "category": "Public Health",
+      "complaint_type": "Stray animals",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-09",
+      "area": "Rajajinagar",
+      "category": "Noise",
+      "complaint_type": "Loud construction",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Environment Cell",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-07-10",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-07-05",
+      "area": "Jayanagar",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Water Board",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-06-18",
+      "area": "Rajajinagar",
+      "category": "Noise",
+      "complaint_type": "Industrial noise",
+      "severity": "low",
+      "status": "Open",
+      "department": "Environment Cell",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-06-01",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-20",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Illegal dumping",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-07",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Food safety",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-06-18",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "Contaminated water",
+      "severity": "low",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-07-17",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-06-22",
+      "area": "Malleshwaram",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-22",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-06",
+      "area": "Vijayanagar",
+      "category": "Waste Collection",
+      "complaint_type": "Illegal dumping",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-07-17",
+      "area": "Jayanagar",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-29",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-07-14",
+      "area": "Basavanagudi",
+      "category": "Noise",
+      "complaint_type": "Loud construction",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Environment Cell",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-25",
+      "area": "Basavanagudi",
+      "category": "Water Supply",
+      "complaint_type": "No supply",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-24",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-11",
+      "area": "Jayanagar",
+      "category": "Sanitation",
+      "complaint_type": "Stagnant water",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-06-15",
+      "area": "Malleshwaram",
+      "category": "Noise",
+      "complaint_type": "Traffic noise",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Environment Cell",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-06-03",
+      "area": "Vijayanagar",
+      "category": "Roads",
+      "complaint_type": "Blocked drain",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Public Works",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-17",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-07-16",
+      "area": "Malleshwaram",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "low",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-19",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-12",
+      "area": "Jayanagar",
+      "category": "Public Health",
+      "complaint_type": "Mosquito breeding",
+      "severity": "low",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-06-28",
+      "area": "Vijayanagar",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "high",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-21",
+      "area": "Vijayanagar",
+      "category": "Sanitation",
+      "complaint_type": "Stagnant water",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-06-03",
+      "area": "Rajajinagar",
+      "category": "Public Health",
+      "complaint_type": "Stray animals",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-20",
+      "area": "BTM Layout",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-06-17",
+      "area": "BTM Layout",
+      "category": "Roads",
+      "complaint_type": "Pothole",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Public Works",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-18",
+      "area": "Vijayanagar",
+      "category": "Roads",
+      "complaint_type": "Broken streetlight",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Public Works",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-12",
+      "area": "Vijayanagar",
+      "category": "Noise",
+      "complaint_type": "Late-night party",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Environment Cell",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-06-02",
+      "area": "Koramangala",
+      "category": "Roads",
+      "complaint_type": "Blocked drain",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Public Works",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-05",
+      "area": "Jayanagar",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Water Board",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-13",
+      "area": "Basavanagudi",
+      "category": "Water Supply",
+      "complaint_type": "Contaminated water",
+      "severity": "low",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-07-14",
+      "area": "Domlur",
+      "category": "Sanitation",
+      "complaint_type": "Foul smell",
+      "severity": "low",
+      "status": "Escalated",
+      "department": "Sanitation Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-05-31",
+      "area": "Rajajinagar",
+      "category": "Roads",
+      "complaint_type": "Broken streetlight",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Public Works",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-07-14",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "low",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-22",
+      "area": "Basavanagudi",
+      "category": "Sanitation",
+      "complaint_type": "Blocked sewer",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-06-22",
+      "area": "Koramangala",
+      "category": "Sanitation",
+      "complaint_type": "Foul smell",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-25",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-25",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Stray animals",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-21",
+      "area": "BTM Layout",
+      "category": "Roads",
+      "complaint_type": "Blocked drain",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Public Works",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-06",
+      "area": "BTM Layout",
+      "category": "Noise",
+      "complaint_type": "Traffic noise",
+      "severity": "high",
+      "status": "Open",
+      "department": "Environment Cell",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-11",
+      "area": "Koramangala",
+      "category": "Roads",
+      "complaint_type": "Broken streetlight",
+      "severity": "high",
+      "status": "Open",
+      "department": "Public Works",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-25",
+      "area": "Malleshwaram",
+      "category": "Public Health",
+      "complaint_type": "Stray animals",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-06-04",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Food safety",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-18",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-19",
+      "area": "Basavanagudi",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-13",
+      "area": "Koramangala",
+      "category": "Sanitation",
+      "complaint_type": "Stagnant water",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-28",
+      "area": "Rajajinagar",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "low",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-13",
+      "area": "Rajajinagar",
+      "category": "Noise",
+      "complaint_type": "Late-night party",
+      "severity": "low",
+      "status": "Open",
+      "department": "Environment Cell",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-06-07",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-11",
+      "area": "Jayanagar",
+      "category": "Roads",
+      "complaint_type": "Broken streetlight",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Public Works",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-03",
+      "area": "Basavanagudi",
+      "category": "Roads",
+      "complaint_type": "Pothole",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Public Works",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-08",
+      "area": "Vijayanagar",
+      "category": "Water Supply",
+      "complaint_type": "No supply",
+      "severity": "low",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-06-24",
+      "area": "Basavanagudi",
+      "category": "Water Supply",
+      "complaint_type": "Contaminated water",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-06-28",
+      "area": "Koramangala",
+      "category": "Sanitation",
+      "complaint_type": "Blocked sewer",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-06-19",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Stray animals",
+      "severity": "critical",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-02",
+      "area": "Rajajinagar",
+      "category": "Roads",
+      "complaint_type": "Pothole",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Public Works",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-20",
+      "area": "Domlur",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-08",
+      "area": "Rajajinagar",
+      "category": "Public Health",
+      "complaint_type": "Mosquito breeding",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-10",
+      "area": "Jayanagar",
+      "category": "Noise",
+      "complaint_type": "Loud construction",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Environment Cell",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-09",
+      "area": "Vijayanagar",
+      "category": "Public Health",
+      "complaint_type": "Stray animals",
+      "severity": "low",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-07-20",
+      "area": "Koramangala",
+      "category": "Roads",
+      "complaint_type": "Blocked drain",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Public Works",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-22",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Missed pickup",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-08",
+      "area": "Jayanagar",
+      "category": "Noise",
+      "complaint_type": "Late-night party",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Environment Cell",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-19",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Missed pickup",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-06-27",
+      "area": "Malleshwaram",
+      "category": "Public Health",
+      "complaint_type": "Mosquito breeding",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-07-22",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Missed pickup",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-21",
+      "area": "Domlur",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-07-21",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-21",
+      "area": "Malleshwaram",
+      "category": "Waste Collection",
+      "complaint_type": "Missed pickup",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-07-05",
+      "area": "Jayanagar",
+      "category": "Sanitation",
+      "complaint_type": "Public toilet issue",
+      "severity": "high",
+      "status": "Escalated",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-06-30",
+      "area": "Malleshwaram",
+      "category": "Water Supply",
+      "complaint_type": "Leak",
+      "severity": "low",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-05-30",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-06-17",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "No supply",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Water Board",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-22",
+      "area": "Malleshwaram",
+      "category": "Noise",
+      "complaint_type": "Traffic noise",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Environment Cell",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-08",
+      "area": "Domlur",
+      "category": "Noise",
+      "complaint_type": "Traffic noise",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Environment Cell",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-07-13",
+      "area": "Malleshwaram",
+      "category": "Noise",
+      "complaint_type": "Industrial noise",
+      "severity": "low",
+      "status": "Open",
+      "department": "Environment Cell",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-06-14",
+      "area": "Domlur",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "low",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-20",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Missed pickup",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-07",
+      "area": "Vijayanagar",
+      "category": "Sanitation",
+      "complaint_type": "Blocked sewer",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-07-09",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Mosquito breeding",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-02",
+      "area": "Koramangala",
+      "category": "Sanitation",
+      "complaint_type": "Blocked sewer",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-06-23",
+      "area": "Rajajinagar",
+      "category": "Roads",
+      "complaint_type": "Blocked drain",
+      "severity": "high",
+      "status": "Open",
+      "department": "Public Works",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-23",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-09",
+      "area": "Basavanagudi",
+      "category": "Roads",
+      "complaint_type": "Blocked drain",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Public Works",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-08",
+      "area": "Malleshwaram",
+      "category": "Waste Collection",
+      "complaint_type": "Illegal dumping",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-07-12",
+      "area": "Rajajinagar",
+      "category": "Sanitation",
+      "complaint_type": "Blocked sewer",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-06-14",
+      "area": "BTM Layout",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-15",
+      "area": "Vijayanagar",
       "category": "Sanitation",
       "complaint_type": "Stagnant water",
       "severity": "medium",
@@ -2151,8 +2151,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-06-29",
-      "area": "Riverside",
+      "date": "2026-07-18",
+      "area": "Koramangala",
       "category": "Water Supply",
       "complaint_type": "Low pressure",
       "severity": "low",
@@ -2161,8 +2161,8 @@
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-05-30",
-      "area": "Harbor District",
+      "date": "2026-06-18",
+      "area": "Malleshwaram",
       "category": "Sanitation",
       "complaint_type": "Public toilet issue",
       "severity": "low",
@@ -2171,8 +2171,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-06-02",
-      "area": "Riverside",
+      "date": "2026-06-21",
+      "area": "Koramangala",
       "category": "Sanitation",
       "complaint_type": "Foul smell",
       "severity": "high",
@@ -2181,8 +2181,8 @@
       "notes": ""
     },
     {
-      "date": "2026-05-23",
-      "area": "Harbor District",
+      "date": "2026-06-11",
+      "area": "Malleshwaram",
       "category": "Roads",
       "complaint_type": "Broken streetlight",
       "severity": "low",
@@ -2191,8 +2191,8 @@
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-06-29",
-      "area": "Riverside",
+      "date": "2026-07-18",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "high",
@@ -2201,8 +2201,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-06-22",
-      "area": "Riverside",
+      "date": "2026-07-11",
+      "area": "Koramangala",
       "category": "Roads",
       "complaint_type": "Damaged signage",
       "severity": "medium",
@@ -2211,8 +2211,8 @@
       "notes": "Photo evidence attached by citizen."
     },
     {
-      "date": "2026-05-24",
-      "area": "Riverside",
+      "date": "2026-06-12",
+      "area": "Koramangala",
       "category": "Sanitation",
       "complaint_type": "Blocked sewer",
       "severity": "medium",
@@ -2221,8 +2221,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-05-25",
-      "area": "Oak Hill",
+      "date": "2026-06-13",
+      "area": "Jayanagar",
       "category": "Roads",
       "complaint_type": "Damaged signage",
       "severity": "medium",
@@ -2231,8 +2231,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-06-25",
-      "area": "Midtown",
+      "date": "2026-07-14",
+      "area": "Rajajinagar",
       "category": "Sanitation",
       "complaint_type": "Stagnant water",
       "severity": "high",
@@ -2241,8 +2241,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-07-02",
-      "area": "Riverside",
+      "date": "2026-07-21",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Illegal dumping",
       "severity": "high",
@@ -2251,8 +2251,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-07-03",
-      "area": "Riverside",
+      "date": "2026-07-22",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Delayed collection",
       "severity": "medium",
@@ -2261,8 +2261,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-06-27",
-      "area": "Riverside",
+      "date": "2026-07-16",
+      "area": "Koramangala",
       "category": "Noise",
       "complaint_type": "Traffic noise",
       "severity": "medium",
@@ -2271,8 +2271,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-06-16",
-      "area": "North Gate",
+      "date": "2026-07-05",
+      "area": "Vijayanagar",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "low",
@@ -2281,8 +2281,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-06-30",
-      "area": "Lakeside",
+      "date": "2026-07-19",
+      "area": "BTM Layout",
       "category": "Water Supply",
       "complaint_type": "Contaminated water",
       "severity": "medium",
@@ -2291,8 +2291,8 @@
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-06-02",
-      "area": "Midtown",
+      "date": "2026-06-21",
+      "area": "Rajajinagar",
       "category": "Noise",
       "complaint_type": "Loud construction",
       "severity": "medium",
@@ -2301,8 +2301,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-06-24",
-      "area": "Old Town",
+      "date": "2026-07-13",
+      "area": "Domlur",
       "category": "Sanitation",
       "complaint_type": "Foul smell",
       "severity": "medium",
@@ -2311,8 +2311,8 @@
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-06-01",
-      "area": "Harbor District",
+      "date": "2026-06-20",
+      "area": "Malleshwaram",
       "category": "Waste Collection",
       "complaint_type": "Delayed collection",
       "severity": "medium",
@@ -2321,8 +2321,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-05-26",
-      "area": "Old Town",
+      "date": "2026-06-14",
+      "area": "Domlur",
       "category": "Sanitation",
       "complaint_type": "Stagnant water",
       "severity": "medium",
@@ -2331,8 +2331,8 @@
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-06-29",
-      "area": "Riverside",
+      "date": "2026-07-18",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "medium",
@@ -2341,8 +2341,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-06-17",
-      "area": "Oak Hill",
+      "date": "2026-07-06",
+      "area": "Jayanagar",
       "category": "Noise",
       "complaint_type": "Late-night party",
       "severity": "medium",
@@ -2351,8 +2351,8 @@
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-05-26",
-      "area": "Green Valley",
+      "date": "2026-06-14",
+      "area": "Basavanagudi",
       "category": "Roads",
       "complaint_type": "Damaged signage",
       "severity": "medium",
@@ -2361,8 +2361,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-06-09",
-      "area": "Midtown",
+      "date": "2026-06-28",
+      "area": "Rajajinagar",
       "category": "Noise",
       "complaint_type": "Late-night party",
       "severity": "medium",
@@ -2371,8 +2371,8 @@
       "notes": "Photo evidence attached by citizen."
     },
     {
-      "date": "2026-06-23",
-      "area": "Riverside",
+      "date": "2026-07-12",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Illegal dumping",
       "severity": "critical",
@@ -2381,8 +2381,8 @@
       "notes": "Photo evidence attached by citizen."
     },
     {
-      "date": "2026-06-21",
-      "area": "Midtown",
+      "date": "2026-07-10",
+      "area": "Rajajinagar",
       "category": "Waste Collection",
       "complaint_type": "Illegal dumping",
       "severity": "high",
@@ -2391,8 +2391,8 @@
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-06-02",
-      "area": "Riverside",
+      "date": "2026-06-21",
+      "area": "Koramangala",
       "category": "Roads",
       "complaint_type": "Damaged signage",
       "severity": "medium",
@@ -2401,8 +2401,8 @@
       "notes": ""
     },
     {
-      "date": "2026-05-15",
-      "area": "Green Valley",
+      "date": "2026-06-03",
+      "area": "Basavanagudi",
       "category": "Public Health",
       "complaint_type": "Mosquito breeding",
       "severity": "low",
@@ -2411,8 +2411,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-05-27",
-      "area": "Lakeside",
+      "date": "2026-06-15",
+      "area": "BTM Layout",
       "category": "Public Health",
       "complaint_type": "Stray animals",
       "severity": "low",
@@ -2421,8 +2421,8 @@
       "notes": ""
     },
     {
-      "date": "2026-05-23",
-      "area": "North Gate",
+      "date": "2026-06-11",
+      "area": "Vijayanagar",
       "category": "Waste Collection",
       "complaint_type": "Missed pickup",
       "severity": "high",
@@ -2431,8 +2431,8 @@
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-07-03",
-      "area": "Riverside",
+      "date": "2026-07-22",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Missed pickup",
       "severity": "high",
@@ -2441,8 +2441,8 @@
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-06-04",
-      "area": "Riverside",
+      "date": "2026-06-23",
+      "area": "Koramangala",
       "category": "Sanitation",
       "complaint_type": "Foul smell",
       "severity": "low",
@@ -2451,8 +2451,8 @@
       "notes": "Affects a school zone nearby."
     },
     {
-      "date": "2026-06-30",
-      "area": "Riverside",
+      "date": "2026-07-19",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Missed pickup",
       "severity": "high",
@@ -2461,8 +2461,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-06-29",
-      "area": "Riverside",
+      "date": "2026-07-18",
+      "area": "Koramangala",
       "category": "Public Health",
       "complaint_type": "Food safety",
       "severity": "critical",
@@ -2471,8 +2471,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-06-07",
-      "area": "Lakeside",
+      "date": "2026-06-26",
+      "area": "BTM Layout",
       "category": "Roads",
       "complaint_type": "Damaged signage",
       "severity": "low",
@@ -2481,8 +2481,8 @@
       "notes": ""
     },
     {
-      "date": "2026-07-01",
-      "area": "Lakeside",
+      "date": "2026-07-20",
+      "area": "BTM Layout",
       "category": "Public Health",
       "complaint_type": "Food safety",
       "severity": "medium",
@@ -2491,8 +2491,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-06-07",
-      "area": "Old Town",
+      "date": "2026-06-26",
+      "area": "Domlur",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "low",
@@ -2501,8 +2501,8 @@
       "notes": ""
     },
     {
-      "date": "2026-06-28",
-      "area": "Green Valley",
+      "date": "2026-07-17",
+      "area": "Basavanagudi",
       "category": "Waste Collection",
       "complaint_type": "Illegal dumping",
       "severity": "low",
@@ -2511,8 +2511,8 @@
       "notes": "Photo evidence attached by citizen."
     },
     {
-      "date": "2026-05-29",
-      "area": "Midtown",
+      "date": "2026-06-17",
+      "area": "Rajajinagar",
       "category": "Roads",
       "complaint_type": "Damaged signage",
       "severity": "low",
@@ -2521,8 +2521,8 @@
       "notes": ""
     },
     {
-      "date": "2026-06-23",
-      "area": "Riverside",
+      "date": "2026-07-12",
+      "area": "Koramangala",
       "category": "Sanitation",
       "complaint_type": "Foul smell",
       "severity": "medium",
@@ -2531,8 +2531,8 @@
       "notes": "Affects a school zone nearby."
     },
     {
-      "date": "2026-05-25",
-      "area": "Midtown",
+      "date": "2026-06-13",
+      "area": "Rajajinagar",
       "category": "Water Supply",
       "complaint_type": "No supply",
       "severity": "medium",
@@ -2541,8 +2541,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-05-30",
-      "area": "Harbor District",
+      "date": "2026-06-18",
+      "area": "Malleshwaram",
       "category": "Sanitation",
       "complaint_type": "Blocked sewer",
       "severity": "medium",
@@ -2551,8 +2551,8 @@
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-07-04",
-      "area": "Riverside",
+      "date": "2026-07-23",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Missed pickup",
       "severity": "high",
@@ -2561,8 +2561,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-06-26",
-      "area": "Green Valley",
+      "date": "2026-07-15",
+      "area": "Basavanagudi",
       "category": "Water Supply",
       "complaint_type": "No supply",
       "severity": "high",
@@ -2571,8 +2571,8 @@
       "notes": "Photo evidence attached by citizen."
     },
     {
-      "date": "2026-06-29",
-      "area": "Riverside",
+      "date": "2026-07-18",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Missed pickup",
       "severity": "high",
@@ -2581,8 +2581,8 @@
       "notes": "Third complaint from the same street."
     },
     {
-      "date": "2026-06-14",
-      "area": "Old Town",
+      "date": "2026-07-03",
+      "area": "Domlur",
       "category": "Public Health",
       "complaint_type": "Food safety",
       "severity": "medium",
@@ -2591,8 +2591,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-06-10",
-      "area": "North Gate",
+      "date": "2026-06-29",
+      "area": "Vijayanagar",
       "category": "Water Supply",
       "complaint_type": "Contaminated water",
       "severity": "low",
@@ -2601,8 +2601,8 @@
       "notes": "Photo evidence attached by citizen."
     },
     {
-      "date": "2026-06-15",
-      "area": "North Gate",
+      "date": "2026-07-04",
+      "area": "Vijayanagar",
       "category": "Sanitation",
       "complaint_type": "Blocked sewer",
       "severity": "low",
@@ -2611,8 +2611,8 @@
       "notes": "Affects a school zone nearby."
     },
     {
-      "date": "2026-05-26",
-      "area": "Lakeside",
+      "date": "2026-06-14",
+      "area": "BTM Layout",
       "category": "Water Supply",
       "complaint_type": "Low pressure",
       "severity": "medium",
@@ -2621,8 +2621,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-05-18",
-      "area": "Green Valley",
+      "date": "2026-06-06",
+      "area": "Basavanagudi",
       "category": "Water Supply",
       "complaint_type": "Leak",
       "severity": "low",
@@ -2631,8 +2631,8 @@
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-05-27",
-      "area": "Harbor District",
+      "date": "2026-06-15",
+      "area": "Malleshwaram",
       "category": "Water Supply",
       "complaint_type": "No supply",
       "severity": "high",
@@ -2641,8 +2641,8 @@
       "notes": "Photo evidence attached by citizen."
     },
     {
-      "date": "2026-06-27",
-      "area": "Lakeside",
+      "date": "2026-07-16",
+      "area": "BTM Layout",
       "category": "Water Supply",
       "complaint_type": "Leak",
       "severity": "low",
@@ -2651,8 +2651,8 @@
       "notes": "Affects a school zone nearby."
     },
     {
-      "date": "2026-06-22",
-      "area": "North Gate",
+      "date": "2026-07-11",
+      "area": "Vijayanagar",
       "category": "Water Supply",
       "complaint_type": "Contaminated water",
       "severity": "medium",
@@ -2661,8 +2661,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-06-13",
-      "area": "Old Town",
+      "date": "2026-07-02",
+      "area": "Domlur",
       "category": "Roads",
       "complaint_type": "Damaged signage",
       "severity": "medium",
@@ -2671,8 +2671,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-07-01",
-      "area": "Riverside",
+      "date": "2026-07-20",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "high",
@@ -2681,8 +2681,8 @@
       "notes": "Affects a school zone nearby."
     },
     {
-      "date": "2026-07-02",
-      "area": "Riverside",
+      "date": "2026-07-21",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Delayed collection",
       "severity": "high",
@@ -2691,8 +2691,8 @@
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-06-23",
-      "area": "Lakeside",
+      "date": "2026-07-12",
+      "area": "BTM Layout",
       "category": "Public Health",
       "complaint_type": "Food safety",
       "severity": "medium",
@@ -2701,8 +2701,8 @@
       "notes": ""
     },
     {
-      "date": "2026-07-03",
-      "area": "Lakeside",
+      "date": "2026-07-22",
+      "area": "BTM Layout",
       "category": "Noise",
       "complaint_type": "Industrial noise",
       "severity": "high",
@@ -2711,8 +2711,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-05-25",
-      "area": "Riverside",
+      "date": "2026-06-13",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "medium",
@@ -2721,298 +2721,298 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-06-23",
-      "area": "Riverside",
+      "date": "2026-07-12",
+      "area": "Koramangala",
       "category": "Sanitation",
       "complaint_type": "Public toilet issue",
       "severity": "low",
       "status": "Resolved",
       "department": "Sanitation Dept",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-06-25",
+      "area": "Rajajinagar",
+      "category": "Noise",
+      "complaint_type": "Loud construction",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Environment Cell",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-07-20",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-07-03",
+      "area": "Basavanagudi",
+      "category": "Noise",
+      "complaint_type": "Loud construction",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Environment Cell",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-04",
+      "area": "Jayanagar",
+      "category": "Noise",
+      "complaint_type": "Loud construction",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Environment Cell",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-30",
+      "area": "Domlur",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Escalated after no response in 72 hours."
+    },
+    {
+      "date": "2026-05-29",
+      "area": "Basavanagudi",
+      "category": "Sanitation",
+      "complaint_type": "Blocked sewer",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-07",
+      "area": "Domlur",
+      "category": "Waste Collection",
+      "complaint_type": "Delayed collection",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Sanitation Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-26",
+      "area": "Basavanagudi",
+      "category": "Noise",
+      "complaint_type": "Late-night party",
+      "severity": "high",
+      "status": "Open",
+      "department": "Environment Cell",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-06-09",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "Contaminated water",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-05",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-09",
+      "area": "Rajajinagar",
+      "category": "Public Health",
+      "complaint_type": "Mosquito breeding",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Third complaint from the same street."
+    },
+    {
+      "date": "2026-05-30",
+      "area": "Jayanagar",
+      "category": "Public Health",
+      "complaint_type": "Open garbage",
+      "severity": "high",
+      "status": "In Progress",
+      "department": "Health Dept",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-22",
+      "area": "Basavanagudi",
+      "category": "Noise",
+      "complaint_type": "Late-night party",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Environment Cell",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-07-05",
+      "area": "Malleshwaram",
+      "category": "Roads",
+      "complaint_type": "Blocked drain",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Public Works",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-13",
+      "area": "Rajajinagar",
+      "category": "Public Health",
+      "complaint_type": "Food safety",
+      "severity": "low",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-07-21",
+      "area": "Vijayanagar",
+      "category": "Sanitation",
+      "complaint_type": "Stagnant water",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Sanitation Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-19",
+      "area": "Rajajinagar",
+      "category": "Public Health",
+      "complaint_type": "Food safety",
+      "severity": "low",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-07-10",
+      "area": "BTM Layout",
+      "category": "Public Health",
+      "complaint_type": "Stray animals",
+      "severity": "low",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-09",
+      "area": "Domlur",
+      "category": "Noise",
+      "complaint_type": "Late-night party",
+      "severity": "low",
+      "status": "In Progress",
+      "department": "Environment Cell",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-22",
+      "area": "BTM Layout",
+      "category": "Water Supply",
+      "complaint_type": "Low pressure",
+      "severity": "critical",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-05",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "Contaminated water",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-06-18",
+      "area": "Rajajinagar",
+      "category": "Public Health",
+      "complaint_type": "Stray animals",
+      "severity": "low",
+      "status": "Resolved",
+      "department": "Health Dept",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-06-07",
+      "area": "Rajajinagar",
+      "category": "Water Supply",
+      "complaint_type": "Leak",
+      "severity": "medium",
+      "status": "In Progress",
+      "department": "Water Board",
+      "notes": "Recurring issue during monsoon."
+    },
+    {
+      "date": "2026-07-18",
+      "area": "Koramangala",
+      "category": "Waste Collection",
+      "complaint_type": "Overflowing bin",
+      "severity": "high",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
+      "notes": "Reported via city helpline."
+    },
+    {
+      "date": "2026-07-20",
+      "area": "Jayanagar",
+      "category": "Roads",
+      "complaint_type": "Damaged signage",
+      "severity": "medium",
+      "status": "Open",
+      "department": "Public Works",
+      "notes": "Affects a school zone nearby."
+    },
+    {
+      "date": "2026-07-11",
+      "area": "Koramangala",
+      "category": "Water Supply",
+      "complaint_type": "No supply",
+      "severity": "low",
+      "status": "Open",
+      "department": "Water Board",
+      "notes": "Resident reported repeatedly this month."
+    },
+    {
+      "date": "2026-07-02",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Food safety",
+      "severity": "low",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": ""
+    },
+    {
+      "date": "2026-06-02",
+      "area": "Basavanagudi",
+      "category": "Noise",
+      "complaint_type": "Loud construction",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Environment Cell",
       "notes": "Recurring issue during monsoon."
     },
     {
       "date": "2026-06-06",
-      "area": "Midtown",
-      "category": "Noise",
-      "complaint_type": "Loud construction",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Environment Cell",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-07-01",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-14",
-      "area": "Green Valley",
-      "category": "Noise",
-      "complaint_type": "Loud construction",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-15",
-      "area": "Oak Hill",
-      "category": "Noise",
-      "complaint_type": "Loud construction",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-11",
-      "area": "Old Town",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Escalated after no response in 72 hours."
-    },
-    {
-      "date": "2026-05-10",
-      "area": "Green Valley",
-      "category": "Sanitation",
-      "complaint_type": "Blocked sewer",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-18",
-      "area": "Old Town",
-      "category": "Waste Collection",
-      "complaint_type": "Delayed collection",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Sanitation Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-07",
-      "area": "Green Valley",
-      "category": "Noise",
-      "complaint_type": "Late-night party",
-      "severity": "high",
-      "status": "Open",
-      "department": "Environment Cell",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-05-21",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "Contaminated water",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-06-16",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-05-21",
-      "area": "Midtown",
-      "category": "Public Health",
-      "complaint_type": "Mosquito breeding",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Third complaint from the same street."
-    },
-    {
-      "date": "2026-05-11",
-      "area": "Oak Hill",
-      "category": "Public Health",
-      "complaint_type": "Open garbage",
-      "severity": "high",
-      "status": "In Progress",
-      "department": "Health Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-07-03",
-      "area": "Green Valley",
-      "category": "Noise",
-      "complaint_type": "Late-night party",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-06-16",
-      "area": "Harbor District",
-      "category": "Roads",
-      "complaint_type": "Blocked drain",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Public Works",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-24",
-      "area": "Midtown",
-      "category": "Public Health",
-      "complaint_type": "Food safety",
-      "severity": "low",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-07-02",
-      "area": "North Gate",
-      "category": "Sanitation",
-      "complaint_type": "Stagnant water",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Sanitation Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-30",
-      "area": "Midtown",
-      "category": "Public Health",
-      "complaint_type": "Food safety",
-      "severity": "low",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-06-21",
-      "area": "Lakeside",
-      "category": "Public Health",
-      "complaint_type": "Stray animals",
-      "severity": "low",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-20",
-      "area": "Old Town",
-      "category": "Noise",
-      "complaint_type": "Late-night party",
-      "severity": "low",
-      "status": "In Progress",
-      "department": "Environment Cell",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-07-03",
-      "area": "Lakeside",
-      "category": "Water Supply",
-      "complaint_type": "Low pressure",
-      "severity": "critical",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": ""
-    },
-    {
-      "date": "2026-05-17",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "Contaminated water",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-05-30",
-      "area": "Midtown",
-      "category": "Public Health",
-      "complaint_type": "Stray animals",
-      "severity": "low",
-      "status": "Resolved",
-      "department": "Health Dept",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-05-19",
-      "area": "Midtown",
-      "category": "Water Supply",
-      "complaint_type": "Leak",
-      "severity": "medium",
-      "status": "In Progress",
-      "department": "Water Board",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-06-29",
-      "area": "Riverside",
-      "category": "Waste Collection",
-      "complaint_type": "Overflowing bin",
-      "severity": "high",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Reported via city helpline."
-    },
-    {
-      "date": "2026-07-01",
-      "area": "Oak Hill",
-      "category": "Roads",
-      "complaint_type": "Damaged signage",
-      "severity": "medium",
-      "status": "Open",
-      "department": "Public Works",
-      "notes": "Affects a school zone nearby."
-    },
-    {
-      "date": "2026-06-22",
-      "area": "Riverside",
-      "category": "Water Supply",
-      "complaint_type": "No supply",
-      "severity": "low",
-      "status": "Open",
-      "department": "Water Board",
-      "notes": "Resident reported repeatedly this month."
-    },
-    {
-      "date": "2026-06-13",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Food safety",
-      "severity": "low",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": ""
-    },
-    {
-      "date": "2026-05-14",
-      "area": "Green Valley",
-      "category": "Noise",
-      "complaint_type": "Loud construction",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Environment Cell",
-      "notes": "Recurring issue during monsoon."
-    },
-    {
-      "date": "2026-05-18",
-      "area": "Old Town",
+      "area": "Domlur",
       "category": "Roads",
       "complaint_type": "Pothole",
       "severity": "medium",
@@ -3021,8 +3021,8 @@
       "notes": "Photo evidence attached by citizen."
     },
     {
-      "date": "2026-05-20",
-      "area": "Lakeside",
+      "date": "2026-06-08",
+      "area": "BTM Layout",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "low",
@@ -3031,8 +3031,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-06-15",
-      "area": "North Gate",
+      "date": "2026-07-04",
+      "area": "Vijayanagar",
       "category": "Roads",
       "complaint_type": "Damaged signage",
       "severity": "medium",
@@ -3041,8 +3041,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-06-09",
-      "area": "Riverside",
+      "date": "2026-06-28",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Illegal dumping",
       "severity": "medium",
@@ -3051,8 +3051,8 @@
       "notes": "Affects a school zone nearby."
     },
     {
-      "date": "2026-07-02",
-      "area": "Riverside",
+      "date": "2026-07-21",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Delayed collection",
       "severity": "high",
@@ -3061,8 +3061,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-07-03",
-      "area": "Green Valley",
+      "date": "2026-07-22",
+      "area": "Basavanagudi",
       "category": "Noise",
       "complaint_type": "Loud construction",
       "severity": "medium",
@@ -3071,8 +3071,8 @@
       "notes": "Third complaint from the same street."
     },
     {
-      "date": "2026-06-30",
-      "area": "Old Town",
+      "date": "2026-07-19",
+      "area": "Domlur",
       "category": "Sanitation",
       "complaint_type": "Foul smell",
       "severity": "high",
@@ -3081,8 +3081,8 @@
       "notes": ""
     },
     {
-      "date": "2026-05-27",
-      "area": "Riverside",
+      "date": "2026-06-15",
+      "area": "Koramangala",
       "category": "Sanitation",
       "complaint_type": "Blocked sewer",
       "severity": "medium",
@@ -3091,8 +3091,8 @@
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-06-03",
-      "area": "Riverside",
+      "date": "2026-06-22",
+      "area": "Koramangala",
       "category": "Public Health",
       "complaint_type": "Stray animals",
       "severity": "high",
@@ -3101,8 +3101,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-05-22",
-      "area": "Harbor District",
+      "date": "2026-06-10",
+      "area": "Malleshwaram",
       "category": "Public Health",
       "complaint_type": "Food safety",
       "severity": "high",
@@ -3111,8 +3111,8 @@
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-05-22",
-      "area": "Riverside",
+      "date": "2026-06-10",
+      "area": "Koramangala",
       "category": "Public Health",
       "complaint_type": "Open garbage",
       "severity": "low",
@@ -3121,8 +3121,8 @@
       "notes": ""
     },
     {
-      "date": "2026-06-01",
-      "area": "Old Town",
+      "date": "2026-06-20",
+      "area": "Domlur",
       "category": "Roads",
       "complaint_type": "Blocked drain",
       "severity": "medium",
@@ -3131,8 +3131,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-06-12",
-      "area": "Oak Hill",
+      "date": "2026-07-01",
+      "area": "Jayanagar",
       "category": "Waste Collection",
       "complaint_type": "Missed pickup",
       "severity": "medium",
@@ -3141,8 +3141,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-05-20",
-      "area": "Riverside",
+      "date": "2026-06-08",
+      "area": "Koramangala",
       "category": "Noise",
       "complaint_type": "Loud construction",
       "severity": "low",
@@ -3151,8 +3151,8 @@
       "notes": "Affects a school zone nearby."
     },
     {
-      "date": "2026-06-17",
-      "area": "Green Valley",
+      "date": "2026-07-06",
+      "area": "Basavanagudi",
       "category": "Waste Collection",
       "complaint_type": "Illegal dumping",
       "severity": "medium",
@@ -3161,8 +3161,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-06-29",
-      "area": "Riverside",
+      "date": "2026-07-18",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Illegal dumping",
       "severity": "medium",
@@ -3171,8 +3171,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-05-30",
-      "area": "Old Town",
+      "date": "2026-06-18",
+      "area": "Domlur",
       "category": "Waste Collection",
       "complaint_type": "Illegal dumping",
       "severity": "low",
@@ -3181,8 +3181,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-06-18",
-      "area": "Riverside",
+      "date": "2026-07-07",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Missed pickup",
       "severity": "high",
@@ -3191,8 +3191,8 @@
       "notes": ""
     },
     {
-      "date": "2026-06-14",
-      "area": "Riverside",
+      "date": "2026-07-03",
+      "area": "Koramangala",
       "category": "Sanitation",
       "complaint_type": "Foul smell",
       "severity": "medium",
@@ -3201,8 +3201,8 @@
       "notes": ""
     },
     {
-      "date": "2026-07-04",
-      "area": "Lakeside",
+      "date": "2026-07-23",
+      "area": "BTM Layout",
       "category": "Public Health",
       "complaint_type": "Mosquito breeding",
       "severity": "medium",
@@ -3211,8 +3211,8 @@
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-06-20",
-      "area": "Riverside",
+      "date": "2026-07-09",
+      "area": "Koramangala",
       "category": "Noise",
       "complaint_type": "Traffic noise",
       "severity": "low",
@@ -3221,8 +3221,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-06-03",
-      "area": "Midtown",
+      "date": "2026-06-22",
+      "area": "Rajajinagar",
       "category": "Waste Collection",
       "complaint_type": "Delayed collection",
       "severity": "medium",
@@ -3231,8 +3231,8 @@
       "notes": ""
     },
     {
-      "date": "2026-06-23",
-      "area": "Lakeside",
+      "date": "2026-07-12",
+      "area": "BTM Layout",
       "category": "Water Supply",
       "complaint_type": "Leak",
       "severity": "medium",
@@ -3241,8 +3241,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-06-22",
-      "area": "Riverside",
+      "date": "2026-07-11",
+      "area": "Koramangala",
       "category": "Noise",
       "complaint_type": "Industrial noise",
       "severity": "medium",
@@ -3251,8 +3251,8 @@
       "notes": "Affects a school zone nearby."
     },
     {
-      "date": "2026-06-12",
-      "area": "Old Town",
+      "date": "2026-07-01",
+      "area": "Domlur",
       "category": "Public Health",
       "complaint_type": "Open garbage",
       "severity": "low",
@@ -3261,8 +3261,8 @@
       "notes": "Photo evidence attached by citizen."
     },
     {
-      "date": "2026-06-28",
-      "area": "Riverside",
+      "date": "2026-07-17",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "high",
@@ -3271,8 +3271,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-05-11",
-      "area": "Riverside",
+      "date": "2026-05-30",
+      "area": "Koramangala",
       "category": "Water Supply",
       "complaint_type": "No supply",
       "severity": "low",
@@ -3281,8 +3281,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-06-13",
-      "area": "Riverside",
+      "date": "2026-07-02",
+      "area": "Koramangala",
       "category": "Noise",
       "complaint_type": "Loud construction",
       "severity": "critical",
@@ -3291,8 +3291,8 @@
       "notes": ""
     },
     {
-      "date": "2026-06-29",
-      "area": "Riverside",
+      "date": "2026-07-18",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "high",
@@ -3301,8 +3301,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-07-03",
-      "area": "Midtown",
+      "date": "2026-07-22",
+      "area": "Rajajinagar",
       "category": "Water Supply",
       "complaint_type": "Low pressure",
       "severity": "medium",
@@ -3311,8 +3311,8 @@
       "notes": ""
     },
     {
-      "date": "2026-06-28",
-      "area": "Riverside",
+      "date": "2026-07-17",
+      "area": "Koramangala",
       "category": "Sanitation",
       "complaint_type": "Blocked sewer",
       "severity": "low",
@@ -3321,8 +3321,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-06-28",
-      "area": "Green Valley",
+      "date": "2026-07-17",
+      "area": "Basavanagudi",
       "category": "Noise",
       "complaint_type": "Late-night party",
       "severity": "low",
@@ -3331,8 +3331,8 @@
       "notes": ""
     },
     {
-      "date": "2026-06-08",
-      "area": "Oak Hill",
+      "date": "2026-06-27",
+      "area": "Jayanagar",
       "category": "Roads",
       "complaint_type": "Damaged signage",
       "severity": "medium",
@@ -3341,8 +3341,8 @@
       "notes": ""
     },
     {
-      "date": "2026-06-28",
-      "area": "Riverside",
+      "date": "2026-07-17",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Delayed collection",
       "severity": "high",
@@ -3351,8 +3351,8 @@
       "notes": "Affects a school zone nearby."
     },
     {
-      "date": "2026-06-04",
-      "area": "Riverside",
+      "date": "2026-06-23",
+      "area": "Koramangala",
       "category": "Roads",
       "complaint_type": "Pothole",
       "severity": "critical",
@@ -3361,8 +3361,8 @@
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-06-14",
-      "area": "Oak Hill",
+      "date": "2026-07-03",
+      "area": "Jayanagar",
       "category": "Sanitation",
       "complaint_type": "Blocked sewer",
       "severity": "medium",
@@ -3371,8 +3371,8 @@
       "notes": "Third complaint from the same street."
     },
     {
-      "date": "2026-05-17",
-      "area": "North Gate",
+      "date": "2026-06-05",
+      "area": "Vijayanagar",
       "category": "Waste Collection",
       "complaint_type": "Missed pickup",
       "severity": "medium",
@@ -3381,8 +3381,8 @@
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-05-14",
-      "area": "Riverside",
+      "date": "2026-06-02",
+      "area": "Koramangala",
       "category": "Water Supply",
       "complaint_type": "Low pressure",
       "severity": "medium",
@@ -3391,8 +3391,8 @@
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-06-10",
-      "area": "Oak Hill",
+      "date": "2026-06-29",
+      "area": "Jayanagar",
       "category": "Sanitation",
       "complaint_type": "Blocked sewer",
       "severity": "low",
@@ -3401,8 +3401,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-06-27",
-      "area": "Green Valley",
+      "date": "2026-07-16",
+      "area": "Basavanagudi",
       "category": "Water Supply",
       "complaint_type": "No supply",
       "severity": "high",
@@ -3411,8 +3411,8 @@
       "notes": ""
     },
     {
-      "date": "2026-05-20",
-      "area": "Green Valley",
+      "date": "2026-06-08",
+      "area": "Basavanagudi",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "low",
@@ -3421,8 +3421,8 @@
       "notes": ""
     },
     {
-      "date": "2026-05-30",
-      "area": "Riverside",
+      "date": "2026-06-18",
+      "area": "Koramangala",
       "category": "Sanitation",
       "complaint_type": "Public toilet issue",
       "severity": "critical",
@@ -3431,8 +3431,8 @@
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-06-20",
-      "area": "Riverside",
+      "date": "2026-07-09",
+      "area": "Koramangala",
       "category": "Public Health",
       "complaint_type": "Food safety",
       "severity": "high",
@@ -3441,8 +3441,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-06-11",
-      "area": "Riverside",
+      "date": "2026-06-30",
+      "area": "Koramangala",
       "category": "Roads",
       "complaint_type": "Pothole",
       "severity": "low",
@@ -3451,38 +3451,38 @@
       "notes": ""
     },
     {
-      "date": "2026-06-29",
-      "area": "Riverside",
+      "date": "2026-07-18",
+      "area": "Koramangala",
       "category": "Roads",
       "complaint_type": "Damaged signage",
       "severity": "critical",
       "status": "Resolved",
       "department": "Public Works",
+      "notes": "Photo evidence attached by citizen."
+    },
+    {
+      "date": "2026-07-08",
+      "area": "Koramangala",
+      "category": "Public Health",
+      "complaint_type": "Stray animals",
+      "severity": "low",
+      "status": "Open",
+      "department": "Health Dept",
+      "notes": "Flagged by community volunteer."
+    },
+    {
+      "date": "2026-07-22",
+      "area": "Koramangala",
+      "category": "Sanitation",
+      "complaint_type": "Public toilet issue",
+      "severity": "medium",
+      "status": "Resolved",
+      "department": "Sanitation Dept",
       "notes": "Photo evidence attached by citizen."
     },
     {
       "date": "2026-06-19",
-      "area": "Riverside",
-      "category": "Public Health",
-      "complaint_type": "Stray animals",
-      "severity": "low",
-      "status": "Open",
-      "department": "Health Dept",
-      "notes": "Flagged by community volunteer."
-    },
-    {
-      "date": "2026-07-03",
-      "area": "Riverside",
-      "category": "Sanitation",
-      "complaint_type": "Public toilet issue",
-      "severity": "medium",
-      "status": "Resolved",
-      "department": "Sanitation Dept",
-      "notes": "Photo evidence attached by citizen."
-    },
-    {
-      "date": "2026-05-31",
-      "area": "Oak Hill",
+      "area": "Jayanagar",
       "category": "Sanitation",
       "complaint_type": "Blocked sewer",
       "severity": "low",
@@ -3491,8 +3491,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-07-01",
-      "area": "Riverside",
+      "date": "2026-07-20",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "high",
@@ -3501,8 +3501,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-05-24",
-      "area": "Oak Hill",
+      "date": "2026-06-12",
+      "area": "Jayanagar",
       "category": "Roads",
       "complaint_type": "Blocked drain",
       "severity": "medium",
@@ -3511,8 +3511,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-06-09",
-      "area": "Old Town",
+      "date": "2026-06-28",
+      "area": "Domlur",
       "category": "Noise",
       "complaint_type": "Traffic noise",
       "severity": "low",
@@ -3521,8 +3521,8 @@
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-05-18",
-      "area": "Old Town",
+      "date": "2026-06-06",
+      "area": "Domlur",
       "category": "Waste Collection",
       "complaint_type": "Missed pickup",
       "severity": "low",
@@ -3531,8 +3531,8 @@
       "notes": "Escalated after no response in 72 hours."
     },
     {
-      "date": "2026-06-16",
-      "area": "Riverside",
+      "date": "2026-07-05",
+      "area": "Koramangala",
       "category": "Sanitation",
       "complaint_type": "Foul smell",
       "severity": "medium",
@@ -3541,8 +3541,8 @@
       "notes": "Third complaint from the same street."
     },
     {
-      "date": "2026-05-28",
-      "area": "Midtown",
+      "date": "2026-06-16",
+      "area": "Rajajinagar",
       "category": "Roads",
       "complaint_type": "Blocked drain",
       "severity": "medium",
@@ -3551,8 +3551,8 @@
       "notes": ""
     },
     {
-      "date": "2026-06-28",
-      "area": "Lakeside",
+      "date": "2026-07-17",
+      "area": "BTM Layout",
       "category": "Public Health",
       "complaint_type": "Food safety",
       "severity": "medium",
@@ -3561,8 +3561,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-06-02",
-      "area": "Riverside",
+      "date": "2026-06-21",
+      "area": "Koramangala",
       "category": "Water Supply",
       "complaint_type": "Low pressure",
       "severity": "high",
@@ -3571,8 +3571,8 @@
       "notes": "Third complaint from the same street."
     },
     {
-      "date": "2026-05-16",
-      "area": "Oak Hill",
+      "date": "2026-06-04",
+      "area": "Jayanagar",
       "category": "Water Supply",
       "complaint_type": "Low pressure",
       "severity": "medium",
@@ -3581,8 +3581,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-06-10",
-      "area": "Old Town",
+      "date": "2026-06-29",
+      "area": "Domlur",
       "category": "Noise",
       "complaint_type": "Late-night party",
       "severity": "medium",
@@ -3591,8 +3591,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-05-27",
-      "area": "Riverside",
+      "date": "2026-06-15",
+      "area": "Koramangala",
       "category": "Public Health",
       "complaint_type": "Food safety",
       "severity": "medium",
@@ -3601,8 +3601,8 @@
       "notes": "Recurring issue during monsoon."
     },
     {
-      "date": "2026-05-16",
-      "area": "Green Valley",
+      "date": "2026-06-04",
+      "area": "Basavanagudi",
       "category": "Public Health",
       "complaint_type": "Open garbage",
       "severity": "medium",
@@ -3611,8 +3611,8 @@
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-07-04",
-      "area": "Riverside",
+      "date": "2026-07-23",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "high",
@@ -3621,8 +3621,8 @@
       "notes": "Affects a school zone nearby."
     },
     {
-      "date": "2026-06-28",
-      "area": "Old Town",
+      "date": "2026-07-17",
+      "area": "Domlur",
       "category": "Noise",
       "complaint_type": "Industrial noise",
       "severity": "medium",
@@ -3631,8 +3631,8 @@
       "notes": "Flagged by community volunteer."
     },
     {
-      "date": "2026-06-30",
-      "area": "North Gate",
+      "date": "2026-07-19",
+      "area": "Vijayanagar",
       "category": "Public Health",
       "complaint_type": "Mosquito breeding",
       "severity": "medium",
@@ -3641,8 +3641,8 @@
       "notes": "Resident reported repeatedly this month."
     },
     {
-      "date": "2026-06-08",
-      "area": "Midtown",
+      "date": "2026-06-27",
+      "area": "Rajajinagar",
       "category": "Water Supply",
       "complaint_type": "Low pressure",
       "severity": "medium",
@@ -3651,8 +3651,8 @@
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-06-29",
-      "area": "Riverside",
+      "date": "2026-07-18",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "high",
@@ -3661,8 +3661,8 @@
       "notes": "Reported via city helpline."
     },
     {
-      "date": "2026-05-17",
-      "area": "Riverside",
+      "date": "2026-06-05",
+      "area": "Koramangala",
       "category": "Public Health",
       "complaint_type": "Food safety",
       "severity": "medium",
@@ -3671,8 +3671,8 @@
       "notes": ""
     },
     {
-      "date": "2026-05-16",
-      "area": "Riverside",
+      "date": "2026-06-04",
+      "area": "Koramangala",
       "category": "Waste Collection",
       "complaint_type": "Overflowing bin",
       "severity": "medium",
@@ -3681,8 +3681,8 @@
       "notes": "Photo evidence attached by citizen."
     },
     {
-      "date": "2026-06-12",
-      "area": "Old Town",
+      "date": "2026-07-01",
+      "area": "Domlur",
       "category": "Waste Collection",
       "complaint_type": "Illegal dumping",
       "severity": "high",

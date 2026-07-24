@@ -1,370 +1,370 @@
 date,area,category,complaint_type,severity,status,department,notes
-2026-06-15,Lakeside,Roads,Broken streetlight,high,Open,Public Works,Third complaint from the same street.
-2026-06-07,Green Valley,Public Health,Food safety,critical,In Progress,Health Dept,Recurring issue during monsoon.
-2026-06-12,Riverside,Sanitation,Blocked sewer,high,Open,Sanitation Dept,Reported via city helpline.
-2026-06-29,Riverside,Public Health,Mosquito breeding,medium,Resolved,Health Dept,Resident reported repeatedly this month.
-2026-06-21,Green Valley,Sanitation,Public toilet issue,low,Open,Sanitation Dept,Photo evidence attached by citizen.
-2026-06-13,Green Valley,Water Supply,Low pressure,medium,Open,Water Board,Third complaint from the same street.
-2026-05-19,Harbor District,Sanitation,Stagnant water,critical,Escalated,Sanitation Dept,
-2026-07-04,Riverside,Noise,Loud construction,low,In Progress,Environment Cell,Affects a school zone nearby.
-2026-05-27,Lakeside,Public Health,Food safety,low,Resolved,Health Dept,Third complaint from the same street.
-2026-06-21,Riverside,Public Health,Open garbage,low,Resolved,Health Dept,Resident reported repeatedly this month.
-2026-06-29,Harbor District,Public Health,Mosquito breeding,low,Open,Health Dept,Resident reported repeatedly this month.
-2026-07-03,Oak Hill,Water Supply,Contaminated water,medium,Resolved,Water Board,Third complaint from the same street.
-2026-06-07,Harbor District,Public Health,Mosquito breeding,high,In Progress,Health Dept,Third complaint from the same street.
-2026-05-16,Green Valley,Roads,Pothole,low,In Progress,Public Works,
-2026-05-31,Harbor District,Sanitation,Stagnant water,low,Open,Sanitation Dept,Flagged by community volunteer.
-2026-05-24,Riverside,Water Supply,Contaminated water,low,Open,Water Board,Escalated after no response in 72 hours.
-2026-06-28,Riverside,Waste Collection,Missed pickup,high,In Progress,Sanitation Dept,Escalated after no response in 72 hours.
-2026-05-28,Harbor District,Water Supply,Low pressure,high,Resolved,Water Board,
-2026-05-17,Oak Hill,Public Health,Open garbage,medium,Resolved,Health Dept,Resident reported repeatedly this month.
-2026-06-22,Old Town,Public Health,Food safety,medium,Resolved,Health Dept,Resident reported repeatedly this month.
-2026-05-19,Midtown,Waste Collection,Missed pickup,high,Open,Sanitation Dept,Affects a school zone nearby.
-2026-06-01,Oak Hill,Sanitation,Blocked sewer,medium,Resolved,Sanitation Dept,Recurring issue during monsoon.
-2026-05-27,Harbor District,Noise,Loud construction,high,In Progress,Environment Cell,Recurring issue during monsoon.
-2026-06-30,Green Valley,Sanitation,Stagnant water,high,Resolved,Sanitation Dept,Photo evidence attached by citizen.
-2026-05-28,Harbor District,Noise,Traffic noise,high,Open,Environment Cell,Escalated after no response in 72 hours.
-2026-06-11,Midtown,Roads,Blocked drain,medium,Open,Public Works,Recurring issue during monsoon.
-2026-06-25,Oak Hill,Roads,Blocked drain,low,Escalated,Public Works,Resident reported repeatedly this month.
-2026-05-12,Riverside,Roads,Broken streetlight,high,Open,Public Works,Recurring issue during monsoon.
-2026-06-06,Harbor District,Noise,Industrial noise,medium,Resolved,Environment Cell,Recurring issue during monsoon.
-2026-05-19,Midtown,Roads,Broken streetlight,low,Open,Public Works,Flagged by community volunteer.
-2026-06-15,Lakeside,Water Supply,Leak,low,In Progress,Water Board,Escalated after no response in 72 hours.
-2026-07-04,Riverside,Waste Collection,Delayed collection,high,Open,Sanitation Dept,Recurring issue during monsoon.
-2026-06-26,North Gate,Sanitation,Public toilet issue,low,Resolved,Sanitation Dept,Reported via city helpline.
-2026-07-03,Riverside,Waste Collection,Delayed collection,high,In Progress,Sanitation Dept,Photo evidence attached by citizen.
-2026-07-01,Riverside,Waste Collection,Overflowing bin,high,Resolved,Sanitation Dept,Reported via city helpline.
-2026-06-30,North Gate,Waste Collection,Illegal dumping,low,Resolved,Sanitation Dept,Photo evidence attached by citizen.
-2026-06-19,Old Town,Roads,Pothole,low,Resolved,Public Works,Resident reported repeatedly this month.
-2026-06-03,Riverside,Waste Collection,Missed pickup,medium,Open,Sanitation Dept,Affects a school zone nearby.
-2026-06-29,Riverside,Public Health,Stray animals,high,Open,Health Dept,Resident reported repeatedly this month.
-2026-06-28,Riverside,Waste Collection,Overflowing bin,high,In Progress,Sanitation Dept,Affects a school zone nearby.
-2026-05-14,Old Town,Water Supply,Low pressure,low,Resolved,Water Board,Escalated after no response in 72 hours.
-2026-06-11,Midtown,Roads,Broken streetlight,medium,Resolved,Public Works,Flagged by community volunteer.
-2026-06-15,North Gate,Public Health,Open garbage,medium,Resolved,Health Dept,Affects a school zone nearby.
-2026-06-10,North Gate,Noise,Late-night party,low,Resolved,Environment Cell,
-2026-06-23,Old Town,Roads,Pothole,low,Open,Public Works,Affects a school zone nearby.
-2026-06-02,Lakeside,Waste Collection,Illegal dumping,high,In Progress,Sanitation Dept,Reported via city helpline.
-2026-05-30,Harbor District,Sanitation,Foul smell,medium,Open,Sanitation Dept,Escalated after no response in 72 hours.
-2026-07-04,Riverside,Waste Collection,Delayed collection,medium,In Progress,Sanitation Dept,
-2026-06-21,Midtown,Public Health,Food safety,medium,In Progress,Health Dept,Photo evidence attached by citizen.
-2026-06-29,Riverside,Noise,Traffic noise,high,In Progress,Environment Cell,Affects a school zone nearby.
-2026-05-14,North Gate,Noise,Industrial noise,high,Resolved,Environment Cell,Escalated after no response in 72 hours.
-2026-06-02,Lakeside,Public Health,Food safety,medium,Resolved,Health Dept,Photo evidence attached by citizen.
-2026-06-27,North Gate,Public Health,Open garbage,medium,Open,Health Dept,Flagged by community volunteer.
-2026-06-07,Riverside,Public Health,Open garbage,medium,Resolved,Health Dept,Resident reported repeatedly this month.
-2026-05-18,Old Town,Waste Collection,Delayed collection,high,Open,Sanitation Dept,
-2026-05-29,Green Valley,Sanitation,Foul smell,low,In Progress,Sanitation Dept,Reported via city helpline.
-2026-06-12,Harbor District,Water Supply,No supply,low,Open,Water Board,Reported via city helpline.
-2026-07-03,Riverside,Waste Collection,Delayed collection,high,Resolved,Sanitation Dept,Affects a school zone nearby.
-2026-06-29,Riverside,Waste Collection,Illegal dumping,high,Resolved,Sanitation Dept,Photo evidence attached by citizen.
-2026-05-14,Riverside,Water Supply,Low pressure,low,Open,Water Board,Third complaint from the same street.
-2026-06-16,Oak Hill,Water Supply,Leak,high,Open,Water Board,Flagged by community volunteer.
-2026-06-28,Riverside,Waste Collection,Delayed collection,high,Resolved,Sanitation Dept,Flagged by community volunteer.
-2026-06-05,Old Town,Sanitation,Blocked sewer,medium,In Progress,Sanitation Dept,Reported via city helpline.
-2026-06-18,Riverside,Public Health,Food safety,high,Open,Health Dept,Resident reported repeatedly this month.
-2026-06-29,Riverside,Water Supply,No supply,medium,Resolved,Water Board,Recurring issue during monsoon.
-2026-06-06,Green Valley,Public Health,Food safety,high,Open,Health Dept,
-2026-06-15,Old Town,Waste Collection,Illegal dumping,low,Resolved,Sanitation Dept,
-2026-06-12,Riverside,Sanitation,Blocked sewer,low,In Progress,Sanitation Dept,Affects a school zone nearby.
-2026-06-18,Riverside,Public Health,Open garbage,medium,Escalated,Health Dept,Third complaint from the same street.
-2026-06-13,Midtown,Sanitation,Stagnant water,low,In Progress,Sanitation Dept,Affects a school zone nearby.
-2026-05-15,Lakeside,Waste Collection,Missed pickup,low,Open,Sanitation Dept,Third complaint from the same street.
-2026-05-23,Riverside,Water Supply,Contaminated water,medium,Resolved,Water Board,
-2026-06-18,Harbor District,Noise,Industrial noise,medium,Resolved,Environment Cell,Resident reported repeatedly this month.
-2026-06-04,Old Town,Roads,Pothole,low,In Progress,Public Works,Photo evidence attached by citizen.
-2026-06-28,Riverside,Waste Collection,Delayed collection,high,In Progress,Sanitation Dept,
-2026-05-11,Old Town,Sanitation,Stagnant water,low,Resolved,Sanitation Dept,Recurring issue during monsoon.
-2026-06-25,North Gate,Water Supply,No supply,medium,Resolved,Water Board,Flagged by community volunteer.
-2026-05-19,Oak Hill,Water Supply,Low pressure,low,In Progress,Water Board,Escalated after no response in 72 hours.
-2026-05-30,Harbor District,Noise,Industrial noise,high,Open,Environment Cell,Recurring issue during monsoon.
-2026-07-02,Riverside,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Resident reported repeatedly this month.
-2026-07-04,Riverside,Waste Collection,Illegal dumping,high,Resolved,Sanitation Dept,Affects a school zone nearby.
-2026-06-28,Old Town,Water Supply,Contaminated water,medium,Open,Water Board,
-2026-05-17,Green Valley,Roads,Broken streetlight,critical,Open,Public Works,Recurring issue during monsoon.
-2026-06-29,Oak Hill,Water Supply,No supply,low,Open,Water Board,Escalated after no response in 72 hours.
-2026-06-17,Lakeside,Sanitation,Stagnant water,medium,In Progress,Sanitation Dept,Third complaint from the same street.
-2026-06-16,Riverside,Waste Collection,Delayed collection,low,Resolved,Sanitation Dept,Reported via city helpline.
-2026-05-11,Green Valley,Roads,Broken streetlight,high,In Progress,Public Works,Resident reported repeatedly this month.
-2026-05-27,Riverside,Sanitation,Public toilet issue,medium,Resolved,Sanitation Dept,Third complaint from the same street.
-2026-05-11,Old Town,Waste Collection,Overflowing bin,high,Open,Sanitation Dept,Reported via city helpline.
-2026-06-05,Midtown,Water Supply,Contaminated water,low,Open,Water Board,Third complaint from the same street.
-2026-05-22,Riverside,Public Health,Mosquito breeding,medium,Resolved,Health Dept,Third complaint from the same street.
-2026-06-13,North Gate,Public Health,Open garbage,high,In Progress,Health Dept,Recurring issue during monsoon.
-2026-06-25,Riverside,Sanitation,Public toilet issue,medium,Open,Sanitation Dept,Reported via city helpline.
-2026-07-03,Riverside,Waste Collection,Delayed collection,high,In Progress,Sanitation Dept,Affects a school zone nearby.
-2026-07-01,Old Town,Noise,Industrial noise,low,Open,Environment Cell,Photo evidence attached by citizen.
-2026-06-06,Riverside,Water Supply,Low pressure,high,In Progress,Water Board,Photo evidence attached by citizen.
-2026-06-12,Riverside,Public Health,Mosquito breeding,low,Escalated,Health Dept,Escalated after no response in 72 hours.
-2026-06-27,Riverside,Water Supply,Leak,high,In Progress,Water Board,Flagged by community volunteer.
-2026-06-07,Harbor District,Roads,Pothole,medium,Resolved,Public Works,Recurring issue during monsoon.
-2026-05-10,Midtown,Roads,Damaged signage,high,Resolved,Public Works,
-2026-06-22,Old Town,Waste Collection,Overflowing bin,medium,Resolved,Sanitation Dept,Reported via city helpline.
-2026-07-03,Riverside,Waste Collection,Illegal dumping,high,In Progress,Sanitation Dept,Photo evidence attached by citizen.
-2026-07-01,Riverside,Waste Collection,Illegal dumping,high,Open,Sanitation Dept,Affects a school zone nearby.
-2026-05-22,Oak Hill,Water Supply,No supply,high,Escalated,Water Board,Photo evidence attached by citizen.
-2026-05-27,Riverside,Public Health,Stray animals,medium,Resolved,Health Dept,Third complaint from the same street.
-2026-06-23,North Gate,Roads,Blocked drain,medium,Open,Public Works,Escalated after no response in 72 hours.
-2026-07-01,North Gate,Water Supply,Low pressure,medium,In Progress,Water Board,Photo evidence attached by citizen.
-2026-05-16,Harbor District,Waste Collection,Illegal dumping,low,Resolved,Sanitation Dept,Affects a school zone nearby.
-2026-05-19,Harbor District,Public Health,Food safety,critical,Open,Health Dept,Escalated after no response in 72 hours.
-2026-06-22,Riverside,Sanitation,Foul smell,high,In Progress,Sanitation Dept,
-2026-06-11,Lakeside,Sanitation,Blocked sewer,low,Resolved,Sanitation Dept,
-2026-06-09,Riverside,Roads,Blocked drain,medium,In Progress,Public Works,Flagged by community volunteer.
-2026-06-03,Old Town,Sanitation,Stagnant water,critical,Open,Sanitation Dept,Recurring issue during monsoon.
-2026-06-03,Harbor District,Public Health,Stray animals,low,In Progress,Health Dept,Affects a school zone nearby.
-2026-05-19,Midtown,Public Health,Open garbage,high,Open,Health Dept,Resident reported repeatedly this month.
-2026-07-02,Riverside,Roads,Broken streetlight,medium,In Progress,Public Works,Resident reported repeatedly this month.
-2026-06-17,Old Town,Roads,Blocked drain,medium,Escalated,Public Works,Photo evidence attached by citizen.
-2026-06-28,Harbor District,Noise,Late-night party,high,Resolved,Environment Cell,Reported via city helpline.
-2026-06-30,Riverside,Waste Collection,Delayed collection,high,Open,Sanitation Dept,Escalated after no response in 72 hours.
-2026-07-03,Midtown,Roads,Pothole,high,In Progress,Public Works,Escalated after no response in 72 hours.
-2026-06-05,Riverside,Sanitation,Stagnant water,medium,Resolved,Sanitation Dept,Reported via city helpline.
-2026-06-28,Riverside,Waste Collection,Delayed collection,high,Open,Sanitation Dept,
-2026-05-11,Lakeside,Water Supply,Contaminated water,medium,In Progress,Water Board,Affects a school zone nearby.
-2026-05-14,Green Valley,Public Health,Stray animals,low,In Progress,Health Dept,Photo evidence attached by citizen.
-2026-06-20,Midtown,Noise,Loud construction,medium,Resolved,Environment Cell,Resident reported repeatedly this month.
-2026-06-21,Riverside,Water Supply,Low pressure,medium,In Progress,Water Board,Resident reported repeatedly this month.
-2026-06-16,Oak Hill,Water Supply,Low pressure,low,Resolved,Water Board,Reported via city helpline.
-2026-05-30,Midtown,Noise,Industrial noise,low,Open,Environment Cell,Photo evidence attached by citizen.
-2026-05-13,Riverside,Waste Collection,Overflowing bin,low,In Progress,Sanitation Dept,Escalated after no response in 72 hours.
-2026-07-01,Riverside,Waste Collection,Illegal dumping,high,Open,Sanitation Dept,Reported via city helpline.
-2026-06-18,Riverside,Public Health,Food safety,medium,In Progress,Health Dept,Resident reported repeatedly this month.
-2026-05-30,Riverside,Water Supply,Contaminated water,low,Open,Water Board,Recurring issue during monsoon.
-2026-06-28,Riverside,Waste Collection,Overflowing bin,high,Open,Sanitation Dept,Recurring issue during monsoon.
-2026-06-03,Harbor District,Waste Collection,Overflowing bin,medium,In Progress,Sanitation Dept,Photo evidence attached by citizen.
-2026-07-03,Riverside,Waste Collection,Overflowing bin,high,Open,Sanitation Dept,
-2026-06-17,North Gate,Waste Collection,Illegal dumping,low,Resolved,Sanitation Dept,Resident reported repeatedly this month.
-2026-06-28,Oak Hill,Waste Collection,Delayed collection,medium,Resolved,Sanitation Dept,Flagged by community volunteer.
-2026-06-10,Riverside,Public Health,Open garbage,low,Resolved,Health Dept,Third complaint from the same street.
-2026-06-25,Green Valley,Noise,Loud construction,low,Resolved,Environment Cell,Flagged by community volunteer.
-2026-06-06,Green Valley,Water Supply,No supply,low,In Progress,Water Board,
-2026-06-05,Riverside,Water Supply,Low pressure,high,In Progress,Water Board,
-2026-05-23,Oak Hill,Sanitation,Stagnant water,high,Open,Sanitation Dept,Resident reported repeatedly this month.
-2026-05-27,Harbor District,Noise,Traffic noise,medium,Open,Environment Cell,Reported via city helpline.
-2026-05-15,North Gate,Roads,Blocked drain,medium,In Progress,Public Works,
-2026-06-28,Riverside,Waste Collection,Delayed collection,high,Resolved,Sanitation Dept,Resident reported repeatedly this month.
-2026-06-27,Harbor District,Public Health,Open garbage,low,Open,Health Dept,Photo evidence attached by citizen.
-2026-06-30,Riverside,Waste Collection,Overflowing bin,high,In Progress,Sanitation Dept,Escalated after no response in 72 hours.
-2026-06-23,Oak Hill,Public Health,Mosquito breeding,low,Open,Health Dept,Third complaint from the same street.
-2026-06-09,North Gate,Water Supply,Low pressure,high,Open,Water Board,Escalated after no response in 72 hours.
-2026-07-02,North Gate,Sanitation,Stagnant water,high,Resolved,Sanitation Dept,Escalated after no response in 72 hours.
-2026-05-15,Midtown,Public Health,Stray animals,high,Resolved,Health Dept,Escalated after no response in 72 hours.
-2026-07-01,Lakeside,Waste Collection,Overflowing bin,medium,Resolved,Sanitation Dept,Reported via city helpline.
-2026-05-29,Lakeside,Roads,Pothole,medium,Open,Public Works,
-2026-06-29,North Gate,Roads,Broken streetlight,medium,In Progress,Public Works,Photo evidence attached by citizen.
-2026-06-23,North Gate,Noise,Late-night party,low,Resolved,Environment Cell,Reported via city helpline.
-2026-05-14,Riverside,Roads,Blocked drain,high,Resolved,Public Works,Photo evidence attached by citizen.
-2026-06-16,Oak Hill,Water Supply,Low pressure,low,Resolved,Water Board,Affects a school zone nearby.
-2026-06-24,Green Valley,Water Supply,Contaminated water,low,Open,Water Board,Third complaint from the same street.
-2026-06-25,Old Town,Sanitation,Foul smell,low,Escalated,Sanitation Dept,Third complaint from the same street.
-2026-05-12,Midtown,Roads,Broken streetlight,medium,Resolved,Public Works,Third complaint from the same street.
-2026-06-25,Riverside,Public Health,Open garbage,low,Open,Health Dept,Flagged by community volunteer.
-2026-06-03,Green Valley,Sanitation,Blocked sewer,medium,Open,Sanitation Dept,Photo evidence attached by citizen.
-2026-06-03,Riverside,Sanitation,Foul smell,medium,In Progress,Sanitation Dept,
-2026-06-06,Riverside,Waste Collection,Delayed collection,high,Open,Sanitation Dept,Flagged by community volunteer.
-2026-06-06,Riverside,Public Health,Stray animals,medium,Open,Health Dept,
-2026-07-02,Lakeside,Roads,Blocked drain,low,Resolved,Public Works,Affects a school zone nearby.
-2026-06-17,Lakeside,Noise,Traffic noise,high,Open,Environment Cell,Escalated after no response in 72 hours.
-2026-06-22,Riverside,Roads,Broken streetlight,high,Open,Public Works,
-2026-06-06,Harbor District,Public Health,Stray animals,medium,Resolved,Health Dept,Photo evidence attached by citizen.
-2026-05-16,Riverside,Public Health,Food safety,medium,In Progress,Health Dept,Photo evidence attached by citizen.
-2026-06-29,Riverside,Waste Collection,Overflowing bin,high,Open,Sanitation Dept,Flagged by community volunteer.
-2026-05-31,Green Valley,Water Supply,Low pressure,medium,In Progress,Water Board,Escalated after no response in 72 hours.
-2026-06-24,Riverside,Sanitation,Stagnant water,high,In Progress,Sanitation Dept,Flagged by community volunteer.
-2026-06-09,Midtown,Water Supply,Low pressure,low,Open,Water Board,Escalated after no response in 72 hours.
-2026-06-24,Midtown,Noise,Late-night party,low,Open,Environment Cell,Reported via city helpline.
-2026-05-19,Riverside,Waste Collection,Delayed collection,high,In Progress,Sanitation Dept,Escalated after no response in 72 hours.
-2026-06-22,Oak Hill,Roads,Broken streetlight,medium,Resolved,Public Works,Affects a school zone nearby.
-2026-06-14,Green Valley,Roads,Pothole,medium,Open,Public Works,Flagged by community volunteer.
-2026-05-20,North Gate,Water Supply,No supply,low,Open,Water Board,Recurring issue during monsoon.
-2026-06-05,Green Valley,Water Supply,Contaminated water,medium,Open,Water Board,Third complaint from the same street.
-2026-06-09,Riverside,Sanitation,Blocked sewer,medium,In Progress,Sanitation Dept,Third complaint from the same street.
-2026-05-31,Riverside,Public Health,Stray animals,critical,In Progress,Health Dept,Flagged by community volunteer.
-2026-05-14,Midtown,Roads,Pothole,low,Resolved,Public Works,Photo evidence attached by citizen.
-2026-07-01,Old Town,Public Health,Open garbage,low,In Progress,Health Dept,Photo evidence attached by citizen.
-2026-06-19,Midtown,Public Health,Mosquito breeding,medium,In Progress,Health Dept,Affects a school zone nearby.
-2026-06-21,Oak Hill,Noise,Loud construction,medium,Resolved,Environment Cell,Affects a school zone nearby.
-2026-05-21,North Gate,Public Health,Stray animals,low,Open,Health Dept,Flagged by community volunteer.
-2026-07-01,Riverside,Roads,Blocked drain,medium,In Progress,Public Works,Reported via city helpline.
-2026-07-03,Riverside,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Escalated after no response in 72 hours.
-2026-06-19,Oak Hill,Noise,Late-night party,medium,Open,Environment Cell,Photo evidence attached by citizen.
-2026-06-30,Riverside,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Resident reported repeatedly this month.
-2026-06-08,Harbor District,Public Health,Mosquito breeding,low,Resolved,Health Dept,Third complaint from the same street.
-2026-07-03,Riverside,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Affects a school zone nearby.
-2026-07-02,Old Town,Public Health,Open garbage,medium,Open,Health Dept,Third complaint from the same street.
-2026-07-02,Riverside,Waste Collection,Delayed collection,high,Open,Sanitation Dept,Affects a school zone nearby.
-2026-07-02,Harbor District,Waste Collection,Missed pickup,medium,In Progress,Sanitation Dept,Resident reported repeatedly this month.
-2026-06-16,Oak Hill,Sanitation,Public toilet issue,high,Escalated,Sanitation Dept,Reported via city helpline.
-2026-06-11,Harbor District,Water Supply,Leak,low,Open,Water Board,Resident reported repeatedly this month.
-2026-05-11,Riverside,Public Health,Open garbage,medium,In Progress,Health Dept,Third complaint from the same street.
-2026-05-29,Riverside,Water Supply,No supply,medium,Resolved,Water Board,
-2026-06-03,Harbor District,Noise,Traffic noise,medium,Open,Environment Cell,Reported via city helpline.
-2026-06-19,Old Town,Noise,Traffic noise,medium,Open,Environment Cell,Third complaint from the same street.
-2026-06-24,Harbor District,Noise,Industrial noise,low,Open,Environment Cell,Recurring issue during monsoon.
-2026-05-26,Old Town,Waste Collection,Delayed collection,low,Open,Sanitation Dept,Photo evidence attached by citizen.
-2026-07-01,Riverside,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Flagged by community volunteer.
-2026-05-19,North Gate,Sanitation,Blocked sewer,high,Resolved,Sanitation Dept,Third complaint from the same street.
-2026-06-20,Riverside,Public Health,Mosquito breeding,high,In Progress,Health Dept,Reported via city helpline.
-2026-06-13,Riverside,Sanitation,Blocked sewer,medium,In Progress,Sanitation Dept,Photo evidence attached by citizen.
-2026-06-04,Midtown,Roads,Blocked drain,high,Open,Public Works,
-2026-07-04,Riverside,Waste Collection,Delayed collection,high,Resolved,Sanitation Dept,
-2026-06-20,Green Valley,Roads,Blocked drain,medium,Open,Public Works,Escalated after no response in 72 hours.
-2026-06-19,Harbor District,Waste Collection,Illegal dumping,medium,Resolved,Sanitation Dept,Recurring issue during monsoon.
-2026-06-23,Midtown,Sanitation,Blocked sewer,low,In Progress,Sanitation Dept,Reported via city helpline.
-2026-05-26,Lakeside,Public Health,Open garbage,high,Resolved,Health Dept,
-2026-06-26,North Gate,Sanitation,Stagnant water,medium,Resolved,Sanitation Dept,Recurring issue during monsoon.
-2026-06-29,Riverside,Water Supply,Low pressure,low,In Progress,Water Board,Resident reported repeatedly this month.
-2026-05-30,Harbor District,Sanitation,Public toilet issue,low,In Progress,Sanitation Dept,Recurring issue during monsoon.
-2026-06-02,Riverside,Sanitation,Foul smell,high,Resolved,Sanitation Dept,
-2026-05-23,Harbor District,Roads,Broken streetlight,low,In Progress,Public Works,Resident reported repeatedly this month.
-2026-06-29,Riverside,Waste Collection,Overflowing bin,high,In Progress,Sanitation Dept,Escalated after no response in 72 hours.
-2026-06-22,Riverside,Roads,Damaged signage,medium,Resolved,Public Works,Photo evidence attached by citizen.
-2026-05-24,Riverside,Sanitation,Blocked sewer,medium,Resolved,Sanitation Dept,Flagged by community volunteer.
-2026-05-25,Oak Hill,Roads,Damaged signage,medium,Open,Public Works,Escalated after no response in 72 hours.
-2026-06-25,Midtown,Sanitation,Stagnant water,high,Open,Sanitation Dept,Recurring issue during monsoon.
-2026-07-02,Riverside,Waste Collection,Illegal dumping,high,Resolved,Sanitation Dept,Recurring issue during monsoon.
-2026-07-03,Riverside,Waste Collection,Delayed collection,medium,Resolved,Sanitation Dept,Recurring issue during monsoon.
-2026-06-27,Riverside,Noise,Traffic noise,medium,Open,Environment Cell,Flagged by community volunteer.
-2026-06-16,North Gate,Waste Collection,Overflowing bin,low,Resolved,Sanitation Dept,Recurring issue during monsoon.
-2026-06-30,Lakeside,Water Supply,Contaminated water,medium,Resolved,Water Board,Reported via city helpline.
-2026-06-02,Midtown,Noise,Loud construction,medium,Resolved,Environment Cell,Escalated after no response in 72 hours.
-2026-06-24,Old Town,Sanitation,Foul smell,medium,Escalated,Sanitation Dept,Reported via city helpline.
-2026-06-01,Harbor District,Waste Collection,Delayed collection,medium,Open,Sanitation Dept,Escalated after no response in 72 hours.
-2026-05-26,Old Town,Sanitation,Stagnant water,medium,Resolved,Sanitation Dept,Resident reported repeatedly this month.
-2026-06-29,Riverside,Waste Collection,Overflowing bin,medium,In Progress,Sanitation Dept,Escalated after no response in 72 hours.
-2026-06-17,Oak Hill,Noise,Late-night party,medium,Open,Environment Cell,Resident reported repeatedly this month.
-2026-05-26,Green Valley,Roads,Damaged signage,medium,Open,Public Works,Escalated after no response in 72 hours.
-2026-06-09,Midtown,Noise,Late-night party,medium,In Progress,Environment Cell,Photo evidence attached by citizen.
-2026-06-23,Riverside,Waste Collection,Illegal dumping,critical,Open,Sanitation Dept,Photo evidence attached by citizen.
-2026-06-21,Midtown,Waste Collection,Illegal dumping,high,In Progress,Sanitation Dept,Resident reported repeatedly this month.
-2026-06-02,Riverside,Roads,Damaged signage,medium,Open,Public Works,
-2026-05-15,Green Valley,Public Health,Mosquito breeding,low,Open,Health Dept,Escalated after no response in 72 hours.
-2026-05-27,Lakeside,Public Health,Stray animals,low,In Progress,Health Dept,
-2026-05-23,North Gate,Waste Collection,Missed pickup,high,Open,Sanitation Dept,Reported via city helpline.
-2026-07-03,Riverside,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Reported via city helpline.
-2026-06-04,Riverside,Sanitation,Foul smell,low,In Progress,Sanitation Dept,Affects a school zone nearby.
-2026-06-30,Riverside,Waste Collection,Missed pickup,high,Open,Sanitation Dept,Escalated after no response in 72 hours.
-2026-06-29,Riverside,Public Health,Food safety,critical,In Progress,Health Dept,Flagged by community volunteer.
-2026-06-07,Lakeside,Roads,Damaged signage,low,Open,Public Works,
-2026-07-01,Lakeside,Public Health,Food safety,medium,Resolved,Health Dept,Escalated after no response in 72 hours.
-2026-06-07,Old Town,Waste Collection,Overflowing bin,low,In Progress,Sanitation Dept,
-2026-06-28,Green Valley,Waste Collection,Illegal dumping,low,Escalated,Sanitation Dept,Photo evidence attached by citizen.
-2026-05-29,Midtown,Roads,Damaged signage,low,Resolved,Public Works,
-2026-06-23,Riverside,Sanitation,Foul smell,medium,In Progress,Sanitation Dept,Affects a school zone nearby.
-2026-05-25,Midtown,Water Supply,No supply,medium,Resolved,Water Board,Flagged by community volunteer.
-2026-05-30,Harbor District,Sanitation,Blocked sewer,medium,Resolved,Sanitation Dept,Reported via city helpline.
-2026-07-04,Riverside,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Recurring issue during monsoon.
-2026-06-26,Green Valley,Water Supply,No supply,high,Open,Water Board,Photo evidence attached by citizen.
-2026-06-29,Riverside,Waste Collection,Missed pickup,high,In Progress,Sanitation Dept,Third complaint from the same street.
-2026-06-14,Old Town,Public Health,Food safety,medium,In Progress,Health Dept,Flagged by community volunteer.
-2026-06-10,North Gate,Water Supply,Contaminated water,low,Resolved,Water Board,Photo evidence attached by citizen.
-2026-06-15,North Gate,Sanitation,Blocked sewer,low,In Progress,Sanitation Dept,Affects a school zone nearby.
-2026-05-26,Lakeside,Water Supply,Low pressure,medium,Resolved,Water Board,Escalated after no response in 72 hours.
-2026-05-18,Green Valley,Water Supply,Leak,low,Open,Water Board,Reported via city helpline.
-2026-05-27,Harbor District,Water Supply,No supply,high,Resolved,Water Board,Photo evidence attached by citizen.
-2026-06-27,Lakeside,Water Supply,Leak,low,In Progress,Water Board,Affects a school zone nearby.
-2026-06-22,North Gate,Water Supply,Contaminated water,medium,Open,Water Board,Flagged by community volunteer.
-2026-06-13,Old Town,Roads,Damaged signage,medium,Open,Public Works,Escalated after no response in 72 hours.
-2026-07-01,Riverside,Waste Collection,Overflowing bin,high,Open,Sanitation Dept,Affects a school zone nearby.
-2026-07-02,Riverside,Waste Collection,Delayed collection,high,In Progress,Sanitation Dept,Reported via city helpline.
-2026-06-23,Lakeside,Public Health,Food safety,medium,In Progress,Health Dept,
-2026-07-03,Lakeside,Noise,Industrial noise,high,Resolved,Environment Cell,Escalated after no response in 72 hours.
-2026-05-25,Riverside,Waste Collection,Overflowing bin,medium,Open,Sanitation Dept,Escalated after no response in 72 hours.
-2026-06-23,Riverside,Sanitation,Public toilet issue,low,Resolved,Sanitation Dept,Recurring issue during monsoon.
-2026-06-06,Midtown,Noise,Loud construction,medium,In Progress,Environment Cell,Escalated after no response in 72 hours.
-2026-07-01,Riverside,Waste Collection,Delayed collection,high,In Progress,Sanitation Dept,Flagged by community volunteer.
-2026-06-14,Green Valley,Noise,Loud construction,low,Resolved,Environment Cell,Affects a school zone nearby.
-2026-06-15,Oak Hill,Noise,Loud construction,medium,Resolved,Environment Cell,Flagged by community volunteer.
-2026-06-11,Old Town,Public Health,Open garbage,high,Resolved,Health Dept,Escalated after no response in 72 hours.
-2026-05-10,Green Valley,Sanitation,Blocked sewer,high,Resolved,Sanitation Dept,Affects a school zone nearby.
-2026-06-18,Old Town,Waste Collection,Delayed collection,medium,Open,Sanitation Dept,Flagged by community volunteer.
-2026-06-07,Green Valley,Noise,Late-night party,high,Open,Environment Cell,Flagged by community volunteer.
-2026-05-21,Riverside,Water Supply,Contaminated water,medium,Open,Water Board,Reported via city helpline.
-2026-06-16,Riverside,Waste Collection,Overflowing bin,medium,Resolved,Sanitation Dept,Affects a school zone nearby.
-2026-05-21,Midtown,Public Health,Mosquito breeding,medium,Resolved,Health Dept,Third complaint from the same street.
-2026-05-11,Oak Hill,Public Health,Open garbage,high,In Progress,Health Dept,Photo evidence attached by citizen.
-2026-07-03,Green Valley,Noise,Late-night party,medium,Resolved,Environment Cell,Flagged by community volunteer.
-2026-06-16,Harbor District,Roads,Blocked drain,low,In Progress,Public Works,Affects a school zone nearby.
-2026-06-24,Midtown,Public Health,Food safety,low,Open,Health Dept,Recurring issue during monsoon.
-2026-07-02,North Gate,Sanitation,Stagnant water,medium,In Progress,Sanitation Dept,
-2026-06-30,Midtown,Public Health,Food safety,low,Open,Health Dept,
-2026-06-21,Lakeside,Public Health,Stray animals,low,Open,Health Dept,Affects a school zone nearby.
-2026-06-20,Old Town,Noise,Late-night party,low,In Progress,Environment Cell,Affects a school zone nearby.
-2026-07-03,Lakeside,Water Supply,Low pressure,critical,In Progress,Water Board,
-2026-05-17,Riverside,Water Supply,Contaminated water,medium,In Progress,Water Board,Photo evidence attached by citizen.
-2026-05-30,Midtown,Public Health,Stray animals,low,Resolved,Health Dept,Affects a school zone nearby.
-2026-05-19,Midtown,Water Supply,Leak,medium,In Progress,Water Board,Recurring issue during monsoon.
-2026-06-29,Riverside,Waste Collection,Overflowing bin,high,Resolved,Sanitation Dept,Reported via city helpline.
-2026-07-01,Oak Hill,Roads,Damaged signage,medium,Open,Public Works,Affects a school zone nearby.
-2026-06-22,Riverside,Water Supply,No supply,low,Open,Water Board,Resident reported repeatedly this month.
-2026-06-13,Riverside,Public Health,Food safety,low,Open,Health Dept,
-2026-05-14,Green Valley,Noise,Loud construction,medium,Resolved,Environment Cell,Recurring issue during monsoon.
-2026-05-18,Old Town,Roads,Pothole,medium,Open,Public Works,Photo evidence attached by citizen.
-2026-05-20,Lakeside,Waste Collection,Overflowing bin,low,Resolved,Sanitation Dept,Escalated after no response in 72 hours.
-2026-06-15,North Gate,Roads,Damaged signage,medium,Open,Public Works,Flagged by community volunteer.
-2026-06-09,Riverside,Waste Collection,Illegal dumping,medium,Open,Sanitation Dept,Affects a school zone nearby.
-2026-07-02,Riverside,Waste Collection,Delayed collection,high,Open,Sanitation Dept,Escalated after no response in 72 hours.
-2026-07-03,Green Valley,Noise,Loud construction,medium,In Progress,Environment Cell,Third complaint from the same street.
-2026-06-30,Old Town,Sanitation,Foul smell,high,In Progress,Sanitation Dept,
-2026-05-27,Riverside,Sanitation,Blocked sewer,medium,Resolved,Sanitation Dept,Resident reported repeatedly this month.
-2026-06-03,Riverside,Public Health,Stray animals,high,Open,Health Dept,Recurring issue during monsoon.
-2026-05-22,Harbor District,Public Health,Food safety,high,Resolved,Health Dept,Resident reported repeatedly this month.
-2026-05-22,Riverside,Public Health,Open garbage,low,Escalated,Health Dept,
-2026-06-01,Old Town,Roads,Blocked drain,medium,Open,Public Works,Escalated after no response in 72 hours.
-2026-06-12,Oak Hill,Waste Collection,Missed pickup,medium,In Progress,Sanitation Dept,Flagged by community volunteer.
-2026-05-20,Riverside,Noise,Loud construction,low,Open,Environment Cell,Affects a school zone nearby.
-2026-06-17,Green Valley,Waste Collection,Illegal dumping,medium,Resolved,Sanitation Dept,Recurring issue during monsoon.
-2026-06-29,Riverside,Waste Collection,Illegal dumping,medium,Open,Sanitation Dept,Flagged by community volunteer.
-2026-05-30,Old Town,Waste Collection,Illegal dumping,low,In Progress,Sanitation Dept,Recurring issue during monsoon.
-2026-06-18,Riverside,Waste Collection,Missed pickup,high,Open,Sanitation Dept,
-2026-06-14,Riverside,Sanitation,Foul smell,medium,Resolved,Sanitation Dept,
-2026-07-04,Lakeside,Public Health,Mosquito breeding,medium,In Progress,Health Dept,Reported via city helpline.
-2026-06-20,Riverside,Noise,Traffic noise,low,Open,Environment Cell,Recurring issue during monsoon.
-2026-06-03,Midtown,Waste Collection,Delayed collection,medium,Resolved,Sanitation Dept,
-2026-06-23,Lakeside,Water Supply,Leak,medium,Open,Water Board,Escalated after no response in 72 hours.
-2026-06-22,Riverside,Noise,Industrial noise,medium,In Progress,Environment Cell,Affects a school zone nearby.
-2026-06-12,Old Town,Public Health,Open garbage,low,Open,Health Dept,Photo evidence attached by citizen.
-2026-06-28,Riverside,Waste Collection,Overflowing bin,high,Resolved,Sanitation Dept,Recurring issue during monsoon.
-2026-05-11,Riverside,Water Supply,No supply,low,Open,Water Board,Flagged by community volunteer.
-2026-06-13,Riverside,Noise,Loud construction,critical,Escalated,Environment Cell,
-2026-06-29,Riverside,Waste Collection,Overflowing bin,high,Open,Sanitation Dept,Flagged by community volunteer.
-2026-07-03,Midtown,Water Supply,Low pressure,medium,Open,Water Board,
-2026-06-28,Riverside,Sanitation,Blocked sewer,low,Open,Sanitation Dept,Recurring issue during monsoon.
-2026-06-28,Green Valley,Noise,Late-night party,low,Open,Environment Cell,
-2026-06-08,Oak Hill,Roads,Damaged signage,medium,Open,Public Works,
-2026-06-28,Riverside,Waste Collection,Delayed collection,high,Resolved,Sanitation Dept,Affects a school zone nearby.
-2026-06-04,Riverside,Roads,Pothole,critical,Resolved,Public Works,Resident reported repeatedly this month.
-2026-06-14,Oak Hill,Sanitation,Blocked sewer,medium,In Progress,Sanitation Dept,Third complaint from the same street.
-2026-05-17,North Gate,Waste Collection,Missed pickup,medium,Open,Sanitation Dept,Resident reported repeatedly this month.
-2026-05-14,Riverside,Water Supply,Low pressure,medium,Open,Water Board,Resident reported repeatedly this month.
-2026-06-10,Oak Hill,Sanitation,Blocked sewer,low,Open,Sanitation Dept,Flagged by community volunteer.
-2026-06-27,Green Valley,Water Supply,No supply,high,Resolved,Water Board,
-2026-05-20,Green Valley,Waste Collection,Overflowing bin,low,Open,Sanitation Dept,
-2026-05-30,Riverside,Sanitation,Public toilet issue,critical,In Progress,Sanitation Dept,Resident reported repeatedly this month.
-2026-06-20,Riverside,Public Health,Food safety,high,Open,Health Dept,Recurring issue during monsoon.
-2026-06-11,Riverside,Roads,Pothole,low,Resolved,Public Works,
-2026-06-29,Riverside,Roads,Damaged signage,critical,Resolved,Public Works,Photo evidence attached by citizen.
-2026-06-19,Riverside,Public Health,Stray animals,low,Open,Health Dept,Flagged by community volunteer.
-2026-07-03,Riverside,Sanitation,Public toilet issue,medium,Resolved,Sanitation Dept,Photo evidence attached by citizen.
-2026-05-31,Oak Hill,Sanitation,Blocked sewer,low,Escalated,Sanitation Dept,Recurring issue during monsoon.
-2026-07-01,Riverside,Waste Collection,Overflowing bin,high,Escalated,Sanitation Dept,Escalated after no response in 72 hours.
-2026-05-24,Oak Hill,Roads,Blocked drain,medium,Open,Public Works,Recurring issue during monsoon.
-2026-06-09,Old Town,Noise,Traffic noise,low,Resolved,Environment Cell,Reported via city helpline.
-2026-05-18,Old Town,Waste Collection,Missed pickup,low,Open,Sanitation Dept,Escalated after no response in 72 hours.
-2026-06-16,Riverside,Sanitation,Foul smell,medium,Open,Sanitation Dept,Third complaint from the same street.
-2026-05-28,Midtown,Roads,Blocked drain,medium,In Progress,Public Works,
-2026-06-28,Lakeside,Public Health,Food safety,medium,Resolved,Health Dept,Flagged by community volunteer.
-2026-06-02,Riverside,Water Supply,Low pressure,high,Open,Water Board,Third complaint from the same street.
-2026-05-16,Oak Hill,Water Supply,Low pressure,medium,Resolved,Water Board,Flagged by community volunteer.
-2026-06-10,Old Town,Noise,Late-night party,medium,Resolved,Environment Cell,Recurring issue during monsoon.
-2026-05-27,Riverside,Public Health,Food safety,medium,Open,Health Dept,Recurring issue during monsoon.
-2026-05-16,Green Valley,Public Health,Open garbage,medium,In Progress,Health Dept,Reported via city helpline.
-2026-07-04,Riverside,Waste Collection,Overflowing bin,high,In Progress,Sanitation Dept,Affects a school zone nearby.
-2026-06-28,Old Town,Noise,Industrial noise,medium,Open,Environment Cell,Flagged by community volunteer.
-2026-06-30,North Gate,Public Health,Mosquito breeding,medium,Resolved,Health Dept,Resident reported repeatedly this month.
-2026-06-08,Midtown,Water Supply,Low pressure,medium,Resolved,Water Board,Reported via city helpline.
-2026-06-29,Riverside,Waste Collection,Overflowing bin,high,Resolved,Sanitation Dept,Reported via city helpline.
-2026-05-17,Riverside,Public Health,Food safety,medium,In Progress,Health Dept,
-2026-05-16,Riverside,Waste Collection,Overflowing bin,medium,In Progress,Sanitation Dept,Photo evidence attached by citizen.
-2026-06-12,Old Town,Waste Collection,Illegal dumping,high,In Progress,Sanitation Dept,Affects a school zone nearby.
+2026-07-04,BTM Layout,Roads,Broken streetlight,high,Open,Public Works,Third complaint from the same street.
+2026-06-26,Basavanagudi,Public Health,Food safety,critical,In Progress,Health Dept,Recurring issue during monsoon.
+2026-07-01,Koramangala,Sanitation,Blocked sewer,high,Open,Sanitation Dept,Reported via city helpline.
+2026-07-18,Koramangala,Public Health,Mosquito breeding,medium,Resolved,Health Dept,Resident reported repeatedly this month.
+2026-07-10,Basavanagudi,Sanitation,Public toilet issue,low,Open,Sanitation Dept,Photo evidence attached by citizen.
+2026-07-02,Basavanagudi,Water Supply,Low pressure,medium,Open,Water Board,Third complaint from the same street.
+2026-06-07,Malleshwaram,Sanitation,Stagnant water,critical,Escalated,Sanitation Dept,
+2026-07-23,Koramangala,Noise,Loud construction,low,In Progress,Environment Cell,Affects a school zone nearby.
+2026-06-15,BTM Layout,Public Health,Food safety,low,Resolved,Health Dept,Third complaint from the same street.
+2026-07-10,Koramangala,Public Health,Open garbage,low,Resolved,Health Dept,Resident reported repeatedly this month.
+2026-07-18,Malleshwaram,Public Health,Mosquito breeding,low,Open,Health Dept,Resident reported repeatedly this month.
+2026-07-22,Jayanagar,Water Supply,Contaminated water,medium,Resolved,Water Board,Third complaint from the same street.
+2026-06-26,Malleshwaram,Public Health,Mosquito breeding,high,In Progress,Health Dept,Third complaint from the same street.
+2026-06-04,Basavanagudi,Roads,Pothole,low,In Progress,Public Works,
+2026-06-19,Malleshwaram,Sanitation,Stagnant water,low,Open,Sanitation Dept,Flagged by community volunteer.
+2026-06-12,Koramangala,Water Supply,Contaminated water,low,Open,Water Board,Escalated after no response in 72 hours.
+2026-07-17,Koramangala,Waste Collection,Missed pickup,high,In Progress,Sanitation Dept,Escalated after no response in 72 hours.
+2026-06-16,Malleshwaram,Water Supply,Low pressure,high,Resolved,Water Board,
+2026-06-05,Jayanagar,Public Health,Open garbage,medium,Resolved,Health Dept,Resident reported repeatedly this month.
+2026-07-11,Domlur,Public Health,Food safety,medium,Resolved,Health Dept,Resident reported repeatedly this month.
+2026-06-07,Rajajinagar,Waste Collection,Missed pickup,high,Open,Sanitation Dept,Affects a school zone nearby.
+2026-06-20,Jayanagar,Sanitation,Blocked sewer,medium,Resolved,Sanitation Dept,Recurring issue during monsoon.
+2026-06-15,Malleshwaram,Noise,Loud construction,high,In Progress,Environment Cell,Recurring issue during monsoon.
+2026-07-19,Basavanagudi,Sanitation,Stagnant water,high,Resolved,Sanitation Dept,Photo evidence attached by citizen.
+2026-06-16,Malleshwaram,Noise,Traffic noise,high,Open,Environment Cell,Escalated after no response in 72 hours.
+2026-06-30,Rajajinagar,Roads,Blocked drain,medium,Open,Public Works,Recurring issue during monsoon.
+2026-07-14,Jayanagar,Roads,Blocked drain,low,Escalated,Public Works,Resident reported repeatedly this month.
+2026-05-31,Koramangala,Roads,Broken streetlight,high,Open,Public Works,Recurring issue during monsoon.
+2026-06-25,Malleshwaram,Noise,Industrial noise,medium,Resolved,Environment Cell,Recurring issue during monsoon.
+2026-06-07,Rajajinagar,Roads,Broken streetlight,low,Open,Public Works,Flagged by community volunteer.
+2026-07-04,BTM Layout,Water Supply,Leak,low,In Progress,Water Board,Escalated after no response in 72 hours.
+2026-07-23,Koramangala,Waste Collection,Delayed collection,high,Open,Sanitation Dept,Recurring issue during monsoon.
+2026-07-15,Vijayanagar,Sanitation,Public toilet issue,low,Resolved,Sanitation Dept,Reported via city helpline.
+2026-07-22,Koramangala,Waste Collection,Delayed collection,high,In Progress,Sanitation Dept,Photo evidence attached by citizen.
+2026-07-20,Koramangala,Waste Collection,Overflowing bin,high,Resolved,Sanitation Dept,Reported via city helpline.
+2026-07-19,Vijayanagar,Waste Collection,Illegal dumping,low,Resolved,Sanitation Dept,Photo evidence attached by citizen.
+2026-07-08,Domlur,Roads,Pothole,low,Resolved,Public Works,Resident reported repeatedly this month.
+2026-06-22,Koramangala,Waste Collection,Missed pickup,medium,Open,Sanitation Dept,Affects a school zone nearby.
+2026-07-18,Koramangala,Public Health,Stray animals,high,Open,Health Dept,Resident reported repeatedly this month.
+2026-07-17,Koramangala,Waste Collection,Overflowing bin,high,In Progress,Sanitation Dept,Affects a school zone nearby.
+2026-06-02,Domlur,Water Supply,Low pressure,low,Resolved,Water Board,Escalated after no response in 72 hours.
+2026-06-30,Rajajinagar,Roads,Broken streetlight,medium,Resolved,Public Works,Flagged by community volunteer.
+2026-07-04,Vijayanagar,Public Health,Open garbage,medium,Resolved,Health Dept,Affects a school zone nearby.
+2026-06-29,Vijayanagar,Noise,Late-night party,low,Resolved,Environment Cell,
+2026-07-12,Domlur,Roads,Pothole,low,Open,Public Works,Affects a school zone nearby.
+2026-06-21,BTM Layout,Waste Collection,Illegal dumping,high,In Progress,Sanitation Dept,Reported via city helpline.
+2026-06-18,Malleshwaram,Sanitation,Foul smell,medium,Open,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-23,Koramangala,Waste Collection,Delayed collection,medium,In Progress,Sanitation Dept,
+2026-07-10,Rajajinagar,Public Health,Food safety,medium,In Progress,Health Dept,Photo evidence attached by citizen.
+2026-07-18,Koramangala,Noise,Traffic noise,high,In Progress,Environment Cell,Affects a school zone nearby.
+2026-06-02,Vijayanagar,Noise,Industrial noise,high,Resolved,Environment Cell,Escalated after no response in 72 hours.
+2026-06-21,BTM Layout,Public Health,Food safety,medium,Resolved,Health Dept,Photo evidence attached by citizen.
+2026-07-16,Vijayanagar,Public Health,Open garbage,medium,Open,Health Dept,Flagged by community volunteer.
+2026-06-26,Koramangala,Public Health,Open garbage,medium,Resolved,Health Dept,Resident reported repeatedly this month.
+2026-06-06,Domlur,Waste Collection,Delayed collection,high,Open,Sanitation Dept,
+2026-06-17,Basavanagudi,Sanitation,Foul smell,low,In Progress,Sanitation Dept,Reported via city helpline.
+2026-07-01,Malleshwaram,Water Supply,No supply,low,Open,Water Board,Reported via city helpline.
+2026-07-22,Koramangala,Waste Collection,Delayed collection,high,Resolved,Sanitation Dept,Affects a school zone nearby.
+2026-07-18,Koramangala,Waste Collection,Illegal dumping,high,Resolved,Sanitation Dept,Photo evidence attached by citizen.
+2026-06-02,Koramangala,Water Supply,Low pressure,low,Open,Water Board,Third complaint from the same street.
+2026-07-05,Jayanagar,Water Supply,Leak,high,Open,Water Board,Flagged by community volunteer.
+2026-07-17,Koramangala,Waste Collection,Delayed collection,high,Resolved,Sanitation Dept,Flagged by community volunteer.
+2026-06-24,Domlur,Sanitation,Blocked sewer,medium,In Progress,Sanitation Dept,Reported via city helpline.
+2026-07-07,Koramangala,Public Health,Food safety,high,Open,Health Dept,Resident reported repeatedly this month.
+2026-07-18,Koramangala,Water Supply,No supply,medium,Resolved,Water Board,Recurring issue during monsoon.
+2026-06-25,Basavanagudi,Public Health,Food safety,high,Open,Health Dept,
+2026-07-04,Domlur,Waste Collection,Illegal dumping,low,Resolved,Sanitation Dept,
+2026-07-01,Koramangala,Sanitation,Blocked sewer,low,In Progress,Sanitation Dept,Affects a school zone nearby.
+2026-07-07,Koramangala,Public Health,Open garbage,medium,Escalated,Health Dept,Third complaint from the same street.
+2026-07-02,Rajajinagar,Sanitation,Stagnant water,low,In Progress,Sanitation Dept,Affects a school zone nearby.
+2026-06-03,BTM Layout,Waste Collection,Missed pickup,low,Open,Sanitation Dept,Third complaint from the same street.
+2026-06-11,Koramangala,Water Supply,Contaminated water,medium,Resolved,Water Board,
+2026-07-07,Malleshwaram,Noise,Industrial noise,medium,Resolved,Environment Cell,Resident reported repeatedly this month.
+2026-06-23,Domlur,Roads,Pothole,low,In Progress,Public Works,Photo evidence attached by citizen.
+2026-07-17,Koramangala,Waste Collection,Delayed collection,high,In Progress,Sanitation Dept,
+2026-05-30,Domlur,Sanitation,Stagnant water,low,Resolved,Sanitation Dept,Recurring issue during monsoon.
+2026-07-14,Vijayanagar,Water Supply,No supply,medium,Resolved,Water Board,Flagged by community volunteer.
+2026-06-07,Jayanagar,Water Supply,Low pressure,low,In Progress,Water Board,Escalated after no response in 72 hours.
+2026-06-18,Malleshwaram,Noise,Industrial noise,high,Open,Environment Cell,Recurring issue during monsoon.
+2026-07-21,Koramangala,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Resident reported repeatedly this month.
+2026-07-23,Koramangala,Waste Collection,Illegal dumping,high,Resolved,Sanitation Dept,Affects a school zone nearby.
+2026-07-17,Domlur,Water Supply,Contaminated water,medium,Open,Water Board,
+2026-06-05,Basavanagudi,Roads,Broken streetlight,critical,Open,Public Works,Recurring issue during monsoon.
+2026-07-18,Jayanagar,Water Supply,No supply,low,Open,Water Board,Escalated after no response in 72 hours.
+2026-07-06,BTM Layout,Sanitation,Stagnant water,medium,In Progress,Sanitation Dept,Third complaint from the same street.
+2026-07-05,Koramangala,Waste Collection,Delayed collection,low,Resolved,Sanitation Dept,Reported via city helpline.
+2026-05-30,Basavanagudi,Roads,Broken streetlight,high,In Progress,Public Works,Resident reported repeatedly this month.
+2026-06-15,Koramangala,Sanitation,Public toilet issue,medium,Resolved,Sanitation Dept,Third complaint from the same street.
+2026-05-30,Domlur,Waste Collection,Overflowing bin,high,Open,Sanitation Dept,Reported via city helpline.
+2026-06-24,Rajajinagar,Water Supply,Contaminated water,low,Open,Water Board,Third complaint from the same street.
+2026-06-10,Koramangala,Public Health,Mosquito breeding,medium,Resolved,Health Dept,Third complaint from the same street.
+2026-07-02,Vijayanagar,Public Health,Open garbage,high,In Progress,Health Dept,Recurring issue during monsoon.
+2026-07-14,Koramangala,Sanitation,Public toilet issue,medium,Open,Sanitation Dept,Reported via city helpline.
+2026-07-22,Koramangala,Waste Collection,Delayed collection,high,In Progress,Sanitation Dept,Affects a school zone nearby.
+2026-07-20,Domlur,Noise,Industrial noise,low,Open,Environment Cell,Photo evidence attached by citizen.
+2026-06-25,Koramangala,Water Supply,Low pressure,high,In Progress,Water Board,Photo evidence attached by citizen.
+2026-07-01,Koramangala,Public Health,Mosquito breeding,low,Escalated,Health Dept,Escalated after no response in 72 hours.
+2026-07-16,Koramangala,Water Supply,Leak,high,In Progress,Water Board,Flagged by community volunteer.
+2026-06-26,Malleshwaram,Roads,Pothole,medium,Resolved,Public Works,Recurring issue during monsoon.
+2026-05-29,Rajajinagar,Roads,Damaged signage,high,Resolved,Public Works,
+2026-07-11,Domlur,Waste Collection,Overflowing bin,medium,Resolved,Sanitation Dept,Reported via city helpline.
+2026-07-22,Koramangala,Waste Collection,Illegal dumping,high,In Progress,Sanitation Dept,Photo evidence attached by citizen.
+2026-07-20,Koramangala,Waste Collection,Illegal dumping,high,Open,Sanitation Dept,Affects a school zone nearby.
+2026-06-10,Jayanagar,Water Supply,No supply,high,Escalated,Water Board,Photo evidence attached by citizen.
+2026-06-15,Koramangala,Public Health,Stray animals,medium,Resolved,Health Dept,Third complaint from the same street.
+2026-07-12,Vijayanagar,Roads,Blocked drain,medium,Open,Public Works,Escalated after no response in 72 hours.
+2026-07-20,Vijayanagar,Water Supply,Low pressure,medium,In Progress,Water Board,Photo evidence attached by citizen.
+2026-06-04,Malleshwaram,Waste Collection,Illegal dumping,low,Resolved,Sanitation Dept,Affects a school zone nearby.
+2026-06-07,Malleshwaram,Public Health,Food safety,critical,Open,Health Dept,Escalated after no response in 72 hours.
+2026-07-11,Koramangala,Sanitation,Foul smell,high,In Progress,Sanitation Dept,
+2026-06-30,BTM Layout,Sanitation,Blocked sewer,low,Resolved,Sanitation Dept,
+2026-06-28,Koramangala,Roads,Blocked drain,medium,In Progress,Public Works,Flagged by community volunteer.
+2026-06-22,Domlur,Sanitation,Stagnant water,critical,Open,Sanitation Dept,Recurring issue during monsoon.
+2026-06-22,Malleshwaram,Public Health,Stray animals,low,In Progress,Health Dept,Affects a school zone nearby.
+2026-06-07,Rajajinagar,Public Health,Open garbage,high,Open,Health Dept,Resident reported repeatedly this month.
+2026-07-21,Koramangala,Roads,Broken streetlight,medium,In Progress,Public Works,Resident reported repeatedly this month.
+2026-07-06,Domlur,Roads,Blocked drain,medium,Escalated,Public Works,Photo evidence attached by citizen.
+2026-07-17,Malleshwaram,Noise,Late-night party,high,Resolved,Environment Cell,Reported via city helpline.
+2026-07-19,Koramangala,Waste Collection,Delayed collection,high,Open,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-22,Rajajinagar,Roads,Pothole,high,In Progress,Public Works,Escalated after no response in 72 hours.
+2026-06-24,Koramangala,Sanitation,Stagnant water,medium,Resolved,Sanitation Dept,Reported via city helpline.
+2026-07-17,Koramangala,Waste Collection,Delayed collection,high,Open,Sanitation Dept,
+2026-05-30,BTM Layout,Water Supply,Contaminated water,medium,In Progress,Water Board,Affects a school zone nearby.
+2026-06-02,Basavanagudi,Public Health,Stray animals,low,In Progress,Health Dept,Photo evidence attached by citizen.
+2026-07-09,Rajajinagar,Noise,Loud construction,medium,Resolved,Environment Cell,Resident reported repeatedly this month.
+2026-07-10,Koramangala,Water Supply,Low pressure,medium,In Progress,Water Board,Resident reported repeatedly this month.
+2026-07-05,Jayanagar,Water Supply,Low pressure,low,Resolved,Water Board,Reported via city helpline.
+2026-06-18,Rajajinagar,Noise,Industrial noise,low,Open,Environment Cell,Photo evidence attached by citizen.
+2026-06-01,Koramangala,Waste Collection,Overflowing bin,low,In Progress,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-20,Koramangala,Waste Collection,Illegal dumping,high,Open,Sanitation Dept,Reported via city helpline.
+2026-07-07,Koramangala,Public Health,Food safety,medium,In Progress,Health Dept,Resident reported repeatedly this month.
+2026-06-18,Koramangala,Water Supply,Contaminated water,low,Open,Water Board,Recurring issue during monsoon.
+2026-07-17,Koramangala,Waste Collection,Overflowing bin,high,Open,Sanitation Dept,Recurring issue during monsoon.
+2026-06-22,Malleshwaram,Waste Collection,Overflowing bin,medium,In Progress,Sanitation Dept,Photo evidence attached by citizen.
+2026-07-22,Koramangala,Waste Collection,Overflowing bin,high,Open,Sanitation Dept,
+2026-07-06,Vijayanagar,Waste Collection,Illegal dumping,low,Resolved,Sanitation Dept,Resident reported repeatedly this month.
+2026-07-17,Jayanagar,Waste Collection,Delayed collection,medium,Resolved,Sanitation Dept,Flagged by community volunteer.
+2026-06-29,Koramangala,Public Health,Open garbage,low,Resolved,Health Dept,Third complaint from the same street.
+2026-07-14,Basavanagudi,Noise,Loud construction,low,Resolved,Environment Cell,Flagged by community volunteer.
+2026-06-25,Basavanagudi,Water Supply,No supply,low,In Progress,Water Board,
+2026-06-24,Koramangala,Water Supply,Low pressure,high,In Progress,Water Board,
+2026-06-11,Jayanagar,Sanitation,Stagnant water,high,Open,Sanitation Dept,Resident reported repeatedly this month.
+2026-06-15,Malleshwaram,Noise,Traffic noise,medium,Open,Environment Cell,Reported via city helpline.
+2026-06-03,Vijayanagar,Roads,Blocked drain,medium,In Progress,Public Works,
+2026-07-17,Koramangala,Waste Collection,Delayed collection,high,Resolved,Sanitation Dept,Resident reported repeatedly this month.
+2026-07-16,Malleshwaram,Public Health,Open garbage,low,Open,Health Dept,Photo evidence attached by citizen.
+2026-07-19,Koramangala,Waste Collection,Overflowing bin,high,In Progress,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-12,Jayanagar,Public Health,Mosquito breeding,low,Open,Health Dept,Third complaint from the same street.
+2026-06-28,Vijayanagar,Water Supply,Low pressure,high,Open,Water Board,Escalated after no response in 72 hours.
+2026-07-21,Vijayanagar,Sanitation,Stagnant water,high,Resolved,Sanitation Dept,Escalated after no response in 72 hours.
+2026-06-03,Rajajinagar,Public Health,Stray animals,high,Resolved,Health Dept,Escalated after no response in 72 hours.
+2026-07-20,BTM Layout,Waste Collection,Overflowing bin,medium,Resolved,Sanitation Dept,Reported via city helpline.
+2026-06-17,BTM Layout,Roads,Pothole,medium,Open,Public Works,
+2026-07-18,Vijayanagar,Roads,Broken streetlight,medium,In Progress,Public Works,Photo evidence attached by citizen.
+2026-07-12,Vijayanagar,Noise,Late-night party,low,Resolved,Environment Cell,Reported via city helpline.
+2026-06-02,Koramangala,Roads,Blocked drain,high,Resolved,Public Works,Photo evidence attached by citizen.
+2026-07-05,Jayanagar,Water Supply,Low pressure,low,Resolved,Water Board,Affects a school zone nearby.
+2026-07-13,Basavanagudi,Water Supply,Contaminated water,low,Open,Water Board,Third complaint from the same street.
+2026-07-14,Domlur,Sanitation,Foul smell,low,Escalated,Sanitation Dept,Third complaint from the same street.
+2026-05-31,Rajajinagar,Roads,Broken streetlight,medium,Resolved,Public Works,Third complaint from the same street.
+2026-07-14,Koramangala,Public Health,Open garbage,low,Open,Health Dept,Flagged by community volunteer.
+2026-06-22,Basavanagudi,Sanitation,Blocked sewer,medium,Open,Sanitation Dept,Photo evidence attached by citizen.
+2026-06-22,Koramangala,Sanitation,Foul smell,medium,In Progress,Sanitation Dept,
+2026-06-25,Koramangala,Waste Collection,Delayed collection,high,Open,Sanitation Dept,Flagged by community volunteer.
+2026-06-25,Koramangala,Public Health,Stray animals,medium,Open,Health Dept,
+2026-07-21,BTM Layout,Roads,Blocked drain,low,Resolved,Public Works,Affects a school zone nearby.
+2026-07-06,BTM Layout,Noise,Traffic noise,high,Open,Environment Cell,Escalated after no response in 72 hours.
+2026-07-11,Koramangala,Roads,Broken streetlight,high,Open,Public Works,
+2026-06-25,Malleshwaram,Public Health,Stray animals,medium,Resolved,Health Dept,Photo evidence attached by citizen.
+2026-06-04,Koramangala,Public Health,Food safety,medium,In Progress,Health Dept,Photo evidence attached by citizen.
+2026-07-18,Koramangala,Waste Collection,Overflowing bin,high,Open,Sanitation Dept,Flagged by community volunteer.
+2026-06-19,Basavanagudi,Water Supply,Low pressure,medium,In Progress,Water Board,Escalated after no response in 72 hours.
+2026-07-13,Koramangala,Sanitation,Stagnant water,high,In Progress,Sanitation Dept,Flagged by community volunteer.
+2026-06-28,Rajajinagar,Water Supply,Low pressure,low,Open,Water Board,Escalated after no response in 72 hours.
+2026-07-13,Rajajinagar,Noise,Late-night party,low,Open,Environment Cell,Reported via city helpline.
+2026-06-07,Koramangala,Waste Collection,Delayed collection,high,In Progress,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-11,Jayanagar,Roads,Broken streetlight,medium,Resolved,Public Works,Affects a school zone nearby.
+2026-07-03,Basavanagudi,Roads,Pothole,medium,Open,Public Works,Flagged by community volunteer.
+2026-06-08,Vijayanagar,Water Supply,No supply,low,Open,Water Board,Recurring issue during monsoon.
+2026-06-24,Basavanagudi,Water Supply,Contaminated water,medium,Open,Water Board,Third complaint from the same street.
+2026-06-28,Koramangala,Sanitation,Blocked sewer,medium,In Progress,Sanitation Dept,Third complaint from the same street.
+2026-06-19,Koramangala,Public Health,Stray animals,critical,In Progress,Health Dept,Flagged by community volunteer.
+2026-06-02,Rajajinagar,Roads,Pothole,low,Resolved,Public Works,Photo evidence attached by citizen.
+2026-07-20,Domlur,Public Health,Open garbage,low,In Progress,Health Dept,Photo evidence attached by citizen.
+2026-07-08,Rajajinagar,Public Health,Mosquito breeding,medium,In Progress,Health Dept,Affects a school zone nearby.
+2026-07-10,Jayanagar,Noise,Loud construction,medium,Resolved,Environment Cell,Affects a school zone nearby.
+2026-06-09,Vijayanagar,Public Health,Stray animals,low,Open,Health Dept,Flagged by community volunteer.
+2026-07-20,Koramangala,Roads,Blocked drain,medium,In Progress,Public Works,Reported via city helpline.
+2026-07-22,Koramangala,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-08,Jayanagar,Noise,Late-night party,medium,Open,Environment Cell,Photo evidence attached by citizen.
+2026-07-19,Koramangala,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Resident reported repeatedly this month.
+2026-06-27,Malleshwaram,Public Health,Mosquito breeding,low,Resolved,Health Dept,Third complaint from the same street.
+2026-07-22,Koramangala,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Affects a school zone nearby.
+2026-07-21,Domlur,Public Health,Open garbage,medium,Open,Health Dept,Third complaint from the same street.
+2026-07-21,Koramangala,Waste Collection,Delayed collection,high,Open,Sanitation Dept,Affects a school zone nearby.
+2026-07-21,Malleshwaram,Waste Collection,Missed pickup,medium,In Progress,Sanitation Dept,Resident reported repeatedly this month.
+2026-07-05,Jayanagar,Sanitation,Public toilet issue,high,Escalated,Sanitation Dept,Reported via city helpline.
+2026-06-30,Malleshwaram,Water Supply,Leak,low,Open,Water Board,Resident reported repeatedly this month.
+2026-05-30,Koramangala,Public Health,Open garbage,medium,In Progress,Health Dept,Third complaint from the same street.
+2026-06-17,Koramangala,Water Supply,No supply,medium,Resolved,Water Board,
+2026-06-22,Malleshwaram,Noise,Traffic noise,medium,Open,Environment Cell,Reported via city helpline.
+2026-07-08,Domlur,Noise,Traffic noise,medium,Open,Environment Cell,Third complaint from the same street.
+2026-07-13,Malleshwaram,Noise,Industrial noise,low,Open,Environment Cell,Recurring issue during monsoon.
+2026-06-14,Domlur,Waste Collection,Delayed collection,low,Open,Sanitation Dept,Photo evidence attached by citizen.
+2026-07-20,Koramangala,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Flagged by community volunteer.
+2026-06-07,Vijayanagar,Sanitation,Blocked sewer,high,Resolved,Sanitation Dept,Third complaint from the same street.
+2026-07-09,Koramangala,Public Health,Mosquito breeding,high,In Progress,Health Dept,Reported via city helpline.
+2026-07-02,Koramangala,Sanitation,Blocked sewer,medium,In Progress,Sanitation Dept,Photo evidence attached by citizen.
+2026-06-23,Rajajinagar,Roads,Blocked drain,high,Open,Public Works,
+2026-07-23,Koramangala,Waste Collection,Delayed collection,high,Resolved,Sanitation Dept,
+2026-07-09,Basavanagudi,Roads,Blocked drain,medium,Open,Public Works,Escalated after no response in 72 hours.
+2026-07-08,Malleshwaram,Waste Collection,Illegal dumping,medium,Resolved,Sanitation Dept,Recurring issue during monsoon.
+2026-07-12,Rajajinagar,Sanitation,Blocked sewer,low,In Progress,Sanitation Dept,Reported via city helpline.
+2026-06-14,BTM Layout,Public Health,Open garbage,high,Resolved,Health Dept,
+2026-07-15,Vijayanagar,Sanitation,Stagnant water,medium,Resolved,Sanitation Dept,Recurring issue during monsoon.
+2026-07-18,Koramangala,Water Supply,Low pressure,low,In Progress,Water Board,Resident reported repeatedly this month.
+2026-06-18,Malleshwaram,Sanitation,Public toilet issue,low,In Progress,Sanitation Dept,Recurring issue during monsoon.
+2026-06-21,Koramangala,Sanitation,Foul smell,high,Resolved,Sanitation Dept,
+2026-06-11,Malleshwaram,Roads,Broken streetlight,low,In Progress,Public Works,Resident reported repeatedly this month.
+2026-07-18,Koramangala,Waste Collection,Overflowing bin,high,In Progress,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-11,Koramangala,Roads,Damaged signage,medium,Resolved,Public Works,Photo evidence attached by citizen.
+2026-06-12,Koramangala,Sanitation,Blocked sewer,medium,Resolved,Sanitation Dept,Flagged by community volunteer.
+2026-06-13,Jayanagar,Roads,Damaged signage,medium,Open,Public Works,Escalated after no response in 72 hours.
+2026-07-14,Rajajinagar,Sanitation,Stagnant water,high,Open,Sanitation Dept,Recurring issue during monsoon.
+2026-07-21,Koramangala,Waste Collection,Illegal dumping,high,Resolved,Sanitation Dept,Recurring issue during monsoon.
+2026-07-22,Koramangala,Waste Collection,Delayed collection,medium,Resolved,Sanitation Dept,Recurring issue during monsoon.
+2026-07-16,Koramangala,Noise,Traffic noise,medium,Open,Environment Cell,Flagged by community volunteer.
+2026-07-05,Vijayanagar,Waste Collection,Overflowing bin,low,Resolved,Sanitation Dept,Recurring issue during monsoon.
+2026-07-19,BTM Layout,Water Supply,Contaminated water,medium,Resolved,Water Board,Reported via city helpline.
+2026-06-21,Rajajinagar,Noise,Loud construction,medium,Resolved,Environment Cell,Escalated after no response in 72 hours.
+2026-07-13,Domlur,Sanitation,Foul smell,medium,Escalated,Sanitation Dept,Reported via city helpline.
+2026-06-20,Malleshwaram,Waste Collection,Delayed collection,medium,Open,Sanitation Dept,Escalated after no response in 72 hours.
+2026-06-14,Domlur,Sanitation,Stagnant water,medium,Resolved,Sanitation Dept,Resident reported repeatedly this month.
+2026-07-18,Koramangala,Waste Collection,Overflowing bin,medium,In Progress,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-06,Jayanagar,Noise,Late-night party,medium,Open,Environment Cell,Resident reported repeatedly this month.
+2026-06-14,Basavanagudi,Roads,Damaged signage,medium,Open,Public Works,Escalated after no response in 72 hours.
+2026-06-28,Rajajinagar,Noise,Late-night party,medium,In Progress,Environment Cell,Photo evidence attached by citizen.
+2026-07-12,Koramangala,Waste Collection,Illegal dumping,critical,Open,Sanitation Dept,Photo evidence attached by citizen.
+2026-07-10,Rajajinagar,Waste Collection,Illegal dumping,high,In Progress,Sanitation Dept,Resident reported repeatedly this month.
+2026-06-21,Koramangala,Roads,Damaged signage,medium,Open,Public Works,
+2026-06-03,Basavanagudi,Public Health,Mosquito breeding,low,Open,Health Dept,Escalated after no response in 72 hours.
+2026-06-15,BTM Layout,Public Health,Stray animals,low,In Progress,Health Dept,
+2026-06-11,Vijayanagar,Waste Collection,Missed pickup,high,Open,Sanitation Dept,Reported via city helpline.
+2026-07-22,Koramangala,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Reported via city helpline.
+2026-06-23,Koramangala,Sanitation,Foul smell,low,In Progress,Sanitation Dept,Affects a school zone nearby.
+2026-07-19,Koramangala,Waste Collection,Missed pickup,high,Open,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-18,Koramangala,Public Health,Food safety,critical,In Progress,Health Dept,Flagged by community volunteer.
+2026-06-26,BTM Layout,Roads,Damaged signage,low,Open,Public Works,
+2026-07-20,BTM Layout,Public Health,Food safety,medium,Resolved,Health Dept,Escalated after no response in 72 hours.
+2026-06-26,Domlur,Waste Collection,Overflowing bin,low,In Progress,Sanitation Dept,
+2026-07-17,Basavanagudi,Waste Collection,Illegal dumping,low,Escalated,Sanitation Dept,Photo evidence attached by citizen.
+2026-06-17,Rajajinagar,Roads,Damaged signage,low,Resolved,Public Works,
+2026-07-12,Koramangala,Sanitation,Foul smell,medium,In Progress,Sanitation Dept,Affects a school zone nearby.
+2026-06-13,Rajajinagar,Water Supply,No supply,medium,Resolved,Water Board,Flagged by community volunteer.
+2026-06-18,Malleshwaram,Sanitation,Blocked sewer,medium,Resolved,Sanitation Dept,Reported via city helpline.
+2026-07-23,Koramangala,Waste Collection,Missed pickup,high,Resolved,Sanitation Dept,Recurring issue during monsoon.
+2026-07-15,Basavanagudi,Water Supply,No supply,high,Open,Water Board,Photo evidence attached by citizen.
+2026-07-18,Koramangala,Waste Collection,Missed pickup,high,In Progress,Sanitation Dept,Third complaint from the same street.
+2026-07-03,Domlur,Public Health,Food safety,medium,In Progress,Health Dept,Flagged by community volunteer.
+2026-06-29,Vijayanagar,Water Supply,Contaminated water,low,Resolved,Water Board,Photo evidence attached by citizen.
+2026-07-04,Vijayanagar,Sanitation,Blocked sewer,low,In Progress,Sanitation Dept,Affects a school zone nearby.
+2026-06-14,BTM Layout,Water Supply,Low pressure,medium,Resolved,Water Board,Escalated after no response in 72 hours.
+2026-06-06,Basavanagudi,Water Supply,Leak,low,Open,Water Board,Reported via city helpline.
+2026-06-15,Malleshwaram,Water Supply,No supply,high,Resolved,Water Board,Photo evidence attached by citizen.
+2026-07-16,BTM Layout,Water Supply,Leak,low,In Progress,Water Board,Affects a school zone nearby.
+2026-07-11,Vijayanagar,Water Supply,Contaminated water,medium,Open,Water Board,Flagged by community volunteer.
+2026-07-02,Domlur,Roads,Damaged signage,medium,Open,Public Works,Escalated after no response in 72 hours.
+2026-07-20,Koramangala,Waste Collection,Overflowing bin,high,Open,Sanitation Dept,Affects a school zone nearby.
+2026-07-21,Koramangala,Waste Collection,Delayed collection,high,In Progress,Sanitation Dept,Reported via city helpline.
+2026-07-12,BTM Layout,Public Health,Food safety,medium,In Progress,Health Dept,
+2026-07-22,BTM Layout,Noise,Industrial noise,high,Resolved,Environment Cell,Escalated after no response in 72 hours.
+2026-06-13,Koramangala,Waste Collection,Overflowing bin,medium,Open,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-12,Koramangala,Sanitation,Public toilet issue,low,Resolved,Sanitation Dept,Recurring issue during monsoon.
+2026-06-25,Rajajinagar,Noise,Loud construction,medium,In Progress,Environment Cell,Escalated after no response in 72 hours.
+2026-07-20,Koramangala,Waste Collection,Delayed collection,high,In Progress,Sanitation Dept,Flagged by community volunteer.
+2026-07-03,Basavanagudi,Noise,Loud construction,low,Resolved,Environment Cell,Affects a school zone nearby.
+2026-07-04,Jayanagar,Noise,Loud construction,medium,Resolved,Environment Cell,Flagged by community volunteer.
+2026-06-30,Domlur,Public Health,Open garbage,high,Resolved,Health Dept,Escalated after no response in 72 hours.
+2026-05-29,Basavanagudi,Sanitation,Blocked sewer,high,Resolved,Sanitation Dept,Affects a school zone nearby.
+2026-07-07,Domlur,Waste Collection,Delayed collection,medium,Open,Sanitation Dept,Flagged by community volunteer.
+2026-06-26,Basavanagudi,Noise,Late-night party,high,Open,Environment Cell,Flagged by community volunteer.
+2026-06-09,Koramangala,Water Supply,Contaminated water,medium,Open,Water Board,Reported via city helpline.
+2026-07-05,Koramangala,Waste Collection,Overflowing bin,medium,Resolved,Sanitation Dept,Affects a school zone nearby.
+2026-06-09,Rajajinagar,Public Health,Mosquito breeding,medium,Resolved,Health Dept,Third complaint from the same street.
+2026-05-30,Jayanagar,Public Health,Open garbage,high,In Progress,Health Dept,Photo evidence attached by citizen.
+2026-07-22,Basavanagudi,Noise,Late-night party,medium,Resolved,Environment Cell,Flagged by community volunteer.
+2026-07-05,Malleshwaram,Roads,Blocked drain,low,In Progress,Public Works,Affects a school zone nearby.
+2026-07-13,Rajajinagar,Public Health,Food safety,low,Open,Health Dept,Recurring issue during monsoon.
+2026-07-21,Vijayanagar,Sanitation,Stagnant water,medium,In Progress,Sanitation Dept,
+2026-07-19,Rajajinagar,Public Health,Food safety,low,Open,Health Dept,
+2026-07-10,BTM Layout,Public Health,Stray animals,low,Open,Health Dept,Affects a school zone nearby.
+2026-07-09,Domlur,Noise,Late-night party,low,In Progress,Environment Cell,Affects a school zone nearby.
+2026-07-22,BTM Layout,Water Supply,Low pressure,critical,In Progress,Water Board,
+2026-06-05,Koramangala,Water Supply,Contaminated water,medium,In Progress,Water Board,Photo evidence attached by citizen.
+2026-06-18,Rajajinagar,Public Health,Stray animals,low,Resolved,Health Dept,Affects a school zone nearby.
+2026-06-07,Rajajinagar,Water Supply,Leak,medium,In Progress,Water Board,Recurring issue during monsoon.
+2026-07-18,Koramangala,Waste Collection,Overflowing bin,high,Resolved,Sanitation Dept,Reported via city helpline.
+2026-07-20,Jayanagar,Roads,Damaged signage,medium,Open,Public Works,Affects a school zone nearby.
+2026-07-11,Koramangala,Water Supply,No supply,low,Open,Water Board,Resident reported repeatedly this month.
+2026-07-02,Koramangala,Public Health,Food safety,low,Open,Health Dept,
+2026-06-02,Basavanagudi,Noise,Loud construction,medium,Resolved,Environment Cell,Recurring issue during monsoon.
+2026-06-06,Domlur,Roads,Pothole,medium,Open,Public Works,Photo evidence attached by citizen.
+2026-06-08,BTM Layout,Waste Collection,Overflowing bin,low,Resolved,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-04,Vijayanagar,Roads,Damaged signage,medium,Open,Public Works,Flagged by community volunteer.
+2026-06-28,Koramangala,Waste Collection,Illegal dumping,medium,Open,Sanitation Dept,Affects a school zone nearby.
+2026-07-21,Koramangala,Waste Collection,Delayed collection,high,Open,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-22,Basavanagudi,Noise,Loud construction,medium,In Progress,Environment Cell,Third complaint from the same street.
+2026-07-19,Domlur,Sanitation,Foul smell,high,In Progress,Sanitation Dept,
+2026-06-15,Koramangala,Sanitation,Blocked sewer,medium,Resolved,Sanitation Dept,Resident reported repeatedly this month.
+2026-06-22,Koramangala,Public Health,Stray animals,high,Open,Health Dept,Recurring issue during monsoon.
+2026-06-10,Malleshwaram,Public Health,Food safety,high,Resolved,Health Dept,Resident reported repeatedly this month.
+2026-06-10,Koramangala,Public Health,Open garbage,low,Escalated,Health Dept,
+2026-06-20,Domlur,Roads,Blocked drain,medium,Open,Public Works,Escalated after no response in 72 hours.
+2026-07-01,Jayanagar,Waste Collection,Missed pickup,medium,In Progress,Sanitation Dept,Flagged by community volunteer.
+2026-06-08,Koramangala,Noise,Loud construction,low,Open,Environment Cell,Affects a school zone nearby.
+2026-07-06,Basavanagudi,Waste Collection,Illegal dumping,medium,Resolved,Sanitation Dept,Recurring issue during monsoon.
+2026-07-18,Koramangala,Waste Collection,Illegal dumping,medium,Open,Sanitation Dept,Flagged by community volunteer.
+2026-06-18,Domlur,Waste Collection,Illegal dumping,low,In Progress,Sanitation Dept,Recurring issue during monsoon.
+2026-07-07,Koramangala,Waste Collection,Missed pickup,high,Open,Sanitation Dept,
+2026-07-03,Koramangala,Sanitation,Foul smell,medium,Resolved,Sanitation Dept,
+2026-07-23,BTM Layout,Public Health,Mosquito breeding,medium,In Progress,Health Dept,Reported via city helpline.
+2026-07-09,Koramangala,Noise,Traffic noise,low,Open,Environment Cell,Recurring issue during monsoon.
+2026-06-22,Rajajinagar,Waste Collection,Delayed collection,medium,Resolved,Sanitation Dept,
+2026-07-12,BTM Layout,Water Supply,Leak,medium,Open,Water Board,Escalated after no response in 72 hours.
+2026-07-11,Koramangala,Noise,Industrial noise,medium,In Progress,Environment Cell,Affects a school zone nearby.
+2026-07-01,Domlur,Public Health,Open garbage,low,Open,Health Dept,Photo evidence attached by citizen.
+2026-07-17,Koramangala,Waste Collection,Overflowing bin,high,Resolved,Sanitation Dept,Recurring issue during monsoon.
+2026-05-30,Koramangala,Water Supply,No supply,low,Open,Water Board,Flagged by community volunteer.
+2026-07-02,Koramangala,Noise,Loud construction,critical,Escalated,Environment Cell,
+2026-07-18,Koramangala,Waste Collection,Overflowing bin,high,Open,Sanitation Dept,Flagged by community volunteer.
+2026-07-22,Rajajinagar,Water Supply,Low pressure,medium,Open,Water Board,
+2026-07-17,Koramangala,Sanitation,Blocked sewer,low,Open,Sanitation Dept,Recurring issue during monsoon.
+2026-07-17,Basavanagudi,Noise,Late-night party,low,Open,Environment Cell,
+2026-06-27,Jayanagar,Roads,Damaged signage,medium,Open,Public Works,
+2026-07-17,Koramangala,Waste Collection,Delayed collection,high,Resolved,Sanitation Dept,Affects a school zone nearby.
+2026-06-23,Koramangala,Roads,Pothole,critical,Resolved,Public Works,Resident reported repeatedly this month.
+2026-07-03,Jayanagar,Sanitation,Blocked sewer,medium,In Progress,Sanitation Dept,Third complaint from the same street.
+2026-06-05,Vijayanagar,Waste Collection,Missed pickup,medium,Open,Sanitation Dept,Resident reported repeatedly this month.
+2026-06-02,Koramangala,Water Supply,Low pressure,medium,Open,Water Board,Resident reported repeatedly this month.
+2026-06-29,Jayanagar,Sanitation,Blocked sewer,low,Open,Sanitation Dept,Flagged by community volunteer.
+2026-07-16,Basavanagudi,Water Supply,No supply,high,Resolved,Water Board,
+2026-06-08,Basavanagudi,Waste Collection,Overflowing bin,low,Open,Sanitation Dept,
+2026-06-18,Koramangala,Sanitation,Public toilet issue,critical,In Progress,Sanitation Dept,Resident reported repeatedly this month.
+2026-07-09,Koramangala,Public Health,Food safety,high,Open,Health Dept,Recurring issue during monsoon.
+2026-06-30,Koramangala,Roads,Pothole,low,Resolved,Public Works,
+2026-07-18,Koramangala,Roads,Damaged signage,critical,Resolved,Public Works,Photo evidence attached by citizen.
+2026-07-08,Koramangala,Public Health,Stray animals,low,Open,Health Dept,Flagged by community volunteer.
+2026-07-22,Koramangala,Sanitation,Public toilet issue,medium,Resolved,Sanitation Dept,Photo evidence attached by citizen.
+2026-06-19,Jayanagar,Sanitation,Blocked sewer,low,Escalated,Sanitation Dept,Recurring issue during monsoon.
+2026-07-20,Koramangala,Waste Collection,Overflowing bin,high,Escalated,Sanitation Dept,Escalated after no response in 72 hours.
+2026-06-12,Jayanagar,Roads,Blocked drain,medium,Open,Public Works,Recurring issue during monsoon.
+2026-06-28,Domlur,Noise,Traffic noise,low,Resolved,Environment Cell,Reported via city helpline.
+2026-06-06,Domlur,Waste Collection,Missed pickup,low,Open,Sanitation Dept,Escalated after no response in 72 hours.
+2026-07-05,Koramangala,Sanitation,Foul smell,medium,Open,Sanitation Dept,Third complaint from the same street.
+2026-06-16,Rajajinagar,Roads,Blocked drain,medium,In Progress,Public Works,
+2026-07-17,BTM Layout,Public Health,Food safety,medium,Resolved,Health Dept,Flagged by community volunteer.
+2026-06-21,Koramangala,Water Supply,Low pressure,high,Open,Water Board,Third complaint from the same street.
+2026-06-04,Jayanagar,Water Supply,Low pressure,medium,Resolved,Water Board,Flagged by community volunteer.
+2026-06-29,Domlur,Noise,Late-night party,medium,Resolved,Environment Cell,Recurring issue during monsoon.
+2026-06-15,Koramangala,Public Health,Food safety,medium,Open,Health Dept,Recurring issue during monsoon.
+2026-06-04,Basavanagudi,Public Health,Open garbage,medium,In Progress,Health Dept,Reported via city helpline.
+2026-07-23,Koramangala,Waste Collection,Overflowing bin,high,In Progress,Sanitation Dept,Affects a school zone nearby.
+2026-07-17,Domlur,Noise,Industrial noise,medium,Open,Environment Cell,Flagged by community volunteer.
+2026-07-19,Vijayanagar,Public Health,Mosquito breeding,medium,Resolved,Health Dept,Resident reported repeatedly this month.
+2026-06-27,Rajajinagar,Water Supply,Low pressure,medium,Resolved,Water Board,Reported via city helpline.
+2026-07-18,Koramangala,Waste Collection,Overflowing bin,high,Resolved,Sanitation Dept,Reported via city helpline.
+2026-06-05,Koramangala,Public Health,Food safety,medium,In Progress,Health Dept,
+2026-06-04,Koramangala,Waste Collection,Overflowing bin,medium,In Progress,Sanitation Dept,Photo evidence attached by citizen.
+2026-07-01,Domlur,Waste Collection,Illegal dumping,high,In Progress,Sanitation Dept,Affects a school zone nearby.

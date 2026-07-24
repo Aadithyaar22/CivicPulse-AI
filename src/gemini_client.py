@@ -179,71 +179,91 @@ class GeminiClient:
         month"). Every number still comes from a deterministic pandas query;
         Gemini only chooses which query to run and narrates the real result.
 
-        Falls back to the static grounded `answer_question` (which itself
-        falls back to a deterministic offline answer) on any failure -- this
-        upgrade never makes the demo less reliable than before it existed.
+        Small/cheap models occasionally produce a malformed function call or
+        an empty final turn on multi-step tool loops (observed with
+        flash-lite on comparison-style questions) -- a fresh attempt often
+        succeeds, so this retries once before falling back to the static
+        grounded `answer_question` (which itself falls back to a
+        deterministic offline answer). This upgrade never makes the demo
+        less reliable than before it existed.
         """
         if not self.available or df is None or getattr(df, "empty", True):
             return self.answer_question(insights, question, domain)
 
-        try:
-            from google.genai import types
+        last_error: str | None = None
+        for _attempt in range(2):
+            try:
+                result = self._run_agentic_once(df, question, domain)
+            except Exception as exc:  # noqa: BLE001 - the agentic path must never crash the app
+                last_error = str(exc)
+                result = None
+            if result is not None:
+                return result
 
-            from .qa_tools import TOOL_DECLARATIONS, dispatch_tool
+        fallback = self.answer_question(insights, question, domain)
+        fallback.error = last_error or "Agentic Q&A produced no usable answer after retry; used grounded fallback."
+        return fallback
 
-            tool = types.Tool(function_declarations=TOOL_DECLARATIONS)
-            config = types.GenerateContentConfig(
-                system_instruction=AGENTIC_SYSTEM_INSTRUCTION,
-                temperature=0.2,
-                max_output_tokens=1024,
-                tools=[tool],
+    def _run_agentic_once(self, df: Any, question: str, domain: str) -> GeminiResult | None:
+        """One attempt at the tool-calling loop. Returns None (rather than a
+        hollow ok=True with blank content) if the model produced an unusable
+        turn -- a malformed function call, an empty response, or exhausted
+        MAX_TOOL_TURNS without a final answer -- so the caller can retry or
+        fall back instead of showing nothing."""
+        from google.genai import types
+
+        from .qa_tools import TOOL_DECLARATIONS, dispatch_tool
+
+        tool = types.Tool(function_declarations=TOOL_DECLARATIONS)
+        config = types.GenerateContentConfig(
+            system_instruction=AGENTIC_SYSTEM_INSTRUCTION,
+            temperature=0.2,
+            max_output_tokens=1024,
+            tools=[tool],
+        )
+        prompt = build_agentic_question_prompt(question, domain)
+        contents = [types.Content(role="user", parts=[types.Part.from_text(text=prompt)])]
+
+        trace: list[dict[str, Any]] = []
+        for _ in range(MAX_TOOL_TURNS):
+            resp = self._client.models.generate_content(
+                model=self.model, contents=contents, config=config
             )
-            prompt = build_agentic_question_prompt(question, domain)
-            contents = [types.Content(role="user", parts=[types.Part.from_text(text=prompt)])]
+            candidate = resp.candidates[0] if resp.candidates else None
+            calls = resp.function_calls or []
 
-            trace: list[dict[str, Any]] = []
-            resp = None
-            for _ in range(MAX_TOOL_TURNS):
-                resp = self._client.models.generate_content(
-                    model=self.model, contents=contents, config=config
+            if not calls:
+                text = (resp.text or "").strip()
+                if not text:
+                    # e.g. finish_reason MALFORMED_FUNCTION_CALL / SAFETY --
+                    # not a tool call and no usable text either.
+                    return None
+                parsed = extract_json(text)
+                data = parsed if parsed is not None else {"summary": text}
+                data["_tool_trace"] = trace
+                return GeminiResult(ok=True, data=data, raw_text=text, model=self.model)
+
+            if candidate is None:
+                return None
+            contents.append(candidate.content)
+            response_parts = []
+            for fc in calls:
+                args = dict(fc.args or {})
+                result = dispatch_tool(df, fc.name, args)
+                trace.append(
+                    {
+                        "tool": fc.name,
+                        "args": args,
+                        "record_count": result.get("record_count"),
+                        "error": result.get("error"),
+                    }
                 )
-                calls = resp.function_calls or []
-                if not calls:
-                    break
-                contents.append(resp.candidates[0].content)
-                response_parts = []
-                for fc in calls:
-                    args = dict(fc.args or {})
-                    result = dispatch_tool(df, fc.name, args)
-                    trace.append(
-                        {
-                            "tool": fc.name,
-                            "args": args,
-                            "record_count": result.get("record_count"),
-                            "error": result.get("error"),
-                        }
-                    )
-                    response_parts.append(
-                        types.Part.from_function_response(name=fc.name, response={"result": result})
-                    )
-                contents.append(types.Content(role="user", parts=response_parts))
-            else:
-                # Exhausted MAX_TOOL_TURNS without a final text answer -- don't
-                # return a half-finished tool-call turn, fall back instead.
-                fallback = self.answer_question(insights, question, domain)
-                fallback.data["_tool_trace"] = trace
-                fallback.error = "Agentic Q&A exceeded max tool-call turns; used grounded fallback."
-                return fallback
+                response_parts.append(
+                    types.Part.from_function_response(name=fc.name, response={"result": result})
+                )
+            contents.append(types.Content(role="user", parts=response_parts))
 
-            text = (resp.text or "") if resp is not None else ""
-            parsed = extract_json(text)
-            data = parsed if parsed is not None else {"summary": text.strip()}
-            data["_tool_trace"] = trace
-            return GeminiResult(ok=True, data=data, raw_text=text, model=self.model)
-        except Exception as exc:  # noqa: BLE001 - the agentic path must never crash the app
-            fallback = self.answer_question(insights, question, domain)
-            fallback.error = f"Agentic Q&A failed ({exc}); used grounded fallback."
-            return fallback
+        return None  # exhausted MAX_TOOL_TURNS without a final answer
 
     def summarize_text(self, raw_text: str, domain: str) -> GeminiResult:
         prompt = build_text_summary_prompt(raw_text, domain)

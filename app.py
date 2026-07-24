@@ -42,30 +42,130 @@ st.set_page_config(
 # ---------------------------------------------------------------- styling
 CSS = """
 <style>
+    :root {
+        --cp-teal: #0f766e; --cp-cyan: #0e7490; --cp-blue: #1d4ed8;
+        --cp-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes cpFadeUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes cpFadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+    @keyframes cpGradientDrift {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    @keyframes cpPulse {
+        0%, 100% { opacity: 1; }
+        50%      { opacity: .55; }
+    }
+
     .block-container { padding-top: 2rem; padding-bottom: 3rem; }
+
+    /* ---- Hero ---- */
     .cp-hero {
-        background: linear-gradient(120deg, #0f766e 0%, #0e7490 55%, #1d4ed8 100%);
+        background: linear-gradient(120deg, var(--cp-teal) 0%, var(--cp-cyan) 45%, var(--cp-blue) 100%, var(--cp-teal) 140%);
+        background-size: 200% 200%;
         color: #fff; padding: 1.4rem 1.6rem; border-radius: 16px; margin-bottom: 1.2rem;
         box-shadow: 0 10px 30px rgba(13,110,110,0.25);
+        animation: cpFadeUp .5s var(--cp-ease) both, cpGradientDrift 14s ease-in-out infinite;
     }
     .cp-hero h1 { margin: 0; font-size: 1.9rem; letter-spacing: -0.5px; }
     .cp-hero p { margin: .3rem 0 0; opacity: .92; font-size: .98rem; }
     .cp-badge {
         display:inline-block; background: rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35);
         padding: 2px 10px; border-radius: 999px; font-size:.72rem; margin-right:6px; margin-top:.5rem;
+        transition: background .2s var(--cp-ease), transform .2s var(--cp-ease);
     }
+    .cp-badge:hover { background: rgba(255,255,255,.3); transform: translateY(-1px); }
+
+    /* ---- Cards ---- */
     .cp-card {
         background: #ffffff; border: 1px solid #e6e9ef; border-radius: 14px;
         padding: 1rem 1.1rem; height: 100%;
         box-shadow: 0 2px 10px rgba(16,24,40,0.04);
+        animation: cpFadeUp .45s var(--cp-ease) both;
+        transition: transform .2s var(--cp-ease), box-shadow .2s var(--cp-ease), border-color .2s var(--cp-ease);
     }
+    .cp-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 24px rgba(16,24,40,0.09);
+        border-color: #cbd5e1;
+    }
+    /* Stagger card entrances when several sit in a row of st.columns. */
+    div[data-testid="column"]:nth-of-type(1) .cp-card { animation-delay: .00s; }
+    div[data-testid="column"]:nth-of-type(2) .cp-card { animation-delay: .06s; }
+    div[data-testid="column"]:nth-of-type(3) .cp-card { animation-delay: .12s; }
+    div[data-testid="column"]:nth-of-type(4) .cp-card { animation-delay: .18s; }
+
     .cp-card .lbl { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:#667085; margin:0; }
     .cp-card .val { font-size:1.35rem; font-weight:700; color:#101828; margin:.15rem 0 0; }
     .cp-card .sub { font-size:.8rem; color:#475467; margin:.2rem 0 0; }
-    .cp-pill { border-radius:12px; padding:.9rem 1rem; color:#fff; text-align:center; }
-    .cp-section-title { font-weight:700; font-size:1.05rem; margin:.2rem 0 .6rem; color:#101828; }
+
+    /* ---- Decision scoreboard pills ---- */
+    .cp-pill {
+        border-radius:12px; padding:.9rem 1rem; color:#fff; text-align:center;
+        animation: cpFadeUp .45s var(--cp-ease) both;
+        transition: transform .2s var(--cp-ease), box-shadow .2s var(--cp-ease), filter .2s var(--cp-ease);
+        box-shadow: 0 4px 14px rgba(16,24,40,0.10);
+    }
+    .cp-pill:hover { transform: translateY(-3px) scale(1.015); filter: brightness(1.06); }
+    div[data-testid="column"]:nth-of-type(1) .cp-pill { animation-delay: .00s; }
+    div[data-testid="column"]:nth-of-type(2) .cp-pill { animation-delay: .06s; }
+    div[data-testid="column"]:nth-of-type(3) .cp-pill { animation-delay: .12s; }
+    div[data-testid="column"]:nth-of-type(4) .cp-pill { animation-delay: .18s; }
+
+    .cp-section-title {
+        font-weight:700; font-size:1.05rem; margin:.2rem 0 .6rem; color:#101828;
+        animation: cpFadeIn .4s var(--cp-ease) both;
+        padding-left: .6rem; border-left: 3px solid var(--cp-cyan);
+    }
+
+    /* ---- Tabs: smoother active-state + hover transitions ---- */
     .stTabs [data-baseweb="tab-list"] { gap: 4px; }
-    .stTabs [data-baseweb="tab"] { padding: 8px 16px; }
+    .stTabs [data-baseweb="tab"] {
+        padding: 8px 16px; border-radius: 8px 8px 0 0;
+        transition: color .2s var(--cp-ease), background-color .2s var(--cp-ease);
+    }
+    .stTabs [data-baseweb="tab"]:hover { background: rgba(14,116,144,0.06); }
+    .stTabs [data-baseweb="tab-highlight"] { transition: left .25s var(--cp-ease), width .25s var(--cp-ease); }
+    .stTabs [data-baseweb="tab-panel"] { animation: cpFadeIn .35s var(--cp-ease) both; }
+
+    /* ---- Buttons ---- */
+    .stButton > button, .stDownloadButton > button {
+        transition: transform .15s var(--cp-ease), box-shadow .15s var(--cp-ease), filter .15s var(--cp-ease);
+    }
+    .stButton > button:hover, .stDownloadButton > button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(16,24,40,0.12);
+    }
+    .stButton > button:active, .stDownloadButton > button:active { transform: translateY(0) scale(.98); }
+
+    /* ---- Expanders, containers, alerts ---- */
+    .stExpander, div[data-testid="stExpander"] { transition: box-shadow .2s var(--cp-ease); }
+    div[data-testid="stExpander"]:hover { box-shadow: 0 4px 14px rgba(16,24,40,0.06); }
+    div[data-testid="stVerticalBlockBorderWrapper"] { animation: cpFadeIn .35s var(--cp-ease) both; }
+    div[data-testid="stAlert"] { animation: cpFadeUp .35s var(--cp-ease) both; }
+
+    /* ---- Spinner ---- */
+    div[data-testid="stSpinner"] { animation: cpPulse 1.6s ease-in-out infinite; }
+
+    /* ---- Misc polish ---- */
+    ::selection { background: rgba(14,116,144,.25); }
+    [data-testid="stMain"] { scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .cp-hero, .cp-card, .cp-pill, .cp-section-title, .stTabs [data-baseweb="tab-panel"],
+        div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stAlert"], div[data-testid="stSpinner"] {
+            animation: none !important;
+        }
+        .cp-hero { background-position: 0% 50%; }
+    }
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)

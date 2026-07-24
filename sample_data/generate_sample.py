@@ -5,8 +5,14 @@ Produces:
   * citizen_complaints.json  (same data, JSON records)
 
 The data is seeded so trends and one clear anomaly are reproducible:
-  * "Riverside" is a persistent hotspot.
+  * "Koramangala" is a persistent hotspot.
   * "Waste Collection" spikes hard in the final week (the planted anomaly).
+
+Areas are real Bengaluru ward names (exact keys in bengaluru_wards.py) so the
+hotspot map shows real BBMP ward locations out of the box instead of the
+placeholder fallback -- a fictional place name like the old "Riverside" never
+matches a real ward, which meant the map's headline feature never actually
+demonstrated itself on the bundled demo dataset.
 """
 
 from __future__ import annotations
@@ -19,8 +25,8 @@ from pathlib import Path
 random.seed(42)
 
 AREAS = [
-    "Riverside", "Oak Hill", "Harbor District", "Green Valley",
-    "Midtown", "Lakeside", "Old Town", "North Gate",
+    "Koramangala", "Jayanagar", "Malleshwaram", "Basavanagudi",
+    "Rajajinagar", "BTM Layout", "Domlur", "Vijayanagar",
 ]
 CATEGORY_TYPES = {
     "Waste Collection": ["Missed pickup", "Overflowing bin", "Illegal dumping", "Delayed collection"],
@@ -60,8 +66,8 @@ START = date.today() - timedelta(weeks=WEEKS)
 
 
 def weighted_area() -> str:
-    # Riverside is a persistent hotspot.
-    weights = [3 if a == "Riverside" else 1 for a in AREAS]
+    # Koramangala is a persistent hotspot.
+    weights = [3 if a == "Koramangala" else 1 for a in AREAS]
     return random.choices(AREAS, weights=weights, k=1)[0]
 
 
@@ -75,11 +81,11 @@ def make_rows() -> list[dict]:
             category = random.choice(list(CATEGORY_TYPES))
             rows.append(_row(day, category))
 
-        # Planted anomaly: Waste Collection surge in Riverside in the last week.
+        # Planted anomaly: Waste Collection surge in Koramangala in the last week.
         if week == WEEKS - 1:
             for _ in range(45):
                 day = START + timedelta(weeks=week, days=random.randint(0, 6))
-                rows.append(_row(day, "Waste Collection", area="Riverside", severity="high"))
+                rows.append(_row(day, "Waste Collection", area="Koramangala", severity="high"))
 
     random.shuffle(rows)
     return rows
