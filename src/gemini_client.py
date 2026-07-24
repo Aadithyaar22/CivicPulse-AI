@@ -19,6 +19,7 @@ from typing import Any
 from .prompt_templates import (
     AGENTIC_SYSTEM_INSTRUCTION,
     SYSTEM_INSTRUCTION,
+    build_agentic_followup_prompt,
     build_agentic_question_prompt,
     build_brief_prompt,
     build_question_prompt,
@@ -34,6 +35,10 @@ RETRY_BACKOFF_SEC = 1.5
 # and guarantees we fall back to the static grounded answer instead of ever
 # hanging in a loop.
 MAX_TOOL_TURNS = 4
+# Cap on how many follow-up questions one conversation can carry before the
+# caller should start fresh. Bounds token cost/latency growth over a long
+# chat session; app.py resets the stored conversation once this is hit.
+MAX_CONVERSATION_QUESTIONS = 8
 
 
 @dataclass
@@ -170,14 +175,27 @@ class GeminiClient:
         return self._run(prompt, lambda: _fallback_answer(insights, question))
 
     def answer_question_agentic(
-        self, df: Any, insights: dict[str, Any], question: str, domain: str
-    ) -> GeminiResult:
+        self,
+        df: Any,
+        insights: dict[str, Any],
+        question: str,
+        domain: str,
+        conversation: list | None = None,
+    ) -> tuple[GeminiResult, list]:
         """Agentic Q&A: Gemini calls real query tools (see qa_tools.py) against
         the live DataFrame instead of reasoning over one static analytics
         snapshot -- so it can answer comparisons and drill-downs a single
         precomputed payload can't ("compare Koramangala vs Indiranagar this
         month"). Every number still comes from a deterministic pandas query;
         Gemini only chooses which query to run and narrates the real result.
+
+        `conversation` is the prior turn history (as returned by an earlier
+        call) to continue, or None/empty to start fresh -- this is what makes
+        "what about last month?" work as a real follow-up instead of an
+        unrelated one-shot question. Returns (result, updated_conversation);
+        the caller should store the second value and pass it back in on the
+        next question. Callers should also start a fresh conversation (pass
+        None) once MAX_CONVERSATION_QUESTIONS is reached.
 
         Small/cheap models occasionally produce a malformed function call or
         an empty final turn on multi-step tool loops (observed with
@@ -188,28 +206,32 @@ class GeminiClient:
         less reliable than before it existed.
         """
         if not self.available or df is None or getattr(df, "empty", True):
-            return self.answer_question(insights, question, domain)
+            return self.answer_question(insights, question, domain), (conversation or [])
 
         last_error: str | None = None
         for _attempt in range(2):
             try:
-                result = self._run_agentic_once(df, question, domain)
+                result, new_conversation = self._run_agentic_once(df, question, domain, conversation)
             except Exception as exc:  # noqa: BLE001 - the agentic path must never crash the app
                 last_error = str(exc)
-                result = None
+                result, new_conversation = None, None
             if result is not None:
-                return result
+                return result, new_conversation
 
         fallback = self.answer_question(insights, question, domain)
         fallback.error = last_error or "Agentic Q&A produced no usable answer after retry; used grounded fallback."
-        return fallback
+        return fallback, (conversation or [])
 
-    def _run_agentic_once(self, df: Any, question: str, domain: str) -> GeminiResult | None:
-        """One attempt at the tool-calling loop. Returns None (rather than a
-        hollow ok=True with blank content) if the model produced an unusable
-        turn -- a malformed function call, an empty response, or exhausted
-        MAX_TOOL_TURNS without a final answer -- so the caller can retry or
-        fall back instead of showing nothing."""
+    def _run_agentic_once(
+        self, df: Any, question: str, domain: str, conversation: list | None
+    ) -> tuple[GeminiResult | None, list | None]:
+        """One attempt at the tool-calling loop. Returns (None, None) (rather
+        than a hollow ok=True with blank content) if the model produced an
+        unusable turn -- a malformed function call, an empty response, or
+        exhausted MAX_TOOL_TURNS without a final answer -- so the caller can
+        retry or fall back instead of showing nothing. On success, returns
+        the full updated conversation (including this question's tool calls
+        and final answer) so the next follow-up can continue from it."""
         from google.genai import types
 
         from .qa_tools import TOOL_DECLARATIONS, dispatch_tool
@@ -218,11 +240,21 @@ class GeminiClient:
         config = types.GenerateContentConfig(
             system_instruction=AGENTIC_SYSTEM_INSTRUCTION,
             temperature=0.2,
-            max_output_tokens=1024,
+            # The answer schema includes a 2-3 sentence "explanation" paragraph
+            # on top of the other fields; 1024 was tight enough to sometimes
+            # truncate mid-JSON (observed: a cut-off response with no closing
+            # brace, silently rendered as raw text). 2048 gives headroom.
+            max_output_tokens=2048,
             tools=[tool],
         )
-        prompt = build_agentic_question_prompt(question, domain)
-        contents = [types.Content(role="user", parts=[types.Part.from_text(text=prompt)])]
+        is_followup = bool(conversation)
+        prompt = (
+            build_agentic_followup_prompt(question)
+            if is_followup
+            else build_agentic_question_prompt(question, domain)
+        )
+        contents = list(conversation or [])
+        contents.append(types.Content(role="user", parts=[types.Part.from_text(text=prompt)]))
 
         trace: list[dict[str, Any]] = []
         for _ in range(MAX_TOOL_TURNS):
@@ -237,14 +269,22 @@ class GeminiClient:
                 if not text:
                     # e.g. finish_reason MALFORMED_FUNCTION_CALL / SAFETY --
                     # not a tool call and no usable text either.
-                    return None
+                    return None, None
                 parsed = extract_json(text)
-                data = parsed if parsed is not None else {"summary": text}
-                data["_tool_trace"] = trace
-                return GeminiResult(ok=True, data=data, raw_text=text, model=self.model)
+                if parsed is None:
+                    # The prompt requires ONLY JSON; unparseable text here
+                    # usually means the response got cut off mid-JSON (e.g.
+                    # max_output_tokens hit before the closing brace). Showing
+                    # that raw truncated string to the user is worse than
+                    # retrying, so treat this the same as an unusable turn.
+                    return None, None
+                parsed["_tool_trace"] = trace
+                if candidate is not None:
+                    contents.append(candidate.content)
+                return GeminiResult(ok=True, data=parsed, raw_text=text, model=self.model), contents
 
             if candidate is None:
-                return None
+                return None, None
             contents.append(candidate.content)
             response_parts = []
             for fc in calls:
@@ -263,7 +303,7 @@ class GeminiClient:
                 )
             contents.append(types.Content(role="user", parts=response_parts))
 
-        return None  # exhausted MAX_TOOL_TURNS without a final answer
+        return None, None  # exhausted MAX_TOOL_TURNS without a final answer
 
     def summarize_text(self, raw_text: str, domain: str) -> GeminiResult:
         prompt = build_text_summary_prompt(raw_text, domain)
@@ -338,6 +378,8 @@ def _fallback_answer(insights: dict[str, Any], question: str) -> dict[str, Any]:
     hotspot = insights.get("hotspot_area")
     top_cat = insights.get("top_category")
     trend = insights.get("trend_direction", "flat")
+    total = insights.get("total_records", 0)
+    open_rate = insights.get("open_rate_pct", 0)
     return {
         "what_is_happening": (
             f"Based on local analytics, '{humanize(top_cat)}' leads and "
@@ -355,6 +397,15 @@ def _fallback_answer(insights: dict[str, Any], question: str) -> dict[str, Any]:
             f"{humanize(hotspot)} needs attention for {humanize(top_cat)} issues."
             if hotspot and top_cat
             else "Insufficient data for a firm answer."
+        ),
+        "explanation": (
+            f"Out of {total} records analyzed, {humanize(hotspot)} has the highest volume "
+            f"and {humanize(top_cat)} is the leading issue category, with volume trending "
+            f"{trend} and {open_rate}% of cases still open. This is a rule-based summary "
+            "(Gemini wasn't reachable for this answer), not a generated narrative."
+            if hotspot and top_cat
+            else "Gemini wasn't reachable and the uploaded data doesn't have enough "
+            "structured area/category information for a rule-based summary either."
         ),
         "_note": "Offline fallback (Gemini not called).",
     }

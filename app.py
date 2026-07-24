@@ -17,7 +17,7 @@ import streamlit as st
 
 from src.analytics import compute_insights, filter_dataframe
 from src.data_loader import LoadResult, load_sample, load_text, load_uploaded_file
-from src.gemini_client import GeminiClient
+from src.gemini_client import MAX_CONVERSATION_QUESTIONS, GeminiClient
 from src.history_store import HistoryStore
 from src.utils import humanize
 
@@ -155,13 +155,55 @@ CSS = """
     /* ---- Spinner ---- */
     div[data-testid="stSpinner"] { animation: cpPulse 1.6s ease-in-out infinite; }
 
+    /* ---- Confidence badge: left-aligned, color-coded rectangle ---- */
+    .cp-confidence {
+        display: inline-flex; flex-direction: column; align-items: flex-start;
+        border-radius: 10px; padding: .45rem 1rem; margin: .3rem 0 .7rem;
+        color: #fff; animation: cpFadeUp .35s var(--cp-ease) both;
+        transition: transform .2s var(--cp-ease), box-shadow .2s var(--cp-ease);
+        box-shadow: 0 3px 10px rgba(16,24,40,0.10);
+    }
+    .cp-confidence:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(16,24,40,0.14); }
+    .cp-confidence .cp-conf-label {
+        font-size: .64rem; text-transform: uppercase; letter-spacing: .08em; opacity: .9;
+    }
+    .cp-confidence .cp-conf-value { font-size: 1.05rem; font-weight: 800; margin-top: .05rem; }
+    .cp-conf-high   { background: linear-gradient(135deg,#059669,#10b981); }
+    .cp-conf-medium { background: linear-gradient(135deg,#d97706,#f59e0b); }
+    .cp-conf-low    { background: linear-gradient(135deg,#dc2626,#f87171); }
+
+    /* ---- Chat (Ask AI) ---- */
+    [data-testid="stChatMessage"] {
+        border-radius: 16px; margin-bottom: .5rem; padding: .3rem .2rem;
+        animation: cpFadeUp .3s var(--cp-ease) both;
+        transition: box-shadow .2s var(--cp-ease);
+    }
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+        background: rgba(14,116,144,0.07);
+    }
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]),
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarCustom"]) {
+        background: #ffffff; border: 1px solid #e6e9ef; box-shadow: 0 2px 10px rgba(16,24,40,0.04);
+    }
+    [data-testid="stChatMessage"]:hover { box-shadow: 0 6px 16px rgba(16,24,40,0.08); }
+    [data-testid="stChatInput"] textarea:focus { box-shadow: 0 0 0 2px rgba(14,116,144,.25); }
+
     /* ---- Misc polish ---- */
     ::selection { background: rgba(14,116,144,.25); }
     [data-testid="stMain"] { scroll-behavior: smooth; }
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border-right: 1px solid #eef1f6;
+    }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
     @media (prefers-reduced-motion: reduce) {
         .cp-hero, .cp-card, .cp-pill, .cp-section-title, .stTabs [data-baseweb="tab-panel"],
-        div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stAlert"], div[data-testid="stSpinner"] {
+        div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stAlert"], div[data-testid="stSpinner"],
+        .cp-confidence, [data-testid="stChatMessage"] {
             animation: none !important;
         }
         .cp-hero { background-position: 0% 50%; }
@@ -177,6 +219,7 @@ def _init_state() -> None:
     st.session_state.setdefault("insights", None)
     st.session_state.setdefault("brief", None)
     st.session_state.setdefault("qa_history", [])
+    st.session_state.setdefault("qa_conversation", None)
     st.session_state.setdefault("domain", "citizen complaints")
 
 
@@ -201,6 +244,7 @@ def _set_data(load_result: LoadResult) -> None:
     st.session_state.load_result = load_result
     st.session_state.brief = None  # invalidate cached brief on new data
     st.session_state.qa_history = []
+    st.session_state.qa_conversation = None
     if load_result.df is not None and not load_result.df.empty:
         st.session_state.insights = compute_insights(load_result.df)
     else:
@@ -328,6 +372,57 @@ def urgency_color(v: float) -> str:
     if v >= 45:
         return "#d97706"
     return "#059669"
+
+
+def confidence_badge(confidence: str | None) -> str:
+    level = str(confidence or "").strip().lower()
+    css_class = {"high": "cp-conf-high", "medium": "cp-conf-medium", "low": "cp-conf-low"}.get(
+        level, "cp-conf-medium"
+    )
+    label = level.title() or "—"
+    return (
+        f"<div class='cp-confidence {css_class}'>"
+        f"<span class='cp-conf-label'>Confidence</span>"
+        f"<span class='cp-conf-value'>{label}</span>"
+        f"</div>"
+    )
+
+
+def render_qa_answer(result) -> None:
+    """Shared renderer for one Ask AI answer -- used both for the freshly
+    answered turn and for replaying prior turns in the chat history."""
+    data = result.data
+    if result.used_fallback:
+        st.caption("⚠️ Offline fallback answer (Gemini not called).")
+
+    if "what_is_happening" in data:
+        st.markdown(confidence_badge(data.get("confidence")), unsafe_allow_html=True)
+        if data.get("explanation"):
+            st.markdown(data["explanation"])
+            st.write("")
+        st.markdown(f"**What's happening.** {data.get('what_is_happening', '')}")
+        st.markdown(f"**Why it matters.** {data.get('why_it_matters', '')}")
+        st.markdown(f"**Where.** {data.get('where', '')}")
+        st.markdown(f"**Recommended next step.** {data.get('recommended_next_step', '')}")
+        st.info(f"🗣️ {data.get('executive_summary', '')}")
+    else:
+        st.write(data.get("summary", data))
+
+    trace = data.get("_tool_trace")
+    if trace:
+        n = len(trace)
+        with st.expander(f"🔧 How CivicPulse checked this ({n} data quer{'y' if n == 1 else 'ies'})"):
+            st.caption(
+                "Every number above came from one of these real queries against your "
+                "dataset — Gemini chose what to look up, not what the numbers say."
+            )
+            for t in trace:
+                args_str = ", ".join(f"{k}={v}" for k, v in (t.get("args") or {}).items()) or "—"
+                if t.get("error"):
+                    st.caption(f"❌ `{t['tool']}({args_str})` → {t['error']}")
+                else:
+                    rc = t.get("record_count")
+                    st.caption(f"✅ `{t['tool']}({args_str})` → {rc} matching record{'s' if rc != 1 else ''}")
 
 
 def _brief_to_markdown(data: dict) -> str:
@@ -560,68 +655,63 @@ with tab_overview:
 # ============================== ASK AI ==============================
 with tab_ask:
     st.markdown("<div class='cp-section-title'>Ask in natural language</div>", unsafe_allow_html=True)
-    st.caption("Grounded strictly in your data — the model never invents numbers.")
+    st.caption(
+        "Grounded strictly in your data — the model never invents numbers. "
+        "Keep asking follow-ups; CivicPulse remembers the conversation."
+    )
 
-    suggestions = [
-        "Which area has the most urgent issues?",
-        "What patterns are increasing this week?",
-        "Compare the top two hotspot areas.",
-        "What should we prioritize this week?",
-    ]
-    cols = st.columns(len(suggestions))
     picked = None
-    for col, s in zip(cols, suggestions):
-        if col.button(s, use_container_width=True):
-            picked = s
-
-    question = st.text_input("Your question", value=picked or "", placeholder="e.g. Where are waste complaints spiking?")
-    ask = st.button("Ask CivicPulse", type="primary")
-
-    if (ask or picked) and question.strip():
-        if insights is not None:
-            payload = insights.to_dict()
-            with st.spinner("Gemini is querying the data..."):
-                result = gemini.answer_question_agentic(
-                    load_result.df, payload, question, st.session_state.domain
-                )
-        else:
-            raw = load_result.raw_text or ""
-            with st.spinner("Analyzing..."):
-                result = gemini.summarize_text(raw, st.session_state.domain)
-        st.session_state.qa_history.insert(0, (question, result))
+    if not st.session_state.qa_history:
+        suggestions = [
+            "Which area has the most urgent issues?",
+            "What patterns are increasing this week?",
+            "Compare the top two hotspot areas.",
+            "What should we prioritize this week?",
+        ]
+        cols = st.columns(len(suggestions))
+        for col, s in zip(cols, suggestions):
+            if col.button(s, use_container_width=True):
+                picked = s
+    elif st.button("🔄 Start a new conversation"):
+        st.session_state.qa_history = []
+        st.session_state.qa_conversation = None
+        st.rerun()
 
     for q, result in st.session_state.qa_history:
-        with st.container(border=True):
-            st.markdown(f"**Q: {q}**")
-            if result.used_fallback:
-                st.caption("⚠️ Offline fallback answer (Gemini not called).")
-            data = result.data
-            if "what_is_happening" in data:
-                a, b = st.columns([3, 1])
-                with a:
-                    st.markdown(f"**What's happening.** {data.get('what_is_happening','')}")
-                    st.markdown(f"**Why it matters.** {data.get('why_it_matters','')}")
-                    st.markdown(f"**Where.** {data.get('where','')}")
-                    st.markdown(f"**Recommended next step.** {data.get('recommended_next_step','')}")
-                    st.info(f"🗣️ {data.get('executive_summary','')}")
-                with b:
-                    conf = str(data.get("confidence", "—")).title()
-                    st.metric("Confidence", conf)
-            else:
-                st.write(data.get("summary", data))
+        with st.chat_message("user"):
+            st.markdown(q)
+        with st.chat_message("assistant", avatar="🏙️"):
+            render_qa_answer(result)
 
-            trace = data.get("_tool_trace")
-            if trace:
-                n = len(trace)
-                with st.expander(f"🔧 How CivicPulse checked this ({n} data quer{'y' if n == 1 else 'ies'})"):
-                    st.caption("Every number above came from one of these real queries against your dataset — Gemini chose what to look up, not what the numbers say.")
-                    for t in trace:
-                        args_str = ", ".join(f"{k}={v}" for k, v in (t.get("args") or {}).items()) or "—"
-                        if t.get("error"):
-                            st.caption(f"❌ `{t['tool']}({args_str})` → {t['error']}")
-                        else:
-                            rc = t.get("record_count")
-                            st.caption(f"✅ `{t['tool']}({args_str})` → {rc} matching record{'s' if rc != 1 else ''}")
+    typed_question = st.chat_input("Ask a follow-up — e.g. \"What about last month?\"")
+    question = picked or typed_question
+
+    if question and question.strip():
+        with st.chat_message("user"):
+            st.markdown(question)
+        with st.chat_message("assistant", avatar="🏙️"):
+            if insights is not None:
+                payload = insights.to_dict()
+                # Keep the conversation going for follow-ups, but cap how long
+                # one thread can grow before starting fresh (bounds token
+                # cost/latency over a long session).
+                prior_conv = (
+                    st.session_state.qa_conversation
+                    if len(st.session_state.qa_history) < MAX_CONVERSATION_QUESTIONS
+                    else None
+                )
+                with st.spinner("Gemini is querying the data..."):
+                    result, updated_conv = gemini.answer_question_agentic(
+                        load_result.df, payload, question, st.session_state.domain,
+                        conversation=prior_conv,
+                    )
+                st.session_state.qa_conversation = updated_conv
+            else:
+                raw = load_result.raw_text or ""
+                with st.spinner("Analyzing..."):
+                    result = gemini.summarize_text(raw, st.session_state.domain)
+            render_qa_answer(result)
+        st.session_state.qa_history.append((question, result))
 
 
 # ============================== ANOMALIES ==============================
@@ -692,7 +782,7 @@ with tab_reco:
             st.markdown("#### Recommended actions")
             render_actions(data.get("recommended_actions", []))
             st.markdown("#### Confidence")
-            st.info(str(data.get("confidence", "—")).title())
+            st.markdown(confidence_badge(data.get("confidence")), unsafe_allow_html=True)
 
         if data.get("explanation"):
             with st.expander("🔍 Explainability — why this recommendation?"):

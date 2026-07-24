@@ -36,6 +36,17 @@ _REPORT_SHAPE = {
 }
 
 
+_AGENTIC_ANSWER_SHAPE = """{
+  "what_is_happening": "1-2 sentences of factual answer grounded in tool results",
+  "why_it_matters": "1-2 sentences on impact",
+  "where": "the most relevant area(s), or 'not enough data'",
+  "recommended_next_step": "one concrete action",
+  "confidence": "high | medium | low",
+  "executive_summary": "one crisp sentence a mayor could repeat",
+  "explanation": "a fuller 2-3 sentence plain-language paragraph walking through what the tool results show and why it leads to that recommendation -- written for someone who wants the full context, not just the bullet points"
+}"""
+
+
 def _analytics_block(insights: dict[str, Any]) -> str:
     return json.dumps(insights, indent=2, default=str)
 
@@ -82,14 +93,7 @@ The user asks: "{question}"
 Answer using ONLY the analytics above. Return ONLY valid JSON (no markdown fences)
 matching this shape:
 
-{{
-  "what_is_happening": "1-2 sentences of factual answer grounded in the data",
-  "why_it_matters": "1-2 sentences on impact",
-  "where": "the most relevant area(s) from the data, or 'not enough data'",
-  "recommended_next_step": "one concrete action",
-  "confidence": "high | medium | low",
-  "executive_summary": "one crisp sentence a mayor could repeat"
-}}
+{_AGENTIC_ANSWER_SHAPE}
 
 If the analytics do not contain enough information to answer, say so honestly in
 'what_is_happening' and set confidence to 'low'.
@@ -137,17 +141,29 @@ Use the available tools to gather real evidence from the dataset, then answer.
 When you have enough evidence, return ONLY valid JSON (no markdown fences, no
 prose before/after) matching this shape:
 
-{{
-  "what_is_happening": "1-2 sentences of factual answer grounded in tool results",
-  "why_it_matters": "1-2 sentences on impact",
-  "where": "the most relevant area(s), or 'not enough data'",
-  "recommended_next_step": "one concrete action",
-  "confidence": "high | medium | low",
-  "executive_summary": "one crisp sentence a mayor could repeat"
-}}
+{_AGENTIC_ANSWER_SHAPE}
 
 If tool results do not contain enough information to answer, say so honestly in
 'what_is_happening' and set confidence to 'low'.
+"""
+
+
+def build_agentic_followup_prompt(question: str) -> str:
+    """Continue an existing agentic conversation with a follow-up question.
+
+    Deliberately lighter than build_agentic_question_prompt: the full
+    instructions and JSON shape are already in the conversation history (the
+    system instruction plus the first turn), so this only needs to state the
+    new question and remind the model to fetch fresh evidence rather than
+    assume the previous answer's numbers still apply.
+    """
+    return f"""Follow-up question in this same conversation: "{question}"
+
+This may be about a different area, category, time range, or comparison than
+before -- call tools again to get evidence specific to THIS question rather
+than reusing the previous answer's numbers, unless the question is clearly
+still about the same thing. Return ONLY valid JSON in the exact same shape as
+your previous answer (no markdown fences, no prose before/after).
 """
 
 
