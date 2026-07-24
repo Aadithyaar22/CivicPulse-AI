@@ -141,7 +141,7 @@ Under the hood `deploy.sh` runs:
 ```bash
 gcloud run deploy civicpulse-ai \
   --source . --region us-central1 --allow-unauthenticated \
-  --memory 512Mi --cpu 1 --min-instances 0 --max-instances 3 \
+  --memory 2Gi --cpu 2 --min-instances 0 --max-instances 3 --concurrency 4 \
   --set-env-vars GEMINI_MODEL=gemini-2.5-flash-lite,GOOGLE_GENAI_USE_VERTEXAI=true,...
 ```
 
@@ -263,7 +263,12 @@ secrets — the only per-run cost is one small Gemini call (a fraction of a cent
 - **Deterministic analytics in Python** do the heavy lifting for free.
 - **Local sample data** — no database, no Cloud Storage required.
 - **Cloud Run scale-to-zero** (`--min-instances 0`) → you pay ~nothing when idle.
-- Modest **512Mi / 1 CPU** container settings.
+- **2Gi / 2 CPU** container settings — sized for real-world CSV uploads
+  (pandas + Streamlit + Plotly + statsmodels resident together needs more
+  than the 512Mi that's enough for the small bundled demo dataset alone;
+  512Mi was silently OOM-killing the container on larger uploads). Still
+  costs nothing while idle thanks to scale-to-zero — you only pay for the
+  CPU/memory-seconds of active requests.
 
 ---
 
