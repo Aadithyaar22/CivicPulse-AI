@@ -454,7 +454,7 @@ with tab_ask:
     suggestions = [
         "Which area has the most urgent issues?",
         "What patterns are increasing this week?",
-        "Summarize the top community risks.",
+        "Compare the top two hotspot areas.",
         "What should we prioritize this week?",
     ]
     cols = st.columns(len(suggestions))
@@ -469,8 +469,10 @@ with tab_ask:
     if (ask or picked) and question.strip():
         if insights is not None:
             payload = insights.to_dict()
-            with st.spinner("Analyzing..."):
-                result = gemini.answer_question(payload, question, st.session_state.domain)
+            with st.spinner("Gemini is querying the data..."):
+                result = gemini.answer_question_agentic(
+                    load_result.df, payload, question, st.session_state.domain
+                )
         else:
             raw = load_result.raw_text or ""
             with st.spinner("Analyzing..."):
@@ -496,6 +498,19 @@ with tab_ask:
                     st.metric("Confidence", conf)
             else:
                 st.write(data.get("summary", data))
+
+            trace = data.get("_tool_trace")
+            if trace:
+                n = len(trace)
+                with st.expander(f"🔧 How CivicPulse checked this ({n} data quer{'y' if n == 1 else 'ies'})"):
+                    st.caption("Every number above came from one of these real queries against your dataset — Gemini chose what to look up, not what the numbers say.")
+                    for t in trace:
+                        args_str = ", ".join(f"{k}={v}" for k, v in (t.get("args") or {}).items()) or "—"
+                        if t.get("error"):
+                            st.caption(f"❌ `{t['tool']}({args_str})` → {t['error']}")
+                        else:
+                            rc = t.get("record_count")
+                            st.caption(f"✅ `{t['tool']}({args_str})` → {rc} matching record{'s' if rc != 1 else ''}")
 
 
 # ============================== ANOMALIES ==============================

@@ -17,7 +17,9 @@ from dataclasses import dataclass
 from typing import Any
 
 from .prompt_templates import (
+    AGENTIC_SYSTEM_INSTRUCTION,
     SYSTEM_INSTRUCTION,
+    build_agentic_question_prompt,
     build_brief_prompt,
     build_question_prompt,
     build_text_summary_prompt,
@@ -28,6 +30,10 @@ from .utils import extract_json, humanize
 DEFAULT_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
 MAX_RETRIES = 2
 RETRY_BACKOFF_SEC = 1.5
+# Hard cap on tool-call round-trips per agentic question. Bounds latency/cost
+# and guarantees we fall back to the static grounded answer instead of ever
+# hanging in a loop.
+MAX_TOOL_TURNS = 4
 
 
 @dataclass
@@ -162,6 +168,82 @@ class GeminiClient:
     ) -> GeminiResult:
         prompt = build_question_prompt(insights, question, domain)
         return self._run(prompt, lambda: _fallback_answer(insights, question))
+
+    def answer_question_agentic(
+        self, df: Any, insights: dict[str, Any], question: str, domain: str
+    ) -> GeminiResult:
+        """Agentic Q&A: Gemini calls real query tools (see qa_tools.py) against
+        the live DataFrame instead of reasoning over one static analytics
+        snapshot -- so it can answer comparisons and drill-downs a single
+        precomputed payload can't ("compare Koramangala vs Indiranagar this
+        month"). Every number still comes from a deterministic pandas query;
+        Gemini only chooses which query to run and narrates the real result.
+
+        Falls back to the static grounded `answer_question` (which itself
+        falls back to a deterministic offline answer) on any failure -- this
+        upgrade never makes the demo less reliable than before it existed.
+        """
+        if not self.available or df is None or getattr(df, "empty", True):
+            return self.answer_question(insights, question, domain)
+
+        try:
+            from google.genai import types
+
+            from .qa_tools import TOOL_DECLARATIONS, dispatch_tool
+
+            tool = types.Tool(function_declarations=TOOL_DECLARATIONS)
+            config = types.GenerateContentConfig(
+                system_instruction=AGENTIC_SYSTEM_INSTRUCTION,
+                temperature=0.2,
+                max_output_tokens=1024,
+                tools=[tool],
+            )
+            prompt = build_agentic_question_prompt(question, domain)
+            contents = [types.Content(role="user", parts=[types.Part.from_text(text=prompt)])]
+
+            trace: list[dict[str, Any]] = []
+            resp = None
+            for _ in range(MAX_TOOL_TURNS):
+                resp = self._client.models.generate_content(
+                    model=self.model, contents=contents, config=config
+                )
+                calls = resp.function_calls or []
+                if not calls:
+                    break
+                contents.append(resp.candidates[0].content)
+                response_parts = []
+                for fc in calls:
+                    args = dict(fc.args or {})
+                    result = dispatch_tool(df, fc.name, args)
+                    trace.append(
+                        {
+                            "tool": fc.name,
+                            "args": args,
+                            "record_count": result.get("record_count"),
+                            "error": result.get("error"),
+                        }
+                    )
+                    response_parts.append(
+                        types.Part.from_function_response(name=fc.name, response={"result": result})
+                    )
+                contents.append(types.Content(role="user", parts=response_parts))
+            else:
+                # Exhausted MAX_TOOL_TURNS without a final text answer -- don't
+                # return a half-finished tool-call turn, fall back instead.
+                fallback = self.answer_question(insights, question, domain)
+                fallback.data["_tool_trace"] = trace
+                fallback.error = "Agentic Q&A exceeded max tool-call turns; used grounded fallback."
+                return fallback
+
+            text = (resp.text or "") if resp is not None else ""
+            parsed = extract_json(text)
+            data = parsed if parsed is not None else {"summary": text.strip()}
+            data["_tool_trace"] = trace
+            return GeminiResult(ok=True, data=data, raw_text=text, model=self.model)
+        except Exception as exc:  # noqa: BLE001 - the agentic path must never crash the app
+            fallback = self.answer_question(insights, question, domain)
+            fallback.error = f"Agentic Q&A failed ({exc}); used grounded fallback."
+            return fallback
 
     def summarize_text(self, raw_text: str, domain: str) -> GeminiResult:
         prompt = build_text_summary_prompt(raw_text, domain)

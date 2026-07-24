@@ -20,7 +20,7 @@ statistics.
 | Feature | Description |
 |---|---|
 | 🧮 **Deterministic-first analytics** | Counts, weekly trends, severity mix & anomaly flags computed in Python — cheap, fast, reliable. |
-| 💬 **Natural-language Q&A** | Ask *"What should we prioritize this week?"* — grounded strictly in your data. |
+| 💬 **Agentic natural-language Q&A** | Ask *"Compare Riverside vs Lakeside this month"* — Gemini calls real query tools (`filter_records`, `get_top_complaints`, `get_summary_stats`) against your live data to gather evidence, then narrates it. It never computes numbers itself, only chooses which deterministic query to run. |
 | 🚨 **Explainable anomaly detection** | Simple z-score thresholds (≥1.5σ) flag spikes by area, category & time. |
 | 🎯 **Decision Scoreboard** | Urgency · Impact · Confidence · Severity scores (0–100) tell teams what to act on. |
 | 📝 **One-click Executive Brief** | The wow feature: a downloadable, decision-ready city action memo from a single Gemini call. |
@@ -164,8 +164,17 @@ When it finishes it prints your **public URL** (e.g.
   deterministic offline report if the model is unreachable.
 - **Model:** `gemini-3.1-flash-lite` by default (smallest/cheapest tier). Override
   with the `GEMINI_MODEL` env var.
-- **Grounding:** every prompt embeds the computed analytics JSON and instructs the
-  model to *use only the provided numbers* — see `src/prompt_templates.py`.
+- **Grounding:** the executive brief and text-summary prompts embed the computed
+  analytics JSON and instruct the model to *use only the provided numbers* — see
+  `src/prompt_templates.py`.
+- **Agentic Q&A:** the Ask AI tab instead gives Gemini function-calling tools
+  (`src/qa_tools.py`) that query the real uploaded DataFrame on demand — so
+  multi-step questions (comparisons, drill-downs) get real evidence instead of
+  reasoning over one static snapshot. Every tool call and its real record count
+  is shown in an expandable trace under each answer. Guardrails: unmatched
+  areas/categories return an explicit error + the real valid values (never a
+  guess), zero-result queries are labeled as genuine zeros, and any failure in
+  the tool-calling loop falls back to the static grounded Q&A path.
 
 ---
 

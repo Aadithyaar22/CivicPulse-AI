@@ -96,6 +96,57 @@ If the analytics do not contain enough information to answer, say so honestly in
 """
 
 
+AGENTIC_SYSTEM_INSTRUCTION = (
+    "You are CivicPulse AI, a community decision intelligence assistant for city "
+    "and neighborhood teams. You have tools that query the REAL uploaded dataset "
+    "(get_summary_stats, filter_records, get_top_complaints). You must call one or "
+    "more tools to gather evidence before answering -- never answer from memory or "
+    "general knowledge about cities. "
+    "To compare two areas, categories, or time periods, call filter_records once "
+    "per side and compare the real numbers returned. "
+    "If a tool returns an 'error' field (e.g. an area/category that doesn't exist), "
+    "do not guess a substitute value -- either try a corrected argument once, or "
+    "tell the user honestly that it wasn't found, using the 'available_values' the "
+    "tool gave you. "
+    "If a tool returns record_count: 0, that is a real zero -- report it as 'no "
+    "matching records', not as missing data. "
+    "Once you have enough tool results to answer, STOP calling tools and write the "
+    "final answer using ONLY numbers that appeared in tool results. Never invent "
+    "a count, percentage, area, or category that didn't come from a tool call. "
+    "Clearly separate facts (from tool results) from recommendations (your advice). "
+    "Be concise and practical -- write for a busy public official who has 60 seconds."
+)
+
+
+def build_agentic_question_prompt(question: str, domain: str = "citizen complaints") -> str:
+    """Kick off a tool-calling turn for a natural-language question.
+
+    Unlike build_question_prompt, this does NOT embed a precomputed analytics
+    blob -- the model must call tools to fetch exactly the evidence it needs,
+    which is what makes multi-step questions (comparisons, drill-downs) work.
+    """
+    return f"""Domain context: {domain}.
+
+The user asks: "{question}"
+
+Use the available tools to gather real evidence from the dataset, then answer.
+When you have enough evidence, return ONLY valid JSON (no markdown fences, no
+prose before/after) matching this shape:
+
+{{
+  "what_is_happening": "1-2 sentences of factual answer grounded in tool results",
+  "why_it_matters": "1-2 sentences on impact",
+  "where": "the most relevant area(s), or 'not enough data'",
+  "recommended_next_step": "one concrete action",
+  "confidence": "high | medium | low",
+  "executive_summary": "one crisp sentence a mayor could repeat"
+}}
+
+If tool results do not contain enough information to answer, say so honestly in
+'what_is_happening' and set confidence to 'low'.
+"""
+
+
 def build_text_summary_prompt(raw_text: str, domain: str = "citizen complaints") -> str:
     """Summarize pasted text or extracted PDF content (no numeric analytics)."""
     snippet = raw_text[:6000]
