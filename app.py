@@ -18,6 +18,7 @@ import streamlit as st
 from src.analytics import compute_insights, filter_dataframe
 from src.data_loader import LoadResult, load_sample, load_text, load_uploaded_file
 from src.gemini_client import GeminiClient
+from src.history_store import HistoryStore
 from src.utils import humanize
 
 # Load .env if present (local dev convenience).
@@ -87,7 +88,13 @@ def get_gemini() -> GeminiClient:
     return GeminiClient()
 
 
+@st.cache_resource(show_spinner=False)
+def get_history() -> HistoryStore:
+    return HistoryStore()
+
+
 gemini = get_gemini()
+history = get_history()
 
 
 def _set_data(load_result: LoadResult) -> None:
@@ -155,6 +162,10 @@ with st.sidebar:
     else:
         st.warning("Gemini offline — using local fallback.")
         st.caption(gemini.status_message)
+    st.caption(
+        "🗄️ Brief history: saving to Firestore" if history.available
+        else "🗄️ Brief history: unavailable this session (not saved)"
+    )
 
     st.divider()
     st.caption("Built with Streamlit + Gemini on Google Cloud Run.")
@@ -550,6 +561,14 @@ with tab_reco:
                 st.session_state.brief = gemini.summarize_text(
                     load_result.raw_text or "", st.session_state.domain
                 )
+        _fresh_brief = st.session_state.brief
+        if _fresh_brief.ok and insights is not None:
+            history.save_brief(
+                domain=st.session_state.domain,
+                source_type=load_result.source_type,
+                insights=insights.to_dict(),
+                brief_data=_fresh_brief.data,
+            )
 
     brief = st.session_state.brief
     if brief is not None:
@@ -589,6 +608,25 @@ with tab_reco:
         )
     else:
         st.info("Click **Generate Executive Brief** to produce a decision-ready memo.")
+
+    if history.available:
+        recent = history.list_recent(limit=5)
+        if recent:
+            st.write("")
+            with st.expander(f"📜 Recent briefs ({len(recent)}) — trend across past uploads"):
+                st.caption(
+                    "Every generated brief is saved automatically, so a team can see how a "
+                    "location trends across sessions instead of only today's snapshot."
+                )
+                for r in recent:
+                    ts = r.get("created_at")
+                    ts_str = ts.strftime("%b %d, %Y %H:%M UTC") if hasattr(ts, "strftime") else str(ts or "—")
+                    st.markdown(f"**{r.get('brief_title') or 'Untitled brief'}** · {ts_str}")
+                    st.caption(
+                        f"{humanize(r.get('hotspot_area') or '—')} · {humanize(r.get('top_category') or '—')} · "
+                        f"{r.get('total_records', '—')} records · trend: {r.get('trend_direction', '—')}"
+                    )
+                    st.divider()
 
 
 # ============================== ABOUT ==============================

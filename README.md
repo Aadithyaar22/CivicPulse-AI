@@ -9,7 +9,7 @@ sanitation, water, roads, noise, public health) and instantly get **patterns,
 anomalies, a decision scoreboard, and an auto-generated action memo**.
 
 It is **not** a generic chatbot. It computes real analytics in Python first, then
-uses a **small, low-cost Gemini model** (`gemini-3.1-flash-lite`) to explain the
+uses a **small, low-cost Gemini model** (`gemini-2.5-flash-lite`) to explain the
 numbers and recommend concrete next steps — so the AI never hallucinates
 statistics.
 
@@ -26,6 +26,8 @@ statistics.
 | 📝 **One-click Executive Brief** | The wow feature: a downloadable, decision-ready city action memo from a single Gemini call. |
 | 🔍 **Explainability panel** | Plain-language reasoning behind every recommendation. |
 | 📥 **Multi-format ingest** | CSV, JSON, PDF text, or pasted text — with forgiving column auto-mapping. |
+| 🗄️ **Persistent brief history** | Every generated brief is saved to Firestore, so a team can see how a location trends across sessions, not just today's snapshot. |
+| 🔔 **Automated weekly brief** | A Cloud Scheduler job triggers the same analytics → Gemini pipeline on a cron and emails the result — insight delivered to an inbox with nobody opening the dashboard. |
 
 ---
 
@@ -140,7 +142,7 @@ Under the hood `deploy.sh` runs:
 gcloud run deploy civicpulse-ai \
   --source . --region us-central1 --allow-unauthenticated \
   --memory 512Mi --cpu 1 --min-instances 0 --max-instances 3 \
-  --set-env-vars GEMINI_MODEL=gemini-3.1-flash-lite,GOOGLE_GENAI_USE_VERTEXAI=true,...
+  --set-env-vars GEMINI_MODEL=gemini-2.5-flash-lite,GOOGLE_GENAI_USE_VERTEXAI=true,...
 ```
 
 When it finishes it prints your **public URL** (e.g.
@@ -162,7 +164,7 @@ When it finishes it prints your **public URL** (e.g.
 - **Wrapper:** `src/gemini_client.py` — auto-detects Vertex AI vs. Gemini API,
   requests JSON output, retries transient errors twice, and falls back to a
   deterministic offline report if the model is unreachable.
-- **Model:** `gemini-3.1-flash-lite` by default (smallest/cheapest tier). Override
+- **Model:** `gemini-2.5-flash-lite` by default (smallest/cheapest tier). Override
   with the `GEMINI_MODEL` env var.
 - **Grounding:** the executive brief and text-summary prompts embed the computed
   analytics JSON and instruct the model to *use only the provided numbers* — see
@@ -175,6 +177,82 @@ When it finishes it prints your **public URL** (e.g.
   areas/categories return an explicit error + the real valid values (never a
   guess), zero-result queries are labeled as genuine zeros, and any failure in
   the tool-calling loop falls back to the static grounded Q&A path.
+
+---
+
+## 🗄️ Brief history (Firestore)
+
+Every successfully generated Executive Brief (from the UI or the scheduled
+job below) is saved to a Firestore Native-mode database — same numbers, same
+title, same recommended actions. The Recommendations tab shows the 5 most
+recent under "📜 Recent briefs." This is entirely optional: if Firestore isn't
+reachable (no ADC locally, API disabled, no database), the app keeps working
+exactly as before — persistence just silently turns off. See `src/history_store.py`.
+
+One-time setup:
+```bash
+gcloud services enable firestore.googleapis.com --project YOUR_PROJECT_ID
+gcloud firestore databases create --location=us-central1 --type=firestore-native --project YOUR_PROJECT_ID
+```
+
+---
+
+## 🔔 Automated weekly brief (Cloud Scheduler + Gmail)
+
+A second, small Cloud Function (`main.py` at the repo root, entry point
+`scheduled_brief`) runs the exact same pipeline as the "Generate Executive
+Brief" button — `analytics.compute_insights` → `GeminiClient.executive_brief`
+→ save to Firestore — then emails the result via Gmail SMTP. It's what turns
+CivicPulse from a dashboard someone has to remember to open into a service
+that delivers a decision on its own schedule.
+
+**One-time setup:**
+
+1. On the sending Gmail account, enable 2-Step Verification, then generate an
+   App Password: <https://myaccount.google.com/apppasswords>. **Never paste
+   this into chat, code, or a commit** — it goes straight into Secret Manager.
+   ```bash
+   gcloud secrets create civicpulse-gmail-app-password --replication-policy=automatic --project YOUR_PROJECT_ID
+   gcloud secrets versions add civicpulse-gmail-app-password --data-file=- --project YOUR_PROJECT_ID
+   # (paste the 16-character app password, then Ctrl+D)
+   gcloud secrets add-iam-policy-binding civicpulse-gmail-app-password \
+     --member="serviceAccount:PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+     --role="roles/secretmanager.secretAccessor" --project YOUR_PROJECT_ID
+   ```
+
+2. Deploy the function:
+   ```bash
+   gcloud functions deploy civicpulse-scheduled-brief \
+     --gen2 --runtime=python312 --region=us-central1 \
+     --source=. --entry-point=scheduled_brief --trigger-http \
+     --no-allow-unauthenticated --memory=512Mi --timeout=120s \
+     --set-env-vars=GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID,GOOGLE_CLOUD_LOCATION=us-central1,ALERT_SENDER=you@gmail.com,ALERT_RECIPIENT=official@example.com,GEMINI_MODEL=gemini-2.5-flash-lite \
+     --set-secrets=GMAIL_APP_PASSWORD=civicpulse-gmail-app-password:latest \
+     --project YOUR_PROJECT_ID
+   ```
+
+3. Create a dedicated invoker service account and a weekly Cloud Scheduler job:
+   ```bash
+   gcloud iam service-accounts create civicpulse-scheduler --project YOUR_PROJECT_ID
+   gcloud functions add-invoker-policy-binding civicpulse-scheduled-brief \
+     --region=us-central1 \
+     --member="serviceAccount:civicpulse-scheduler@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+     --project YOUR_PROJECT_ID
+   gcloud scheduler jobs create http civicpulse-weekly-brief \
+     --location=us-central1 --schedule="0 8 * * 1" --time-zone="Asia/Kolkata" \
+     --uri="<function-url-from-step-2>" --http-method=POST \
+     --oidc-service-account-email="civicpulse-scheduler@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+     --project YOUR_PROJECT_ID
+   ```
+
+Optional: set `CIVICPULSE_DATA_GCS_URI` (a `gs://` or `https://` CSV URL) as
+an env var on the function to point scheduled runs at a real dataset instead
+of the bundled sample — it goes through the same column auto-mapping as a
+manual upload.
+
+Cost: Cloud Scheduler's first 3 jobs/month are free, the function scales to
+zero between runs, and Secret Manager's free tier covers a handful of active
+secrets — the only per-run cost is one small Gemini call (a fraction of a cent).
 
 ---
 
