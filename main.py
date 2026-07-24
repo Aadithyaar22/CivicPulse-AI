@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import os
 import smtplib
-from email.mime.text import MIMEText
+from email.message import EmailMessage
 from pathlib import Path
 
 import functions_framework
@@ -58,16 +58,28 @@ def _send_email(subject: str, body: str) -> None:
     app_password = os.environ.get("GMAIL_APP_PASSWORD")
     if not (sender and recipient and app_password):
         raise RuntimeError("ALERT_SENDER, ALERT_RECIPIENT, and GMAIL_APP_PASSWORD must all be set.")
+    # Google displays the app password as four 4-char groups separated by
+    # spaces for readability; the real credential has no whitespace. Copying
+    # it from a rendered web page sometimes carries over non-breaking spaces
+    # (U+00A0) instead of plain ones, which smtplib's ASCII-encoding login
+    # step chokes on -- strip all whitespace defensively so this works
+    # regardless of how it was pasted in.
+    app_password = "".join(app_password.split())
 
-    msg = MIMEText(body, "plain", "utf-8")
+    # EmailMessage (not the legacy MIMEText + as_string()) so non-ASCII
+    # characters in Gemini's output -- e.g. a non-breaking space or smart
+    # punctuation -- get RFC 2047 / quoted-printable encoded automatically
+    # instead of raising a UnicodeEncodeError during serialization.
+    msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = sender
     msg["To"] = recipient
+    msg.set_content(body)
 
     with smtplib.SMTP("smtp.gmail.com", 587) as server:
         server.starttls()
         server.login(sender, app_password)
-        server.sendmail(sender, [recipient], msg.as_string())
+        server.send_message(msg)
 
 
 def _brief_to_email_body(data: dict) -> str:
