@@ -475,6 +475,26 @@ CSS = """
     [data-testid="stFileUploaderDropzone"] button {
         background: var(--cp-uploader-btn-bg) !important; border: 1px solid var(--cp-cyan) !important; color: var(--cp-text) !important;
     }
+    /* Selectbox's OPEN dropdown list is rendered by BaseWeb in a portal
+       appended to <body>, outside .stApp -- it still picks up the global
+       `div, span { color: var(--cp-text) }` rule above (those selectors
+       aren't scoped to .stApp), but keeps BaseWeb's own default WHITE
+       background since nothing here targeted it, so option text went
+       near-invisible (light text on white) in dark theme. Style the portal
+       explicitly so it matches the current theme regardless of where in the
+       DOM it's mounted. */
+    div[data-baseweb="popover"] div[data-baseweb="menu"], ul[role="listbox"] {
+        background: var(--cp-panel-solid) !important;
+        border: 1px solid var(--cp-input-border) !important;
+    }
+    li[role="option"] {
+        background: var(--cp-panel-solid) !important;
+        color: var(--cp-text) !important;
+    }
+    li[role="option"]:hover, li[aria-selected="true"] {
+        background: var(--cp-tab-hover-bg) !important;
+        color: var(--cp-cyan) !important;
+    }
 
     /* ---- Expanders, containers, alerts ---- */
     div[data-testid="stExpander"] {
