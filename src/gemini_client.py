@@ -123,7 +123,11 @@ class GeminiClient:
         config = types.GenerateContentConfig(
             system_instruction=SYSTEM_INSTRUCTION,
             temperature=0.3,
-            max_output_tokens=1024,
+            # The Executive Brief schema (dataset_overview + full findings +
+            # peculiar_patterns + urgency-tagged actions) is verbose by
+            # design -- 1024 was tight enough to truncate mid-JSON on the
+            # agentic path for a smaller schema, so this needs real headroom.
+            max_output_tokens=3072,
             response_mime_type="application/json",
         )
 
@@ -141,25 +145,27 @@ class GeminiClient:
         return False, "", last_error
 
     def _run(self, prompt: str, fallback_fn) -> GeminiResult:
-        ok, text, error = self._generate(prompt)
-        if ok:
+        last_error: str | None = None
+        # One retry if the model returns text that isn't valid JSON -- e.g.
+        # a response cut off mid-structure by max_output_tokens. Showing
+        # that raw/truncated text to the user is worse than a fresh attempt
+        # (same failure mode fixed on the agentic tool-calling path).
+        for _attempt in range(2):
+            ok, text, error = self._generate(prompt)
+            if not ok:
+                last_error = error
+                break  # _generate() already retried transient errors internally
             parsed = extract_json(text)
             if parsed is not None:
                 return GeminiResult(ok=True, data=parsed, raw_text=text, model=self.model)
-            # Model replied but not clean JSON -> keep prose, still succeed.
-            return GeminiResult(
-                ok=True,
-                data={"summary": text.strip()},
-                raw_text=text,
-                model=self.model,
-            )
+            last_error = f"Model returned unparseable JSON (possible truncation): {text[:200]!r}"
         # Failure -> deterministic fallback so the demo continues.
         return GeminiResult(
             ok=False,
             data=fallback_fn(),
             used_fallback=True,
             model=self.model,
-            error=error,
+            error=last_error,
         )
 
     # ---------- public high-level calls ----------
@@ -325,6 +331,32 @@ def _fallback_brief(insights: dict[str, Any]) -> dict[str, Any]:
     trend = insights.get("trend_direction", "flat")
     anomalies = insights.get("anomalies", [])
     open_rate = insights.get("open_rate_pct", 0)
+    by_area = insights.get("by_area", {}) or {}
+    by_category = insights.get("by_category", {}) or {}
+    severity_dist = insights.get("severity_distribution", {}) or {}
+    date_range = insights.get("date_range", {}) or {}
+
+    overview_parts = [f"This dataset has {total} community report(s)"]
+    if date_range.get("start") and date_range.get("end"):
+        overview_parts.append(f"from {date_range['start']} to {date_range['end']}")
+    overview_parts.append(
+        f"spread across {len(by_area)} area(s) and {len(by_category)} categor{'y' if len(by_category) == 1 else 'ies'}."
+    )
+    overview = " ".join(overview_parts)
+    if hotspot:
+        overview += f" '{humanize(hotspot)}' has the most reports."
+    if top_cat:
+        overview += f" '{humanize(top_cat)}' is the most common issue type."
+    overview += f" Overall volume is {trend}, and {open_rate}% of cases are still open/unresolved."
+    if severity_dist:
+        crit = severity_dist.get("critical", 0)
+        high = severity_dist.get("high", 0)
+        if crit or high:
+            overview += f" {crit + high} report(s) are marked high or critical severity."
+    overview += (
+        " This is a rule-based summary (Gemini wasn't reachable), so it covers the headline "
+        "numbers only -- enable Gemini for a full plain-language walkthrough."
+    )
 
     findings = [f"{total} records analyzed."]
     if hotspot:
@@ -334,6 +366,15 @@ def _fallback_brief(insights: dict[str, Any]) -> dict[str, Any]:
     findings.append(f"Overall volume is {trend}.")
     if open_rate:
         findings.append(f"{open_rate}% of cases are still open/unresolved.")
+    if severity_dist:
+        findings.append(
+            "Severity mix: " + ", ".join(f"{k} {v}" for k, v in severity_dist.items())
+        )
+
+    peculiar = [a.get("detail", "") for a in anomalies] or [
+        "No statistically flagged anomalies in this offline summary -- enable Gemini for a "
+        "closer read of less obvious patterns."
+    ]
 
     actions = []
     if hotspot:
@@ -342,6 +383,7 @@ def _fallback_brief(insights: dict[str, Any]) -> dict[str, Any]:
                 "action": f"Deploy a rapid-response team to {humanize(hotspot)}.",
                 "owner": "Operations",
                 "timeframe": "this week",
+                "urgency": "high",
             }
         )
     if top_cat:
@@ -350,20 +392,22 @@ def _fallback_brief(insights: dict[str, Any]) -> dict[str, Any]:
                 "action": f"Prioritize resolution of '{humanize(top_cat)}' cases.",
                 "owner": "Relevant department",
                 "timeframe": "2 weeks",
+                "urgency": "normal",
             }
         )
 
     return {
         "title": "Community Situation Brief",
+        "dataset_overview": overview,
         "summary": (
             f"{total} community records analyzed. Volume is {trend}; "
             f"top hotspot is {humanize(hotspot) if hotspot else 'n/a'} and the leading "
             f"issue is {humanize(top_cat) if top_cat else 'n/a'}."
         ),
         "key_findings": findings,
-        "anomalies": [a.get("detail", "") for a in anomalies] or ["No significant anomalies detected."],
+        "peculiar_patterns": peculiar,
         "recommended_actions": actions or [
-            {"action": "Continue monitoring; no urgent hotspot.", "owner": "Ops", "timeframe": "ongoing"}
+            {"action": "Continue monitoring; no urgent hotspot.", "owner": "Ops", "timeframe": "ongoing", "urgency": "normal"}
         ],
         "explanation": (
             "Recommendations follow the highest-volume area and category, weighted by "

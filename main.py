@@ -83,15 +83,20 @@ def _send_email(subject: str, body: str) -> None:
 
 
 def _brief_to_email_body(data: dict) -> str:
-    lines = [data.get("summary", ""), "", "Key findings:"]
+    lines = []
+    if data.get("dataset_overview"):
+        lines += ["What this data is:", data["dataset_overview"], ""]
+    lines += [data.get("summary", ""), "", "Key findings:"]
     lines += [f"- {f}" for f in data.get("key_findings", [])] or ["- (none)"]
-    if data.get("anomalies"):
-        lines += ["", "Anomalies:"] + [f"- {a}" for a in data["anomalies"]]
-    lines += ["", "Recommended actions:"]
+    patterns = data.get("peculiar_patterns") or data.get("anomalies")
+    if patterns:
+        lines += ["", "Peculiar patterns:"] + [f"- {a}" for a in patterns]
+    lines += ["", "Recommended actions (respond by urgency -- IMMEDIATE means today/ASAP):"]
     for i, act in enumerate(data.get("recommended_actions", []), 1):
         if isinstance(act, dict):
+            urgency = str(act.get("urgency", "")).upper()
             lines.append(
-                f"{i}. {act.get('action', '')} "
+                f"{i}. [{urgency or 'N/A'}] {act.get('action', '')} "
                 f"(owner: {act.get('owner', '—')}, timeframe: {act.get('timeframe', '—')})"
             )
         else:

@@ -20,7 +20,7 @@ statistics.
 | Feature | Description |
 |---|---|
 | 🧮 **Deterministic-first analytics** | Counts, weekly trends, severity mix & anomaly flags computed in Python — cheap, fast, reliable. |
-| 💬 **Agentic natural-language Q&A** | Ask *"Compare Riverside vs Lakeside this month"* — Gemini calls real query tools (`filter_records`, `get_top_complaints`, `get_summary_stats`) against your live data to gather evidence, then narrates it. It never computes numbers itself, only chooses which deterministic query to run. |
+| 💬 **Agentic multi-turn chat** | Ask *"Compare Koramangala vs Domlur this month"*, then keep asking follow-ups — Gemini calls real query tools (`filter_records`, `get_top_complaints`, `get_summary_stats`) against your live data and remembers the conversation. It never computes numbers itself, only chooses which deterministic query to run. |
 | 🚨 **Explainable anomaly detection** | Simple z-score thresholds (≥1.5σ) flag spikes by area, category & time. |
 | 🎯 **Decision Scoreboard** | Urgency · Impact · Confidence · Severity scores (0–100) tell teams what to act on. |
 | 📝 **One-click Executive Brief** | The wow feature: a downloadable, decision-ready city action memo from a single Gemini call. |
@@ -274,12 +274,15 @@ secrets — the only per-run cost is one small Gemini call (a fraction of a cent
 
 ## 📊 Sample dataset
 
-`sample_data/citizen_complaints.csv` (~370 rows over ~8 weeks) with columns:
+`sample_data/citizen_complaints.csv` (~370 rows over ~8 weeks) across 8 real
+Bengaluru wards (Koramangala, Jayanagar, Malleshwaram, Basavanagudi,
+Rajajinagar, BTM Layout, Domlur, Vijayanagar) with columns:
 `date, area, category, complaint_type, severity, status, department, notes`.
 
-It contains a **persistent hotspot** (Riverside), a **rising trend**, and a
+It contains a **persistent hotspot** (Koramangala), a **rising trend**, and a
 **planted anomaly** (a Waste Collection surge in the final week) so the demo
-reliably shows trends, hotspots, anomalies, and actions. Regenerate with:
+reliably shows trends, real-ward hotspot mapping, anomalies, and actions.
+Regenerate with:
 
 ```bash
 python sample_data/generate_sample.py
@@ -295,6 +298,34 @@ python sample_data/generate_sample.py
 | Vertex AI 403 on Cloud Run | Grant the runtime SA `roles/aiplatform.user` (see above). |
 | PDF has no text | Scanned PDFs need OCR; this app reads text-based PDFs only. |
 | Upload columns not recognized | Rename to `area`, `category`, `date`, etc. (aliases in `utils.py`). |
+
+---
+
+## ☁️ Google Cloud services & tools used
+
+| Service | What it's used for |
+|---|---|
+| **Vertex AI (Gemini 2.5 Flash-Lite)** | The core model — explains analytics, drives agentic Q&A via function calling, drafts the Executive Brief. Accessed via Vertex AI (no exposed API key) in production. |
+| **Cloud Run** | Hosts the main Streamlit app, scale-to-zero so idle cost is $0. |
+| **Cloud Functions (2nd gen)** | Hosts the scheduled Executive Brief job (`main.py`) — built on Cloud Run under the hood. |
+| **Cloud Scheduler** | Cron trigger (weekly) for the automated brief-and-email job. |
+| **Firestore** | Stores generated brief history so trends are visible across sessions, not just the current upload. |
+| **Secret Manager** | Holds the Gmail App Password used to send the scheduled brief email — never in code or env vars in plaintext. |
+| **Cloud Build** | Builds the container image on every `gcloud run deploy --source .`. |
+| **Artifact Registry** | Stores the built container images. |
+| **IAM** | Least-privilege service accounts — a dedicated `civicpulse-scheduler` account can only invoke the one function it needs. |
+| **Cloud Logging** | Request/error logs for both the app and the scheduled function (used to diagnose the OOM and truncation bugs found during testing). |
+| **Gmail (SMTP)** | Delivers the automated weekly brief email. |
+| **`gcloud` CLI** | All deployment, IAM, and infra setup in this repo's scripts. |
+
+---
+
+## 👥 Team
+
+**Team CodeSickOs**
+- Aadithya A R
+- Yadunandan M N
+- Kenisha P
 
 ---
 

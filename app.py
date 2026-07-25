@@ -425,24 +425,36 @@ def render_qa_answer(result) -> None:
                     st.caption(f"✅ `{t['tool']}({args_str})` → {rc} matching record{'s' if rc != 1 else ''}")
 
 
+_URGENCY_ICON = {"immediate": "🔴", "high": "🟠", "normal": "⚪"}
+
+
 def _brief_to_markdown(data: dict) -> str:
     lines = [f"# {data.get('title', 'CivicPulse Action Memo')}", ""]
+    if data.get("dataset_overview"):
+        lines.append("## Dataset overview")
+        lines.append(data["dataset_overview"])
+        lines.append("")
     lines.append(f"_{data.get('summary', '')}_\n")
     if data.get("key_findings"):
         lines.append("## Key findings")
         lines += [f"- {f}" for f in data["key_findings"]]
         lines.append("")
-    if data.get("anomalies"):
-        lines.append("## Anomalies")
-        lines += [f"- {a}" for a in data["anomalies"]]
+    patterns = data.get("peculiar_patterns") or data.get("anomalies")
+    if patterns:
+        lines.append("## Peculiar patterns")
+        lines += [f"- {a}" for a in patterns]
         lines.append("")
     if data.get("recommended_actions"):
-        lines.append("## Recommended actions")
+        lines.append("## Recommended actions — respond by urgency")
         for i, act in enumerate(data["recommended_actions"], 1):
             if isinstance(act, dict):
+                urgency = str(act.get("urgency", "")).lower()
+                icon = _URGENCY_ICON.get(urgency, "")
                 lines.append(
-                    f"{i}. {act.get('action', '')} "
-                    f"(owner: {act.get('owner', '—')}, timeframe: {act.get('timeframe', '—')})"
+                    f"{i}. {icon} {act.get('action', '')} "
+                    f"(owner: {act.get('owner', '—')}, timeframe: {act.get('timeframe', '—')}"
+                    + (f", urgency: {urgency}" if urgency else "")
+                    + ")"
                 )
             else:
                 lines.append(f"{i}. {act}")
@@ -461,8 +473,13 @@ def render_actions(actions: list) -> None:
         if isinstance(act, dict):
             owner = act.get("owner", "—")
             tf = act.get("timeframe", "—")
-            st.markdown(f"**{i}. {act.get('action', '')}**")
-            st.caption(f"Owner: {owner}  ·  Timeframe: {tf}")
+            urgency = str(act.get("urgency", "")).lower()
+            icon = _URGENCY_ICON.get(urgency, "")
+            st.markdown(f"**{i}. {icon} {act.get('action', '')}**")
+            caption = f"Owner: {owner}  ·  Timeframe: {tf}"
+            if urgency:
+                caption += f"  ·  Urgency: {urgency}"
+            st.caption(caption)
         else:
             st.markdown(f"**{i}.** {act}")
 
@@ -739,7 +756,10 @@ with tab_anom:
 # ============================== RECOMMENDATIONS ==============================
 with tab_reco:
     st.markdown("<div class='cp-section-title'>✅ One-click Executive Brief</div>", unsafe_allow_html=True)
-    st.caption("The wow feature: an auto-generated city action memo — one Gemini call, fully grounded.")
+    st.caption(
+        "The wow feature: a complete, plain-language handoff memo — written for whoever has "
+        "to act on this data, even if they've never seen it before. One Gemini call, fully grounded."
+    )
 
     if st.button("🧠 Generate Executive Brief", type="primary"):
         with st.spinner("Gemini is drafting your decision memo..."):
@@ -767,6 +787,12 @@ with tab_reco:
             st.warning("Showing offline fallback brief (Gemini not called). Set a key for full AI output.")
 
         st.markdown(f"## 📝 {data.get('title', 'Executive Brief')}")
+
+        if data.get("dataset_overview"):
+            st.markdown("#### 📖 What this dataset is")
+            st.markdown(data["dataset_overview"])
+            st.write("")
+
         st.markdown(f"> {data.get('summary', '')}")
 
         col1, col2 = st.columns(2)
@@ -774,12 +800,14 @@ with tab_reco:
             st.markdown("#### Key findings")
             for f in data.get("key_findings", []):
                 st.markdown(f"- {f}")
-            if data.get("anomalies"):
-                st.markdown("#### Anomalies")
-                for a in data["anomalies"]:
+            patterns = data.get("peculiar_patterns") or data.get("anomalies")
+            if patterns:
+                st.markdown("#### 🔎 Peculiar patterns")
+                for a in patterns:
                     st.markdown(f"- {a}")
         with col2:
-            st.markdown("#### Recommended actions")
+            st.markdown("#### Recommended actions — respond by urgency")
+            st.caption("🔴 immediate (ASAP) · 🟠 high (this week) · ⚪ normal (this month)")
             render_actions(data.get("recommended_actions", []))
             st.markdown("#### Confidence")
             st.markdown(confidence_badge(data.get("confidence")), unsafe_allow_html=True)

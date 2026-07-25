@@ -18,20 +18,43 @@ SYSTEM_INSTRUCTION = (
     "has 60 seconds. Explain what matters, why it matters, and what to do next."
 )
 
-# JSON schema we ask the model to fill. Kept flat and small to save tokens.
+# JSON schema for the Executive Brief. Framed as a handoff document for
+# someone who must fully understand this dataset before acting on it, not a
+# 60-second skim -- see build_brief_prompt for the full instructions.
 _REPORT_SHAPE = {
     "title": "string, <= 8 words",
+    "dataset_overview": (
+        "4-6 sentences in simple, jargon-free language giving a complete walkthrough of "
+        "what this dataset contains: the time range covered, total volume, which areas and "
+        "categories are involved, how severe/urgent it generally looks, and overall data "
+        "quality -- written for someone who has never seen this data before and needs to "
+        "fully understand it before making any changes"
+    ),
     "summary": "2-3 sentence executive summary",
-    "key_findings": ["3-5 short bullet strings grounded in the data"],
-    "anomalies": ["short strings explaining the flagged anomalies in plain language"],
+    "key_findings": [
+        "5-8 short bullet strings covering ALL the important patterns in the data, not just "
+        "the single biggest one -- volume, trend, severity mix, status/department breakdown, "
+        "whatever is notable -- grounded in specific numbers"
+    ],
+    "peculiar_patterns": [
+        "every unusual, surprising, or noteworthy pattern visible in the data, in plain "
+        "language -- statistically flagged anomalies AND anything else that looks off or "
+        "worth a second look (e.g. one area/category dominating, an odd status or department "
+        "imbalance, a sudden shift). Say 'nothing unusual stands out beyond the hotspot above' "
+        "if genuinely none."
+    ],
     "recommended_actions": [
         {
-            "action": "specific next step",
+            "action": (
+                "specific, complete next step -- enough detail that someone could start on "
+                "it without needing to ask a follow-up question"
+            ),
             "owner": "which department/team",
             "timeframe": "e.g. this week / 2 weeks",
+            "urgency": "one of: immediate (respond today/ASAP), high (this week), normal (this month)",
         }
     ],
-    "explanation": "plain-language reasoning for the top recommendation",
+    "explanation": "plain-language reasoning connecting the findings and patterns above to why these specific actions were recommended",
     "confidence": "one of: high, medium, low",
 }
 
@@ -52,7 +75,13 @@ def _analytics_block(insights: dict[str, Any]) -> str:
 
 
 def build_brief_prompt(insights: dict[str, Any], domain: str = "citizen complaints") -> str:
-    """One-click executive brief over the whole dataset."""
+    """One-click executive brief over the whole dataset.
+
+    Framed as a handoff document, not a 60-second skim: the reader is
+    whoever is responsible for acting on this data and may be seeing it for
+    the first time, so the brief must give them full understanding, not just
+    the single headline finding.
+    """
     return f"""Domain context: {domain}.
 
 Here is the deterministic analytics computed from the uploaded community data:
@@ -61,16 +90,31 @@ Here is the deterministic analytics computed from the uploaded community data:
 {_analytics_block(insights)}
 ```
 
-Produce a decision-ready executive brief. Return ONLY valid minified-or-pretty
-JSON (no markdown fences, no prose before/after) matching exactly this shape:
+Write this for someone who is responsible for making changes based on this
+data and needs to fully understand it -- not a 60-second skim. Assume they
+have not seen this dataset before. Use simple, plain language (avoid jargon
+and statistics-speak); explain what the numbers mean in practice, not just
+what they are.
+
+Cover the dataset completely: don't cherry-pick only the single biggest
+issue -- walk through the overall picture (volume, trend, severity, area and
+category spread, status/department breakdown) so the reader has full
+context, then call out every unusual or noteworthy pattern you can see in
+the analytics, even minor ones.
+
+Recommended actions must be complete and immediately actionable, and each
+one must be tagged with how urgently it needs a response so nothing that
+requires action today gets missed.
+
+Return ONLY valid JSON (no markdown fences, no prose before/after) matching
+exactly this shape:
 
 {json.dumps(_REPORT_SHAPE, indent=2)}
 
 Rules:
 - Ground every finding in the analytics above; cite specific counts/areas/categories.
 - If a field has no data, say so rather than guessing.
-- Recommended actions must be concrete and assignable.
-- Keep the whole response under 250 words.
+- Do not invent patterns that aren't supported by the analytics.
 """
 
 
