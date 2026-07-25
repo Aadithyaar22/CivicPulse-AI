@@ -93,6 +93,10 @@ THEMES: dict[str, dict[str, str | list[str]]] = {
         "pie_line": "#05060f",
         "geo_real": "#00f5ff", "geo_provided": "#a742ff", "geo_placeholder": "#ffb84d",
         "legend_bg": "rgba(13,18,38,0.7)",
+        "font_display": "'Orbitron', sans-serif",
+        "font_body": "'Rajdhani', sans-serif",
+        "font_mono": "'Share Tech Mono', monospace",
+        "ui_transform": "uppercase",
     },
     "light": {
         "void": "#f4f7fc", "void2": "#eaf1fa", "void3": "#eaf3fb",
@@ -118,7 +122,7 @@ THEMES: dict[str, dict[str, str | list[str]]] = {
         "sheen": "rgba(14,116,144,.08)",
         "btn_bg": "linear-gradient(135deg, rgba(14,116,144,.10), rgba(29,78,216,.08))",
         "btn_shadow": "0 2px 8px rgba(16,24,40,.08)", "btn_shadow_hover": "0 6px 18px rgba(16,24,40,.14)",
-        "btn_primary_bg": "linear-gradient(135deg, #0e7490, #1d4ed8)", "btn_primary_fg": "#ffffff",
+        "btn_primary_bg": "#0e7490", "btn_primary_fg": "#ffffff",
         "btn_primary_shadow": "0 4px 14px rgba(16,24,40,.18)", "btn_primary_shadow_hover": "0 8px 22px rgba(16,24,40,.24)",
         "uploader_btn_bg": "rgba(14,116,144,.08)",
         "input_border": "rgba(14,116,144,.22)", "input_focus": "0 0 0 2px rgba(14,116,144,.20)",
@@ -141,6 +145,10 @@ THEMES: dict[str, dict[str, str | list[str]]] = {
         "pie_line": "#ffffff",
         "geo_real": "#0e7490", "geo_provided": "#1d4ed8", "geo_placeholder": "#d97706",
         "legend_bg": "rgba(255,255,255,0.85)",
+        "font_display": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+        "font_body": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+        "font_mono": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+        "ui_transform": "none",
     },
 }
 
@@ -234,9 +242,10 @@ CSS = """
         --cp-selection-bg: @@selection_bg@@;
         --cp-selection-fg: @@selection_fg@@;
         --cp-ease: cubic-bezier(0.22, 1, 0.36, 1);
-        --font-display: 'Orbitron', sans-serif;
-        --font-body: 'Rajdhani', sans-serif;
-        --font-mono: 'Share Tech Mono', monospace;
+        --font-display: @@font_display@@;
+        --font-body: @@font_body@@;
+        --font-mono: @@font_mono@@;
+        --cp-ui-transform: @@ui_transform@@;
     }
 
     @keyframes cpFadeUp {
@@ -350,7 +359,7 @@ CSS = """
     .cp-badge {
         display:inline-block; background: var(--cp-badge-bg); border:1px solid var(--cp-badge-border);
         color: var(--cp-badge-fg); padding: 3px 12px; border-radius: 999px; font-size:.72rem;
-        font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase;
+        font-family: var(--font-mono); letter-spacing: .06em; text-transform: var(--cp-ui-transform);
         margin-right:6px; margin-top:.6rem;
         transition: background .2s var(--cp-ease), transform .2s var(--cp-ease), box-shadow .2s var(--cp-ease);
     }
@@ -400,7 +409,7 @@ CSS = """
         position: relative;
     }
     .cp-pill:hover { transform: translateY(-4px) scale(1.02); }
-    .cp-pill .cp-pill-label { font-family: var(--font-mono); letter-spacing: .1em; }
+    .cp-pill .cp-pill-label { font-family: var(--font-mono); letter-spacing: .1em; text-transform: var(--cp-ui-transform); }
     .cp-pill .cp-pill-value { font-family: var(--font-display); }
     div[data-testid="column"]:nth-of-type(1) .cp-pill { animation-delay: .00s; }
     div[data-testid="column"]:nth-of-type(2) .cp-pill { animation-delay: .06s; }
@@ -411,7 +420,7 @@ CSS = """
         font-weight:700; font-size:1.1rem; margin:.3rem 0 .7rem; color: var(--cp-text);
         animation: cpFadeIn .4s var(--cp-ease) both;
         padding-left: .7rem; border-left: 3px solid var(--cp-cyan);
-        text-transform: uppercase; letter-spacing: .06em;
+        text-transform: var(--cp-ui-transform); letter-spacing: .06em;
         filter: var(--cp-section-shadow);
     }
 
@@ -423,7 +432,7 @@ CSS = """
         padding: 10px 18px; border-radius: 10px 10px 0 0;
         background: rgba(255,255,255,.02);
         transition: color .2s var(--cp-ease), background-color .2s var(--cp-ease), box-shadow .2s var(--cp-ease);
-        text-transform: uppercase; font-size: .85rem; letter-spacing: .05em;
+        text-transform: var(--cp-ui-transform); font-size: .85rem; letter-spacing: .05em;
     }
     .stTabs [data-baseweb="tab"] p { color: var(--cp-text-dim) !important; }
     .stTabs [data-baseweb="tab"]:hover { background: var(--cp-tab-hover-bg); }
@@ -442,7 +451,7 @@ CSS = """
         border: 1px solid var(--cp-cyan) !important;
         color: var(--cp-text) !important;
         border-radius: 10px !important;
-        text-transform: uppercase; font-size: .82rem !important;
+        text-transform: var(--cp-ui-transform); font-size: .82rem !important;
         transition: transform .15s var(--cp-ease), box-shadow .15s var(--cp-ease), filter .15s var(--cp-ease);
         box-shadow: var(--cp-btn-shadow);
     }
@@ -483,7 +492,7 @@ CSS = """
        near-invisible (light text on white) in dark theme. Style the portal
        explicitly so it matches the current theme regardless of where in the
        DOM it's mounted. */
-    div[data-baseweb="popover"] div[data-baseweb="menu"], ul[role="listbox"] {
+    div[data-baseweb="popover"], div[data-baseweb="popover"] ul {
         background: var(--cp-panel-solid) !important;
         border: 1px solid var(--cp-input-border) !important;
     }
@@ -492,7 +501,7 @@ CSS = """
         color: var(--cp-text) !important;
     }
     li[role="option"]:hover, li[aria-selected="true"] {
-        background: var(--cp-tab-hover-bg) !important;
+        background: var(--cp-tab-active-bg) !important;
         color: var(--cp-cyan) !important;
     }
 
@@ -746,7 +755,7 @@ if load_result is None:
 def score_pill(label: str, value: float, color: str) -> str:
     return (
         f"<div class='cp-pill' style='border:1px solid {color};box-shadow:0 0 20px {color}59,inset 0 0 16px {color}14'>"
-        f"<div class='cp-pill-label' style='font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;opacity:.85;color:{color}'>{label}</div>"
+        f"<div class='cp-pill-label' style='font-size:.68rem;letter-spacing:.12em;opacity:.85;color:{color}'>{label}</div>"
         f"<div class='cp-pill-value' style='font-size:1.7rem;font-weight:800;color:{color};text-shadow:0 0 14px {color}99'>{value:.0f}</div>"
         f"<div style='font-size:.66rem;opacity:.7;font-family:var(--font-mono)'>/ 100</div></div>"
     )
