@@ -33,6 +33,18 @@ APP_DIR = Path(__file__).parent
 SAMPLE_CSV = APP_DIR / "sample_data" / "citizen_complaints.csv"
 SCHEDULED_BRIEF_FUNCTION_URL = os.environ.get("SCHEDULED_BRIEF_FUNCTION_URL", "")
 
+# Shared dark/neon theme applied to every Plotly chart so they sit on the
+# animated dark background instead of clashing with default white chart chrome.
+DARK_CHART_LAYOUT = dict(
+    paper_bgcolor="rgba(13,18,38,0.35)",
+    plot_bgcolor="rgba(0,0,0,0)",
+    font=dict(family="Rajdhani, sans-serif", color="#e8f6ff", size=13),
+    title_font=dict(family="Orbitron, sans-serif", color="#e8f6ff", size=15),
+    legend=dict(font=dict(color="#90a4c4"), bgcolor="rgba(0,0,0,0)"),
+    xaxis=dict(gridcolor="rgba(0,245,255,0.10)", zerolinecolor="rgba(0,245,255,0.18)", color="#90a4c4"),
+    yaxis=dict(gridcolor="rgba(0,245,255,0.10)", zerolinecolor="rgba(0,245,255,0.18)", color="#90a4c4"),
+)
+
 st.set_page_config(
     page_title="CivicPulse AI",
     page_icon="🏙️",
@@ -43,9 +55,26 @@ st.set_page_config(
 # ---------------------------------------------------------------- styling
 CSS = """
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
     :root {
-        --cp-teal: #0f766e; --cp-cyan: #0e7490; --cp-blue: #1d4ed8;
+        --cp-void: #05060f;
+        --cp-void2: #0a0e20;
+        --cp-panel: rgba(13, 18, 38, 0.55);
+        --cp-panel-solid: #0c1024;
+        --cp-border: rgba(0, 245, 255, 0.28);
+        --cp-cyan: #00f5ff;
+        --cp-violet: #a742ff;
+        --cp-magenta: #ff2fd0;
+        --cp-green: #39ff88;
+        --cp-amber: #ffb84d;
+        --cp-red: #ff3860;
+        --cp-text: #e8f6ff;
+        --cp-text-dim: #90a4c4;
         --cp-ease: cubic-bezier(0.22, 1, 0.36, 1);
+        --font-display: 'Orbitron', sans-serif;
+        --font-body: 'Rajdhani', sans-serif;
+        --font-mono: 'Share Tech Mono', monospace;
     }
 
     @keyframes cpFadeUp {
@@ -65,149 +94,294 @@ CSS = """
         0%, 100% { opacity: 1; }
         50%      { opacity: .55; }
     }
+    @keyframes cpSheen {
+        from { background-position: -150% -150%; }
+        to   { background-position: 150% 150%; }
+    }
+    html, body { background: var(--cp-void) !important; }
 
+    /* ---- Animated background: drifting neon orbs + tech grid ----
+       Painted as .stApp's own background (not a position:fixed pseudo-
+       element) so ordinary content simply paints on top in normal
+       document flow -- position:relative alone does NOT contain fixed-
+       position descendants (only transform/filter/perspective do), so a
+       fixed ::before here would escape .stApp's stacking context and can
+       end up rendered above real content regardless of z-index. */
+    .stApp {
+        background-color: var(--cp-void) !important;
+        background-image:
+            radial-gradient(circle at 20% 25%, rgba(0,245,255,0.20) 0%, transparent 30%),
+            radial-gradient(circle at 80% 18%, rgba(167,66,255,0.18) 0%, transparent 32%),
+            radial-gradient(circle at 55% 82%, rgba(255,47,208,0.15) 0%, transparent 34%),
+            repeating-linear-gradient(0deg, rgba(0,245,255,0.06) 0px, rgba(0,245,255,0.06) 1px, transparent 1px, transparent 56px),
+            repeating-linear-gradient(90deg, rgba(0,245,255,0.06) 0px, rgba(0,245,255,0.06) 1px, transparent 1px, transparent 56px),
+            radial-gradient(ellipse at 50% -10%, #131a3a 0%, var(--cp-void2) 45%, var(--cp-void) 100%) !important;
+        background-attachment: fixed !important;
+        animation: cpBgDrift 26s ease-in-out infinite;
+    }
+    @keyframes cpBgDrift {
+        0%   { background-position: 0% 0%, 0% 0%, 0% 0%, 0px 0px, 0px 0px, 0 0; }
+        50%  { background-position: 6% 8%, -7% -5%, 5% -6%, 0px 28px, 28px 0px, 0 0; }
+        100% { background-position: 0% 0%, 0% 0%, 0% 0%, 0px 0px, 0px 0px, 0 0; }
+    }
     .block-container { padding-top: 2rem; padding-bottom: 3rem; }
+
+    /* ---- Global typography ---- */
+    html, body, [data-testid="stAppViewContainer"], .stMarkdown, p, span, div, label,
+    input, textarea, select, .stSelectbox, .stTextInput, .stTextArea {
+        font-family: var(--font-body) !important;
+        color: var(--cp-text);
+    }
+    h1, h2, h3, h4, h5, h6, .cp-hero h1, .cp-section-title, .stTabs [data-baseweb="tab"] p,
+    [data-testid="stMarkdownContainer"] h1, [data-testid="stMarkdownContainer"] h2,
+    [data-testid="stMarkdownContainer"] h3, [data-testid="stMarkdownContainer"] h4 {
+        font-family: var(--font-display) !important;
+        letter-spacing: .02em;
+        color: var(--cp-text) !important;
+    }
+    button, .stButton > button, .stDownloadButton > button {
+        font-family: var(--font-display) !important;
+        letter-spacing: .04em;
+    }
+    code, .cp-card .val, .cp-pill .val, .cp-conf-value, [data-testid="stMetricValue"] {
+        font-family: var(--font-mono) !important;
+    }
 
     /* ---- Hero ---- */
     .cp-hero {
-        background: linear-gradient(120deg, var(--cp-teal) 0%, var(--cp-cyan) 45%, var(--cp-blue) 100%, var(--cp-teal) 140%);
-        background-size: 200% 200%;
-        color: #fff; padding: 1.4rem 1.6rem; border-radius: 16px; margin-bottom: 1.2rem;
-        box-shadow: 0 10px 30px rgba(13,110,110,0.25);
-        animation: cpFadeUp .5s var(--cp-ease) both, cpGradientDrift 14s ease-in-out infinite;
+        background: linear-gradient(135deg, rgba(0,245,255,0.10), rgba(167,66,255,0.10) 45%, rgba(255,47,208,0.08) 100%);
+        backdrop-filter: blur(18px) saturate(160%);
+        -webkit-backdrop-filter: blur(18px) saturate(160%);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text); padding: 1.6rem 1.8rem; border-radius: 18px; margin-bottom: 1.2rem;
+        box-shadow: 0 0 40px rgba(0,245,255,0.12), 0 20px 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,245,255,0.04);
+        animation: cpFadeUp .6s var(--cp-ease) both;
+        position: relative; overflow: hidden;
     }
-    .cp-hero h1 { margin: 0; font-size: 1.9rem; letter-spacing: -0.5px; }
-    .cp-hero p { margin: .3rem 0 0; opacity: .92; font-size: .98rem; }
+    .cp-hero h1 { margin: 0; font-size: 2.2rem; font-weight: 900; letter-spacing: .03em; }
+    .cp-hero-emoji { filter: drop-shadow(0 0 12px rgba(0,245,255,.5)); }
+    .cp-hero-text {
+        background: linear-gradient(90deg, var(--cp-cyan), var(--cp-violet), var(--cp-magenta), var(--cp-cyan));
+        background-size: 300% auto;
+        -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        animation: cpGradientDrift 7s linear infinite;
+        filter: drop-shadow(0 0 20px rgba(0,245,255,.35));
+    }
+    .cp-hero p { margin: .5rem 0 0; opacity: .88; font-size: 1.02rem; color: var(--cp-text); font-weight: 500; }
     .cp-badge {
-        display:inline-block; background: rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35);
-        padding: 2px 10px; border-radius: 999px; font-size:.72rem; margin-right:6px; margin-top:.5rem;
-        transition: background .2s var(--cp-ease), transform .2s var(--cp-ease);
+        display:inline-block; background: rgba(0,245,255,.08); border:1px solid rgba(0,245,255,.4);
+        color: var(--cp-cyan); padding: 3px 12px; border-radius: 999px; font-size:.72rem;
+        font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase;
+        margin-right:6px; margin-top:.6rem;
+        transition: background .2s var(--cp-ease), transform .2s var(--cp-ease), box-shadow .2s var(--cp-ease);
     }
-    .cp-badge:hover { background: rgba(255,255,255,.3); transform: translateY(-1px); }
+    .cp-badge:hover { background: rgba(0,245,255,.18); transform: translateY(-2px); box-shadow: 0 0 14px rgba(0,245,255,.4); }
 
-    /* ---- Cards ---- */
+    /* ---- Cards (glassmorphic) ---- */
     .cp-card {
-        background: #ffffff; border: 1px solid #e6e9ef; border-radius: 14px;
-        padding: 1rem 1.1rem; height: 100%;
-        box-shadow: 0 2px 10px rgba(16,24,40,0.04);
+        background: var(--cp-panel);
+        backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+        border: 1px solid var(--cp-border); border-radius: 16px;
+        padding: 1.05rem 1.2rem; height: 100%;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.45);
         animation: cpFadeUp .45s var(--cp-ease) both;
-        transition: transform .2s var(--cp-ease), box-shadow .2s var(--cp-ease), border-color .2s var(--cp-ease);
+        transition: transform .25s var(--cp-ease), box-shadow .25s var(--cp-ease), border-color .25s var(--cp-ease);
+        position: relative; overflow: hidden;
+    }
+    .cp-card::before {
+        content: ""; position: absolute; inset: 0;
+        background: linear-gradient(120deg, transparent 30%, rgba(0,245,255,.10) 50%, transparent 70%);
+        background-size: 250% 250%; background-position: -150% -150%; opacity: 0;
     }
     .cp-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 24px rgba(16,24,40,0.09);
-        border-color: #cbd5e1;
+        transform: translateY(-5px);
+        border-color: var(--cp-cyan);
+        box-shadow: 0 0 26px rgba(0,245,255,.30), 0 12px 34px rgba(0,0,0,.5);
     }
-    /* Stagger card entrances when several sit in a row of st.columns. */
+    .cp-card:hover::before { opacity: 1; animation: cpSheen 1.1s ease; }
     div[data-testid="column"]:nth-of-type(1) .cp-card { animation-delay: .00s; }
     div[data-testid="column"]:nth-of-type(2) .cp-card { animation-delay: .06s; }
     div[data-testid="column"]:nth-of-type(3) .cp-card { animation-delay: .12s; }
     div[data-testid="column"]:nth-of-type(4) .cp-card { animation-delay: .18s; }
 
-    .cp-card .lbl { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:#667085; margin:0; }
-    .cp-card .val { font-size:1.35rem; font-weight:700; color:#101828; margin:.15rem 0 0; }
-    .cp-card .sub { font-size:.8rem; color:#475467; margin:.2rem 0 0; }
+    .cp-card .lbl {
+        font-family: var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.14em;
+        color: var(--cp-cyan); margin:0; opacity: .85;
+    }
+    .cp-card .val { font-size:1.4rem; font-weight:700; color: var(--cp-text); margin:.2rem 0 0; text-shadow: 0 0 14px rgba(0,245,255,.35); }
+    .cp-card .sub { font-size:.8rem; color: var(--cp-text-dim); margin:.25rem 0 0; }
 
     /* ---- Decision scoreboard pills ---- */
     .cp-pill {
-        border-radius:12px; padding:.9rem 1rem; color:#fff; text-align:center;
+        border-radius:14px; padding:1rem 1rem; text-align:center;
+        background: var(--cp-panel) !important;
+        backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
         animation: cpFadeUp .45s var(--cp-ease) both;
-        transition: transform .2s var(--cp-ease), box-shadow .2s var(--cp-ease), filter .2s var(--cp-ease);
-        box-shadow: 0 4px 14px rgba(16,24,40,0.10);
+        transition: transform .22s var(--cp-ease), box-shadow .22s var(--cp-ease);
+        position: relative;
     }
-    .cp-pill:hover { transform: translateY(-3px) scale(1.015); filter: brightness(1.06); }
+    .cp-pill:hover { transform: translateY(-4px) scale(1.02); }
+    .cp-pill .cp-pill-label { font-family: var(--font-mono); letter-spacing: .1em; }
+    .cp-pill .cp-pill-value { font-family: var(--font-display); }
     div[data-testid="column"]:nth-of-type(1) .cp-pill { animation-delay: .00s; }
     div[data-testid="column"]:nth-of-type(2) .cp-pill { animation-delay: .06s; }
     div[data-testid="column"]:nth-of-type(3) .cp-pill { animation-delay: .12s; }
     div[data-testid="column"]:nth-of-type(4) .cp-pill { animation-delay: .18s; }
 
     .cp-section-title {
-        font-weight:700; font-size:1.05rem; margin:.2rem 0 .6rem; color:#101828;
+        font-weight:700; font-size:1.1rem; margin:.3rem 0 .7rem; color: var(--cp-text);
         animation: cpFadeIn .4s var(--cp-ease) both;
-        padding-left: .6rem; border-left: 3px solid var(--cp-cyan);
+        padding-left: .7rem; border-left: 3px solid var(--cp-cyan);
+        text-transform: uppercase; letter-spacing: .06em;
+        filter: drop-shadow(0 0 6px rgba(0,245,255,.3));
     }
 
-    /* ---- Tabs: smoother active-state + hover transitions ---- */
-    .stTabs [data-baseweb="tab-list"] { gap: 4px; }
-    .stTabs [data-baseweb="tab"] {
-        padding: 8px 16px; border-radius: 8px 8px 0 0;
-        transition: color .2s var(--cp-ease), background-color .2s var(--cp-ease);
+    /* ---- Tabs ---- */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 6px; border-bottom: 1px solid rgba(0,245,255,.15) !important;
     }
-    .stTabs [data-baseweb="tab"]:hover { background: rgba(14,116,144,0.06); }
-    .stTabs [data-baseweb="tab-highlight"] { transition: left .25s var(--cp-ease), width .25s var(--cp-ease); }
+    .stTabs [data-baseweb="tab"] {
+        padding: 10px 18px; border-radius: 10px 10px 0 0;
+        background: rgba(255,255,255,.02);
+        transition: color .2s var(--cp-ease), background-color .2s var(--cp-ease), box-shadow .2s var(--cp-ease);
+        text-transform: uppercase; font-size: .85rem; letter-spacing: .05em;
+    }
+    .stTabs [data-baseweb="tab"] p { color: var(--cp-text-dim) !important; }
+    .stTabs [data-baseweb="tab"]:hover { background: rgba(0,245,255,0.08); }
+    .stTabs [aria-selected="true"] { background: rgba(0,245,255,0.10); box-shadow: inset 0 -2px 0 var(--cp-cyan); }
+    .stTabs [aria-selected="true"] p { color: var(--cp-cyan) !important; text-shadow: 0 0 10px rgba(0,245,255,.5); }
+    .stTabs [data-baseweb="tab-highlight"] {
+        background-color: var(--cp-cyan) !important; height: 3px !important;
+        box-shadow: 0 0 10px var(--cp-cyan), 0 0 20px var(--cp-cyan);
+        transition: left .25s var(--cp-ease), width .25s var(--cp-ease);
+    }
     .stTabs [data-baseweb="tab-panel"] { animation: cpFadeIn .35s var(--cp-ease) both; }
 
     /* ---- Buttons ---- */
     .stButton > button, .stDownloadButton > button {
+        background: linear-gradient(135deg, rgba(0,245,255,.14), rgba(167,66,255,.14)) !important;
+        border: 1px solid var(--cp-cyan) !important;
+        color: var(--cp-text) !important;
+        border-radius: 10px !important;
+        text-transform: uppercase; font-size: .82rem !important;
         transition: transform .15s var(--cp-ease), box-shadow .15s var(--cp-ease), filter .15s var(--cp-ease);
+        box-shadow: 0 0 14px rgba(0,245,255,.15);
     }
     .stButton > button:hover, .stDownloadButton > button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 16px rgba(16,24,40,0.12);
+        transform: translateY(-2px);
+        box-shadow: 0 0 24px rgba(0,245,255,.5);
+        border-color: var(--cp-cyan) !important;
     }
     .stButton > button:active, .stDownloadButton > button:active { transform: translateY(0) scale(.98); }
+    .stButton > button[kind="primary"] {
+        background: linear-gradient(135deg, var(--cp-cyan), var(--cp-violet)) !important;
+        color: #05060f !important; font-weight: 700 !important; border: none !important;
+        box-shadow: 0 0 22px rgba(0,245,255,.45);
+    }
+    .stButton > button[kind="primary"]:hover { box-shadow: 0 0 34px rgba(0,245,255,.7); }
+
+    /* ---- Inputs, selects, file uploader ---- */
+    .stTextInput input, .stTextArea textarea, .stSelectbox div[data-baseweb="select"] > div,
+    [data-testid="stChatInput"] textarea, [data-testid="stFileUploaderDropzone"] {
+        background: var(--cp-panel-solid) !important;
+        border: 1px solid rgba(0,245,255,.25) !important;
+        color: var(--cp-text) !important;
+        border-radius: 10px !important;
+    }
+    .stTextInput input:focus, .stTextArea textarea:focus, [data-testid="stChatInput"] textarea:focus {
+        border-color: var(--cp-cyan) !important;
+        box-shadow: 0 0 0 2px rgba(0,245,255,.25) !important;
+    }
+    [data-testid="stFileUploaderDropzone"] { border-style: dashed !important; }
+    [data-testid="stFileUploaderDropzone"] button {
+        background: rgba(0,245,255,.10) !important; border: 1px solid var(--cp-cyan) !important; color: var(--cp-text) !important;
+    }
 
     /* ---- Expanders, containers, alerts ---- */
-    .stExpander, div[data-testid="stExpander"] { transition: box-shadow .2s var(--cp-ease); }
-    div[data-testid="stExpander"]:hover { box-shadow: 0 4px 14px rgba(16,24,40,0.06); }
-    div[data-testid="stVerticalBlockBorderWrapper"] { animation: cpFadeIn .35s var(--cp-ease) both; }
-    div[data-testid="stAlert"] { animation: cpFadeUp .35s var(--cp-ease) both; }
+    div[data-testid="stExpander"] {
+        background: var(--cp-panel); backdrop-filter: blur(12px);
+        border: 1px solid rgba(0,245,255,.18) !important; border-radius: 12px !important;
+        transition: box-shadow .2s var(--cp-ease), border-color .2s var(--cp-ease);
+    }
+    div[data-testid="stExpander"]:hover { box-shadow: 0 0 18px rgba(0,245,255,.15); border-color: var(--cp-cyan) !important; }
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        animation: cpFadeIn .35s var(--cp-ease) both;
+    }
+    div[data-testid="stAlert"] {
+        background: var(--cp-panel) !important; backdrop-filter: blur(12px);
+        border: 1px solid rgba(0,245,255,.2); border-radius: 12px;
+        animation: cpFadeUp .35s var(--cp-ease) both;
+    }
 
     /* ---- Spinner ---- */
     div[data-testid="stSpinner"] { animation: cpPulse 1.6s ease-in-out infinite; }
+    div[data-testid="stSpinner"] svg { filter: drop-shadow(0 0 6px var(--cp-cyan)); }
+    div[data-testid="stSpinner"] p { color: var(--cp-cyan) !important; font-family: var(--font-mono) !important; }
 
-    /* ---- Confidence badge: left-aligned, color-coded rectangle ---- */
+    /* ---- Confidence badge ---- */
     .cp-confidence {
         display: inline-flex; flex-direction: column; align-items: flex-start;
-        border-radius: 10px; padding: .45rem 1rem; margin: .3rem 0 .7rem;
-        color: #fff; animation: cpFadeUp .35s var(--cp-ease) both;
+        border-radius: 10px; padding: .5rem 1.1rem; margin: .3rem 0 .7rem;
+        background: var(--cp-panel) !important; backdrop-filter: blur(12px);
+        animation: cpFadeUp .35s var(--cp-ease) both;
         transition: transform .2s var(--cp-ease), box-shadow .2s var(--cp-ease);
-        box-shadow: 0 3px 10px rgba(16,24,40,0.10);
     }
-    .cp-confidence:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(16,24,40,0.14); }
+    .cp-confidence:hover { transform: translateY(-2px); }
     .cp-confidence .cp-conf-label {
-        font-size: .64rem; text-transform: uppercase; letter-spacing: .08em; opacity: .9;
+        font-family: var(--font-mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .12em; opacity: .8;
     }
-    .cp-confidence .cp-conf-value { font-size: 1.05rem; font-weight: 800; margin-top: .05rem; }
-    .cp-conf-high   { background: linear-gradient(135deg,#059669,#10b981); }
-    .cp-conf-medium { background: linear-gradient(135deg,#d97706,#f59e0b); }
-    .cp-conf-low    { background: linear-gradient(135deg,#dc2626,#f87171); }
+    .cp-confidence .cp-conf-value { font-family: var(--font-display); font-size: 1.05rem; font-weight: 800; margin-top: .1rem; }
+    .cp-conf-high   { border: 1px solid var(--cp-green); box-shadow: 0 0 18px rgba(57,255,136,.35); }
+    .cp-conf-high .cp-conf-value   { color: var(--cp-green); text-shadow: 0 0 10px rgba(57,255,136,.6); }
+    .cp-conf-medium { border: 1px solid var(--cp-amber); box-shadow: 0 0 18px rgba(255,184,77,.35); }
+    .cp-conf-medium .cp-conf-value { color: var(--cp-amber); text-shadow: 0 0 10px rgba(255,184,77,.6); }
+    .cp-conf-low    { border: 1px solid var(--cp-red); box-shadow: 0 0 18px rgba(255,56,96,.35); }
+    .cp-conf-low .cp-conf-value    { color: var(--cp-red); text-shadow: 0 0 10px rgba(255,56,96,.6); }
 
     /* ---- Chat (Ask AI) ---- */
     [data-testid="stChatMessage"] {
-        border-radius: 16px; margin-bottom: .5rem; padding: .3rem .2rem;
+        border-radius: 16px; margin-bottom: .6rem; padding: .4rem .3rem;
+        backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
         animation: cpFadeUp .3s var(--cp-ease) both;
         transition: box-shadow .2s var(--cp-ease);
     }
     [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
-        background: rgba(14,116,144,0.07);
+        background: rgba(167,66,255,0.08); border: 1px solid rgba(167,66,255,.3);
     }
     [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]),
     [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarCustom"]) {
-        background: #ffffff; border: 1px solid #e6e9ef; box-shadow: 0 2px 10px rgba(16,24,40,0.04);
+        background: rgba(0,245,255,0.05); border: 1px solid rgba(0,245,255,.28);
     }
-    [data-testid="stChatMessage"]:hover { box-shadow: 0 6px 16px rgba(16,24,40,0.08); }
-    [data-testid="stChatInput"] textarea:focus { box-shadow: 0 0 0 2px rgba(14,116,144,.25); }
+    [data-testid="stChatMessage"]:hover { box-shadow: 0 0 20px rgba(0,245,255,.18); }
+
+    /* ---- Sidebar ---- */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #0a0e20 0%, #05060f 100%) !important;
+        border-right: 1px solid rgba(0,245,255,.18);
+    }
+    [data-testid="stSidebar"] * { color: var(--cp-text) !important; }
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3,
+    [data-testid="stSidebar"] h4 { font-family: var(--font-display) !important; }
+
+    /* ---- Dataframe ---- */
+    [data-testid="stDataFrame"] { border: 1px solid rgba(0,245,255,.2); border-radius: 10px; overflow: hidden; }
 
     /* ---- Misc polish ---- */
-    ::selection { background: rgba(14,116,144,.25); }
+    ::selection { background: rgba(0,245,255,.3); color: #05060f; }
     [data-testid="stMain"] { scroll-behavior: smooth; }
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-        border-right: 1px solid #eef1f6;
-    }
     ::-webkit-scrollbar { width: 10px; height: 10px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(var(--cp-cyan), var(--cp-violet)); border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: linear-gradient(var(--cp-violet), var(--cp-magenta)); }
 
     @media (prefers-reduced-motion: reduce) {
-        .cp-hero, .cp-card, .cp-pill, .cp-section-title, .stTabs [data-baseweb="tab-panel"],
+        .stApp, .cp-hero, .cp-hero h1, .cp-card, .cp-pill, .cp-section-title, .stTabs [data-baseweb="tab-panel"],
         div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stAlert"], div[data-testid="stSpinner"],
         .cp-confidence, [data-testid="stChatMessage"] {
             animation: none !important;
         }
-        .cp-hero { background-position: 0% 50%; }
     }
 </style>
 """
@@ -321,7 +495,7 @@ with st.sidebar:
 st.markdown(
     """
     <div class="cp-hero">
-        <h1>🏙️ CivicPulse AI</h1>
+        <h1><span class="cp-hero-emoji">🏙️</span> <span class="cp-hero-text">CivicPulse AI</span></h1>
         <p>Ask your community data anything — get patterns, anomalies, and decisions.
         <b>Not just answers — better decisions.</b></p>
         <span class="cp-badge">Natural-language analytics</span>
@@ -361,19 +535,19 @@ if load_result is None:
 # ---------------------------------------------------------------- helpers for rendering
 def score_pill(label: str, value: float, color: str) -> str:
     return (
-        f"<div class='cp-pill' style='background:{color}'>"
-        f"<div style='font-size:.72rem;opacity:.9'>{label}</div>"
-        f"<div style='font-size:1.6rem;font-weight:800'>{value:.0f}</div>"
-        f"<div style='font-size:.68rem;opacity:.85'>/ 100</div></div>"
+        f"<div class='cp-pill' style='border:1px solid {color};box-shadow:0 0 20px {color}59,inset 0 0 16px {color}14'>"
+        f"<div class='cp-pill-label' style='font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;opacity:.85;color:{color}'>{label}</div>"
+        f"<div class='cp-pill-value' style='font-size:1.7rem;font-weight:800;color:{color};text-shadow:0 0 14px {color}99'>{value:.0f}</div>"
+        f"<div style='font-size:.66rem;opacity:.7;font-family:var(--font-mono)'>/ 100</div></div>"
     )
 
 
 def urgency_color(v: float) -> str:
     if v >= 70:
-        return "#dc2626"
+        return "#ff3860"
     if v >= 45:
-        return "#d97706"
-    return "#059669"
+        return "#ffb84d"
+    return "#39ff88"
 
 
 def confidence_badge(confidence: str | None) -> str:
@@ -564,9 +738,9 @@ with tab_overview:
         st.markdown("<div class='cp-section-title'>Decision Scoreboard</div>", unsafe_allow_html=True)
         s1, s2, s3, s4 = st.columns(4)
         s1.markdown(score_pill("Urgency", scores["urgency"], urgency_color(scores["urgency"])), unsafe_allow_html=True)
-        s2.markdown(score_pill("Impact", scores["impact"], "#1d4ed8"), unsafe_allow_html=True)
-        s3.markdown(score_pill("Confidence", scores["confidence"], "#0e7490"), unsafe_allow_html=True)
-        s4.markdown(score_pill("Severity", scores["severity_index"], "#7c3aed"), unsafe_allow_html=True)
+        s2.markdown(score_pill("Impact", scores["impact"], "#00f5ff"), unsafe_allow_html=True)
+        s3.markdown(score_pill("Confidence", scores["confidence"], "#a742ff"), unsafe_allow_html=True)
+        s4.markdown(score_pill("Severity", scores["severity_index"], "#ff2fd0"), unsafe_allow_html=True)
         st.caption(f"Open/unresolved case rate: **{d['open_rate_pct']}%**")
         cb = scores.get("confidence_breakdown")
         if cb:
@@ -594,11 +768,11 @@ with tab_overview:
                 hover_data={"total_complaints": True, "open_rate_pct": True, "high_severity_rate_pct": True,
                             "lat": False, "lon": False, "hotspot_score": ":.1f", "coord_label": False},
                 color_discrete_map={
-                    "Real BBMP ward location": "#0e7490",
-                    "Provided coordinates": "#1d4ed8",
-                    "Placeholder (unmatched)": "#d97706",
+                    "Real BBMP ward location": "#00f5ff",
+                    "Provided coordinates": "#a742ff",
+                    "Placeholder (unmatched)": "#ffb84d",
                 },
-                size_max=32, zoom=10, mapbox_style="carto-positron",
+                size_max=32, zoom=10, mapbox_style="carto-darkmatter",
             )
             # Auto-fit the view to the actual data instead of a fixed zoom level.
             lat_span = geo_df["lat"].max() - geo_df["lat"].min()
@@ -607,6 +781,9 @@ with tab_overview:
             auto_zoom = 12 if span < 0.05 else (10 if span < 0.15 else (8 if span < 0.5 else 6))
             fig_map.update_layout(
                 height=520, margin=dict(l=0, r=0, t=10, b=0), legend_title_text="",
+                paper_bgcolor="rgba(0,0,0,0)",
+                font=dict(family="Rajdhani, sans-serif", color="#e8f6ff"),
+                legend=dict(bgcolor="rgba(13,18,38,0.6)", font=dict(color="#e8f6ff")),
                 mapbox=dict(
                     center=dict(lat=float(geo_df["lat"].mean()), lon=float(geo_df["lon"].mean())),
                     zoom=auto_zoom,
@@ -658,9 +835,12 @@ with tab_overview:
                     labels={"x": "Complaints", "y": ""},
                     title="Complaints by area",
                     color=list(d["by_area"].values()),
-                    color_continuous_scale="Teal",
+                    color_continuous_scale=["#1a1f3a", "#00f5ff"],
                 )
-                fig.update_layout(showlegend=False, coloraxis_showscale=False, height=340, margin=dict(l=0, r=0, t=40, b=0))
+                fig.update_layout(
+                    showlegend=False, coloraxis_showscale=False, height=340, margin=dict(l=0, r=0, t=40, b=0),
+                    **DARK_CHART_LAYOUT,
+                )
                 fig.update_yaxes(autorange="reversed")
                 st.plotly_chart(fig, use_container_width=True)
         with c_right:
@@ -669,8 +849,8 @@ with tab_overview:
                 fig2 = px.area(
                     tdf, x="week", y="count", title="Weekly volume trend", markers=True,
                 )
-                fig2.update_traces(line_color="#0e7490", fillcolor="rgba(14,116,144,0.15)")
-                fig2.update_layout(height=340, margin=dict(l=0, r=0, t=40, b=0))
+                fig2.update_traces(line_color="#00f5ff", fillcolor="rgba(0,245,255,0.15)", marker=dict(color="#a742ff", size=7))
+                fig2.update_layout(height=340, margin=dict(l=0, r=0, t=40, b=0), **DARK_CHART_LAYOUT)
                 st.plotly_chart(fig2, use_container_width=True)
 
         c_a, c_b = st.columns(2)
@@ -680,8 +860,10 @@ with tab_overview:
                     names=[humanize(k) for k in d["by_category"].keys()],
                     values=list(d["by_category"].values()),
                     title="Category mix", hole=0.5,
+                    color_discrete_sequence=["#00f5ff", "#a742ff", "#ff2fd0", "#39ff88", "#ffb84d", "#ff3860"],
                 )
-                fig3.update_layout(height=340, margin=dict(l=0, r=0, t=40, b=0))
+                fig3.update_traces(marker=dict(line=dict(color="#05060f", width=2)))
+                fig3.update_layout(height=340, margin=dict(l=0, r=0, t=40, b=0), **DARK_CHART_LAYOUT)
                 st.plotly_chart(fig3, use_container_width=True)
         with c_b:
             if d["severity_distribution"]:
@@ -691,9 +873,9 @@ with tab_overview:
                     x=[k.title() for k in sd.keys()], y=list(sd.values()),
                     title="Severity distribution", labels={"x": "", "y": "Count"},
                     color=[k.title() for k in sd.keys()],
-                    color_discrete_map={"Low": "#22c55e", "Medium": "#eab308", "High": "#f97316", "Critical": "#dc2626"},
+                    color_discrete_map={"Low": "#39ff88", "Medium": "#ffb84d", "High": "#ff7a3d", "Critical": "#ff3860"},
                 )
-                fig4.update_layout(showlegend=False, height=340, margin=dict(l=0, r=0, t=40, b=0))
+                fig4.update_layout(showlegend=False, height=340, margin=dict(l=0, r=0, t=40, b=0), **DARK_CHART_LAYOUT)
                 st.plotly_chart(fig4, use_container_width=True)
 
         with st.expander("Preview raw data"):
