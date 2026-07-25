@@ -206,6 +206,15 @@ Brief" button — `analytics.compute_insights` → `GeminiClient.executive_brief
 CivicPulse from a dashboard someone has to remember to open into a service
 that delivers a decision on its own schedule.
 
+**Department-scoped routing:** on top of the citywide brief (sent to
+`ALERT_RECIPIENT`), the function also finds every department present in the
+data and sends each one its own brief — computed from *only that
+department's* records, not the whole city. Recipients come from
+`src/department_contacts.py` (department name → list of emails, so one
+department can route to multiple sub-offices). A department with no
+configured contact is skipped and reported in the response JSON, never
+guessed. Edit that file to point departments at real addresses.
+
 **One-time setup:**
 
 1. On the sending Gmail account, enable 2-Step Verification, then generate an
@@ -225,7 +234,7 @@ that delivers a decision on its own schedule.
    gcloud functions deploy civicpulse-scheduled-brief \
      --gen2 --runtime=python312 --region=us-central1 \
      --source=. --entry-point=scheduled_brief --trigger-http \
-     --no-allow-unauthenticated --memory=512Mi --timeout=120s \
+     --no-allow-unauthenticated --memory=512Mi --timeout=300s \
      --set-env-vars=GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID,GOOGLE_CLOUD_LOCATION=us-central1,ALERT_SENDER=you@gmail.com,ALERT_RECIPIENT=official@example.com,GEMINI_MODEL=gemini-2.5-flash-lite \
      --set-secrets=GMAIL_APP_PASSWORD=civicpulse-gmail-app-password:latest \
      --project YOUR_PROJECT_ID

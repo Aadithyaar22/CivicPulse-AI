@@ -30,6 +30,7 @@ import functions_framework
 
 from src.analytics import compute_insights
 from src.data_loader import _coerce_types, _map_columns, load_sample
+from src.department_contacts import recipients_for
 from src.gemini_client import GeminiClient
 from src.history_store import HistoryStore
 
@@ -52,12 +53,16 @@ def _load_dataframe():
     return _coerce_types(df)
 
 
-def _send_email(subject: str, body: str) -> None:
+def _send_email(subject: str, body: str, recipients: list[str] | None = None) -> None:
+    """Send one email. `recipients` overrides ALERT_RECIPIENT -- used for
+    department-scoped reports where each department has its own contact
+    list; the citywide report keeps using ALERT_RECIPIENT by omitting it."""
     sender = os.environ.get("ALERT_SENDER")
-    recipient = os.environ.get("ALERT_RECIPIENT")
     app_password = os.environ.get("GMAIL_APP_PASSWORD")
-    if not (sender and recipient and app_password):
-        raise RuntimeError("ALERT_SENDER, ALERT_RECIPIENT, and GMAIL_APP_PASSWORD must all be set.")
+    to_list = recipients if recipients is not None else [os.environ.get("ALERT_RECIPIENT")]
+    to_list = [r for r in to_list if r]
+    if not (sender and app_password and to_list):
+        raise RuntimeError("ALERT_SENDER, GMAIL_APP_PASSWORD, and at least one recipient must be set.")
     # Google displays the app password as four 4-char groups separated by
     # spaces for readability; the real credential has no whitespace. Copying
     # it from a rendered web page sometimes carries over non-breaking spaces
@@ -73,7 +78,7 @@ def _send_email(subject: str, body: str) -> None:
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = sender
-    msg["To"] = recipient
+    msg["To"] = ", ".join(to_list)
     msg.set_content(body)
 
     with smtplib.SMTP("smtp.gmail.com", 587) as server:
@@ -106,10 +111,23 @@ def _brief_to_email_body(data: dict) -> str:
     return "\n".join(lines)
 
 
+def _department_slice(df, department: str):
+    return df[df["department"].astype(str) == department]
+
+
 @functions_framework.http
 def scheduled_brief(request):
     """HTTP entry point Cloud Scheduler calls. Returns a small JSON status
-    body so the Scheduler job's execution log shows what actually happened."""
+    body so the Scheduler job's execution log shows what actually happened.
+
+    Sends two kinds of email:
+      1. The citywide brief (unchanged from before) to ALERT_RECIPIENT.
+      2. One brief per department found in the data, scoped to ONLY that
+         department's records, to the recipients configured in
+         src/department_contacts.py. A department with no configured
+         contact is skipped (reported, not treated as a failure) -- routing
+         never guesses an address.
+    """
     domain = os.environ.get("ALERT_DOMAIN", "citizen complaints")
 
     df = _load_dataframe()
@@ -117,10 +135,11 @@ def scheduled_brief(request):
     payload = insights.to_dict()
 
     gemini = GeminiClient()
+    history = HistoryStore()
+
+    # ---------------------------------------------------------- citywide
     result = gemini.executive_brief(payload, domain)
     data = result.data
-
-    history = HistoryStore()
     saved_id = None
     if result.ok:
         saved_id = history.save_brief(
@@ -135,9 +154,47 @@ def scheduled_brief(request):
     except Exception as exc:  # noqa: BLE001 - report, don't crash the scheduled run
         email_status = f"failed: {exc}"
 
+    # ---------------------------------------------------- department-scoped
+    department_status: dict[str, str] = {}
+    departments = (
+        sorted(df["department"].dropna().astype(str).unique().tolist())
+        if "department" in df.columns
+        else []
+    )
+    for dept in departments:
+        recipients = recipients_for(dept)
+        if not recipients:
+            department_status[dept] = "skipped (no contact configured)"
+            continue
+
+        dept_df = _department_slice(df, dept)
+        if dept_df.empty:
+            department_status[dept] = "skipped (no records)"
+            continue
+
+        dept_payload = compute_insights(dept_df).to_dict()
+        dept_result = gemini.executive_brief(dept_payload, domain)
+        dept_data = dept_result.data
+        if dept_result.ok:
+            history.save_brief(
+                domain=f"{domain} — {dept}",
+                source_type="scheduled_department",
+                insights=dept_payload,
+                brief_data=dept_data,
+            )
+
+        dept_subject = f"CivicPulse AI — {dept} Weekly Report"
+        dept_body = _brief_to_email_body(dept_data)
+        try:
+            _send_email(dept_subject, dept_body, recipients=recipients)
+            department_status[dept] = f"sent to {len(recipients)} recipient(s)"
+        except Exception as exc:  # noqa: BLE001 - one department's failure shouldn't skip the rest
+            department_status[dept] = f"failed: {exc}"
+
     return {
         "ok": True,
         "gemini_used_fallback": result.used_fallback,
         "saved_brief_id": saved_id,
         "email_status": email_status,
+        "department_reports": department_status,
     }, 200
