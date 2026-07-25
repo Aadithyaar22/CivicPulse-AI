@@ -27,6 +27,7 @@ statistics.
 | 🔍 **Explainability panel** | Plain-language reasoning behind every recommendation. |
 | 📥 **Multi-format ingest** | CSV, JSON, PDF text, or pasted text — with forgiving column auto-mapping. |
 | 🗄️ **Persistent brief history** | Every generated brief is saved to Firestore, so a team can see how a location trends across sessions, not just today's snapshot. |
+| 🔄 **Reload-safe sessions** | Loaded data and chat history survive a page refresh — restored from Firestore, keyed by a session id in the URL, auto-expiring after 24h. |
 | 🔔 **Automated weekly brief** | A Cloud Scheduler job triggers the same analytics → Gemini pipeline on a cron and emails the result — insight delivered to an inbox with nobody opening the dashboard. |
 
 ---
@@ -193,6 +194,32 @@ One-time setup:
 ```bash
 gcloud services enable firestore.googleapis.com --project YOUR_PROJECT_ID
 gcloud firestore databases create --location=us-central1 --type=firestore-native --project YOUR_PROJECT_ID
+```
+
+---
+
+## 🔄 Reload-safe sessions (Firestore)
+
+`st.session_state` is in-memory per browser session — a page reload opens a
+fresh one server-side, so without this, refreshing wipes your loaded data and
+chat. Instead, app.py keeps a session id in the URL (`?sid=...`, which *does*
+survive a reload) and saves the loaded dataset + chat history + brief to
+Firestore after every meaningful change; on a fresh session it looks up that
+id and restores them. See `src/session_store.py`.
+
+Entirely optional and best-effort, same as brief history above:
+- If Firestore isn't reachable, the app just works as before (reload resets it).
+- A dataset too large for Firestore's 1 MiB document cap (roughly a few
+  thousand rows, depending on column count) silently isn't persisted —
+  reload will reset that session's data, nothing else is affected.
+- Uses the same Firestore database as brief history — no extra setup beyond
+  what's above, **except** the TTL policy (so old sessions actually get
+  reclaimed instead of just being ignored once expired):
+```bash
+gcloud firestore fields ttls update expires_at \
+  --collection-group=civicpulse_sessions \
+  --enable-ttl \
+  --project YOUR_PROJECT_ID
 ```
 
 ---

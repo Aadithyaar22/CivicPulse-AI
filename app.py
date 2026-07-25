@@ -9,6 +9,7 @@ Philosophy: "Not just answers - better decisions."
 from __future__ import annotations
 
 import os
+import uuid
 from pathlib import Path
 
 import pandas as pd
@@ -16,9 +17,10 @@ import plotly.express as px
 import streamlit as st
 
 from src.analytics import compute_insights, filter_dataframe
-from src.data_loader import LoadResult, load_sample, load_text, load_uploaded_file
-from src.gemini_client import MAX_CONVERSATION_QUESTIONS, GeminiClient
+from src.data_loader import LoadResult, _coerce_types, load_sample, load_text, load_uploaded_file
+from src.gemini_client import MAX_CONVERSATION_QUESTIONS, GeminiClient, GeminiResult
 from src.history_store import HistoryStore
+from src.session_store import SessionStore
 from src.utils import humanize
 
 # Load .env if present (local dev convenience).
@@ -637,8 +639,115 @@ def get_history() -> HistoryStore:
     return HistoryStore()
 
 
+@st.cache_resource(show_spinner=False)
+def get_session_store() -> SessionStore:
+    return SessionStore()
+
+
 gemini = get_gemini()
 history = get_history()
+session_store = get_session_store()
+
+
+# ---------------------------------------------------------------- session persistence
+# st.session_state lives only in server memory for one browser session -- a
+# page reload opens a fresh one, wiping it. A session id kept in the URL's
+# query params DOES survive a reload, so it's what ties a reloaded page back
+# to whatever was last saved to Firestore for that id. See src/session_store.py.
+def _get_session_id() -> str:
+    sid = st.query_params.get("sid")
+    if not sid:
+        sid = uuid.uuid4().hex[:16]
+        st.query_params["sid"] = sid
+    return sid
+
+
+SESSION_ID = _get_session_id()
+
+
+def _result_to_dict(result: GeminiResult) -> dict:
+    return {
+        "ok": result.ok,
+        "data": result.data,
+        "raw_text": result.raw_text,
+        "used_fallback": result.used_fallback,
+        "model": result.model,
+        "error": result.error,
+    }
+
+
+def _dict_to_result(d: dict) -> GeminiResult:
+    return GeminiResult(
+        ok=d.get("ok", True),
+        data=d.get("data") or {},
+        raw_text=d.get("raw_text") or "",
+        used_fallback=d.get("used_fallback", False),
+        model=d.get("model") or "",
+        error=d.get("error"),
+    )
+
+
+def _persist_session() -> None:
+    """Best-effort save of the current session so a reload can restore it.
+    Call after any state change worth surviving a reload (new data loaded,
+    a Q&A turn answered, a brief generated). Silently a no-op if Firestore
+    isn't reachable or the dataset is too large to persist -- never blocks
+    or errors on the live session over it."""
+    lr = st.session_state.load_result
+    session_store.save(
+        SESSION_ID,
+        df=lr.df if lr is not None else None,
+        source_type=lr.source_type if lr is not None else None,
+        raw_text=lr.raw_text if lr is not None else None,
+        domain=st.session_state.domain,
+        qa_history=[(q, _result_to_dict(r)) for q, r in st.session_state.qa_history],
+        brief=_result_to_dict(st.session_state.brief) if st.session_state.brief is not None else None,
+    )
+
+
+def _rehydrate_session() -> None:
+    """Once per browser session (guarded so a normal rerun doesn't hit
+    Firestore every time), try to restore a previously saved dataset and
+    chat history for this session id after a page reload."""
+    if st.session_state.get("_rehydrate_attempted"):
+        return
+    st.session_state._rehydrate_attempted = True
+    if st.session_state.load_result is not None:
+        return
+    restored = session_store.load(SESSION_ID)
+    if not restored:
+        return
+
+    df = restored.get("df")
+    if df is not None and not df.empty:
+        # A CSV round-trip loses dtypes (dates/strings come back as plain
+        # object columns) -- re-run the same coercion the original upload
+        # went through so analytics.py's .dt accessor calls keep working.
+        df = _coerce_types(df)
+    st.session_state.load_result = LoadResult(
+        df=df if df is not None else pd.DataFrame(),
+        source_type=restored.get("source_type") or "csv",
+        raw_text=restored.get("raw_text"),
+    )
+    st.session_state.domain = restored.get("domain") or st.session_state.domain
+    st.session_state.insights = compute_insights(df) if df is not None and not df.empty else None
+
+    st.session_state.qa_history = [
+        (turn.get("question", ""), _dict_to_result(turn.get("result") or {}))
+        for turn in restored.get("qa_history") or []
+    ]
+    # The Gemini SDK conversation object holds live google.genai types, not
+    # plain data, so it can't be restored across a reload -- a follow-up
+    # question after a reload just starts a fresh tool-calling conversation
+    # instead of literally continuing the old one. The restored Q&A history
+    # above still displays normally either way.
+    st.session_state.qa_conversation = None
+
+    brief_dict = restored.get("brief")
+    st.session_state.brief = _dict_to_result(brief_dict) if brief_dict else None
+
+
+_rehydrate_session()
 
 
 def _set_data(load_result: LoadResult) -> None:
@@ -650,6 +759,7 @@ def _set_data(load_result: LoadResult) -> None:
         st.session_state.insights = compute_insights(load_result.df)
     else:
         st.session_state.insights = None
+    _persist_session()
 
 
 # ---------------------------------------------------------------- sidebar
@@ -715,6 +825,10 @@ with st.sidebar:
     st.caption(
         "🗄️ Brief history: saving to Firestore" if history.available
         else "🗄️ Brief history: unavailable this session (not saved)"
+    )
+    st.caption(
+        "🔄 Reload-safe: your data & chat survive a page refresh" if session_store.available
+        else "🔄 Reload-safe: unavailable this session (refresh will reset)"
     )
 
     st.divider()
@@ -1181,6 +1295,7 @@ with tab_ask:
         if st.button("🔄 Start a new conversation"):
             st.session_state.qa_history = []
             st.session_state.qa_conversation = None
+            _persist_session()
             st.rerun()
     else:
         st.caption("💡 Try asking")
@@ -1214,6 +1329,7 @@ with tab_ask:
             with st.spinner("Analyzing..."):
                 result = gemini.summarize_text(raw, st.session_state.domain)
         st.session_state.qa_history.append((question, result))
+        _persist_session()
         # Rerun so this turn renders through the history loop above (in its
         # natural position above the input) instead of appearing transiently
         # below the already-rendered input box for one frame.
@@ -1273,6 +1389,7 @@ with tab_reco:
                 insights=insights.to_dict(),
                 brief_data=_fresh_brief.data,
             )
+        _persist_session()
 
     brief = st.session_state.brief
     if brief is not None:
@@ -1399,6 +1516,9 @@ from a one-off dashboard into an automated service.
   single grounded Gemini call.
 - 🗄️ **Persistent brief history** — every generated brief saves to Firestore, so
   a team can see trends across sessions, not just today's upload.
+- 🔄 **Reload-safe sessions** — your loaded data and chat history survive a page
+  refresh, restored from Firestore via a session id kept in the URL; stale
+  sessions auto-expire after 24h.
 - 🔔 **Automated, department-routed email** — a Cloud Scheduler job runs the same
   pipeline on a cron and emails a citywide brief *plus* a separate brief per
   department, scoped to only that department's data, to that department's own
@@ -1410,7 +1530,7 @@ from a one-off dashboard into an automated service.
 - 🚀 **Cloud Run** — hosts the app, scale-to-zero so idle cost is ~$0
 - ⚡ **Cloud Functions (2nd gen)** — the scheduled brief job
 - ⏰ **Cloud Scheduler** — triggers the weekly automated run
-- 🗄️ **Firestore** — brief history persistence
+- 🗄️ **Firestore** — brief history + reload-safe session persistence
 - 🔐 **Secret Manager** — stores the Gmail app password, never in code
 - 🛠️ **Cloud Build**, **Artifact Registry**, **IAM**, **Cloud Logging**, **`gcloud` CLI**
   — builds, image storage, least-privilege service accounts, and one-command deploys
