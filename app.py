@@ -474,6 +474,17 @@ CSS = """
         background: var(--cp-panel-solid) !important;
         border: 1px solid var(--cp-input-border) !important;
         color: var(--cp-text) !important;
+        caret-color: var(--cp-cyan) !important;
+        border-radius: 10px !important;
+    }
+    /* [data-testid="stChatInput"] is its OWN wrapper around the textarea, not
+       just a container -- it carries its own opaque white background
+       (unrelated to the textarea's), which peeked through at the rounded
+       corners since only the inner textarea was styled above. Typed text
+       itself was never actually black; the white sliver around it just made
+       everything read as washed out / hard to see against the dark page. */
+    [data-testid="stChatInput"] {
+        background: var(--cp-panel-solid) !important;
         border-radius: 10px !important;
     }
     .stTextInput input:focus, .stTextArea textarea:focus, [data-testid="stChatInput"] textarea:focus {
