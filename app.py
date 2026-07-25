@@ -146,6 +146,18 @@ CSS = """
     code, .cp-card .val, .cp-pill .val, .cp-conf-value, [data-testid="stMetricValue"] {
         font-family: var(--font-mono) !important;
     }
+    /* Streamlit's own chevron/collapse icons (sidebar collapse, expander
+       arrows, etc.) are Material Symbols ligatures -- e.g. the text
+       "keyboard_arrow_right" is substituted for an arrow glyph BY that
+       specific icon font. The global font-family override above breaks
+       that substitution, so the raw ligature name shows as literal text.
+       Restore the icon font here so it wins (higher-specificity attribute
+       selector, not just a bare tag). */
+    [data-testid="stIconMaterial"], span[data-testid="stIconMaterial"],
+    .material-symbols-rounded, [class*="material-symbols"], [class*="material-icons"] {
+        font-family: 'Material Symbols Rounded', 'Material Icons' !important;
+        color: var(--cp-cyan) !important;
+    }
 
     /* ---- Hero ---- */
     .cp-hero {
@@ -780,19 +792,39 @@ with tab_overview:
             span = max(lat_span, lon_span, 0.01)
             auto_zoom = 12 if span < 0.05 else (10 if span < 0.15 else (8 if span < 0.5 else 6))
             fig_map.update_layout(
-                height=520, margin=dict(l=0, r=0, t=10, b=0), legend_title_text="",
+                height=520, margin=dict(l=0, r=0, t=40, b=0), legend_title_text="",
                 paper_bgcolor="rgba(0,0,0,0)",
                 font=dict(family="Rajdhani, sans-serif", color="#e8f6ff"),
-                legend=dict(bgcolor="rgba(13,18,38,0.6)", font=dict(color="#e8f6ff")),
+                # Legend top-left so it doesn't collide with the dark/light
+                # toggle buttons placed top-right below.
+                legend=dict(
+                    bgcolor="rgba(13,18,38,0.7)", font=dict(color="#e8f6ff"),
+                    x=0.01, y=0.99, xanchor="left", yanchor="top",
+                ),
                 mapbox=dict(
                     center=dict(lat=float(geo_df["lat"].mean()), lon=float(geo_df["lon"].mean())),
                     zoom=auto_zoom,
                 ),
+                # Native in-chart toggle -- switches the basemap instantly,
+                # client-side, no Streamlit rerun needed.
+                updatemenus=[
+                    dict(
+                        type="buttons", direction="right", showactive=True,
+                        x=1.0, y=1.10, xanchor="right", yanchor="top",
+                        bgcolor="rgba(13,18,38,0.75)", bordercolor="#00f5ff", borderwidth=1,
+                        font=dict(color="#e8f6ff", size=11),
+                        buttons=[
+                            dict(label="🌙 Dark", method="relayout", args=[{"mapbox.style": "carto-darkmatter"}]),
+                            dict(label="☀️ Light", method="relayout", args=[{"mapbox.style": "carto-positron"}]),
+                        ],
+                    )
+                ],
             )
             st.plotly_chart(
                 fig_map, use_container_width=True,
                 config={"scrollZoom": True, "displayModeBar": True, "displaylogo": False},
             )
+            st.caption("🌙☀️ Use the toggle at the top-right of the map to switch between dark and light basemap.")
             st.caption("🖱️ Scroll or pinch to zoom, drag to pan, click a legend item to filter by coordinate source.")
 
             n_real = int((geo_df["coord_source"] == "real_ward").sum())
@@ -890,23 +922,29 @@ with tab_ask:
         "Keep asking follow-ups; CivicPulse remembers the conversation."
     )
 
+    # Suggestion chips stay available for every turn (not just the first),
+    # so there's always a quick-start option for a follow-up too.
+    suggestions = [
+        "Which area has the most urgent issues?",
+        "What patterns are increasing this week?",
+        "Compare the top two hotspot areas.",
+        "What should we prioritize this week?",
+    ]
     picked = None
-    if not st.session_state.qa_history:
-        suggestions = [
-            "Which area has the most urgent issues?",
-            "What patterns are increasing this week?",
-            "Compare the top two hotspot areas.",
-            "What should we prioritize this week?",
-        ]
-        cols = st.columns(len(suggestions))
-        for col, s in zip(cols, suggestions):
-            if col.button(s, use_container_width=True):
-                picked = s
-    elif st.button("🔄 Start a new conversation"):
+    cols = st.columns(len(suggestions))
+    for col, s in zip(cols, suggestions):
+        if col.button(s, use_container_width=True):
+            picked = s
+    if st.session_state.qa_history and st.button("🔄 Start a new conversation"):
         st.session_state.qa_history = []
         st.session_state.qa_conversation = None
         st.rerun()
 
+    # Render the full conversation BEFORE the input box, so the input always
+    # ends up visually pinned below every message -- st.chat_input renders
+    # inline exactly where it's called when used inside a tab (it only
+    # auto-floats to the page bottom at the top level), so code order here
+    # is what determines its on-screen position.
     for q, result in st.session_state.qa_history:
         with st.chat_message("user"):
             st.markdown(q)
@@ -917,37 +955,42 @@ with tab_ask:
     question = picked or typed_question
 
     if question and question.strip():
-        with st.chat_message("user"):
-            st.markdown(question)
-        with st.chat_message("assistant", avatar="🏙️"):
-            if insights is not None:
-                payload = insights.to_dict()
-                # Keep the conversation going for follow-ups, but cap how long
-                # one thread can grow before starting fresh (bounds token
-                # cost/latency over a long session).
-                prior_conv = (
-                    st.session_state.qa_conversation
-                    if len(st.session_state.qa_history) < MAX_CONVERSATION_QUESTIONS
-                    else None
+        if insights is not None:
+            payload = insights.to_dict()
+            # Keep the conversation going for follow-ups, but cap how long
+            # one thread can grow before starting fresh (bounds token
+            # cost/latency over a long session).
+            prior_conv = (
+                st.session_state.qa_conversation
+                if len(st.session_state.qa_history) < MAX_CONVERSATION_QUESTIONS
+                else None
+            )
+            with st.spinner("Gemini is querying the data..."):
+                result, updated_conv = gemini.answer_question_agentic(
+                    load_result.df, payload, question, st.session_state.domain,
+                    conversation=prior_conv,
                 )
-                with st.spinner("Gemini is querying the data..."):
-                    result, updated_conv = gemini.answer_question_agentic(
-                        load_result.df, payload, question, st.session_state.domain,
-                        conversation=prior_conv,
-                    )
-                st.session_state.qa_conversation = updated_conv
-            else:
-                raw = load_result.raw_text or ""
-                with st.spinner("Analyzing..."):
-                    result = gemini.summarize_text(raw, st.session_state.domain)
-            render_qa_answer(result)
+            st.session_state.qa_conversation = updated_conv
+        else:
+            raw = load_result.raw_text or ""
+            with st.spinner("Analyzing..."):
+                result = gemini.summarize_text(raw, st.session_state.domain)
         st.session_state.qa_history.append((question, result))
+        # Rerun so this turn renders through the history loop above (in its
+        # natural position above the input) instead of appearing transiently
+        # below the already-rendered input box for one frame.
+        st.rerun()
 
 
 # ============================== ANOMALIES ==============================
 with tab_anom:
     st.markdown("<div class='cp-section-title'>🚨 Emerging anomalies</div>", unsafe_allow_html=True)
-    st.caption("Flagged by simple statistical thresholds (z-score ≥ 1.5) — transparent and cheap.")
+    st.caption(
+        "Flagged by simple statistical thresholds (σ, \"sigma\" ≥ 1.5) — transparent and cheap. "
+        "**What's a σ score?** It's how far a number is from what's typical, measured in "
+        "\"standard deviations.\" σ ≈ 1.5–2 is worth a look; above ~2.5–3 is a real outlier, "
+        "not just normal day-to-day variation."
+    )
     if insights is None:
         st.info("Anomaly detection needs structured (CSV/JSON) data.")
     else:
@@ -1091,24 +1134,63 @@ with tab_about:
     st.markdown(
         """
 **CivicPulse AI** is a decision intelligence dashboard for cities and communities.
-It combines **deterministic Python analytics** (counts, trends, anomaly detection)
-with a **small, low-cost Gemini model** that explains the numbers and recommends
-concrete next steps.
+It combines **deterministic Python analytics** (counts, trends, anomaly detection,
+forecasting) with a **small, low-cost Gemini model** that explains the numbers and
+recommends concrete next steps — and a set of Google Cloud services that turn it
+from a one-off dashboard into an automated service.
 
 **Why it's different from a chatbot**
 - Numbers are computed locally first, so the AI never hallucinates statistics.
 - Every answer maps to a decision: *what / why / where / next step / confidence*.
 - A Decision Scoreboard (urgency · impact · confidence) tells teams what to act on.
 
+**What's in here**
+- 💬 **Agentic, multi-turn chat** — Ask AI calls real query tools against your live
+  data (not one static snapshot) and remembers the conversation, so follow-ups like
+  *"what about the second one?"* just work. Every answer shows exactly which
+  queries ran.
+- 🗺️ **Real hotspot mapping** — actual BBMP ward coordinates (OpenCity's Bengaluru
+  ward dataset), with a light/dark toggle built into the map itself.
+- 📈 **7-day forecasting** — Holt's linear trend method flags likely spikes per
+  area before they happen, not just after.
+- 📝 **One-click Executive Brief** — a complete, plain-language handoff memo
+  (dataset overview, every notable pattern, urgency-tagged next steps) from a
+  single grounded Gemini call.
+- 🗄️ **Persistent brief history** — every generated brief saves to Firestore, so
+  a team can see trends across sessions, not just today's upload.
+- 🔔 **Automated, department-routed email** — a Cloud Scheduler job runs the same
+  pipeline on a cron and emails a citywide brief *plus* a separate brief per
+  department, scoped to only that department's data, to that department's own
+  contacts — with an in-app button to trigger it on demand.
+
 **Google Cloud stack**
-- 🤖 **Gemini** (`gemini-2.5-flash-lite` by default) via Vertex AI or Gemini API
-- 🚀 **Cloud Run** for serverless, scale-to-zero hosting (very low cost)
-- 🛠️ **`gcloud` CLI** + Cloud Build for one-command deploys
+- 🤖 **Vertex AI / Gemini** (`gemini-2.5-flash-lite` by default) — explanations,
+  agentic function calling, brief generation
+- 🚀 **Cloud Run** — hosts the app, scale-to-zero so idle cost is ~$0
+- ⚡ **Cloud Functions (2nd gen)** — the scheduled brief job
+- ⏰ **Cloud Scheduler** — triggers the weekly automated run
+- 🗄️ **Firestore** — brief history persistence
+- 🔐 **Secret Manager** — stores the Gmail app password, never in code
+- 🛠️ **Cloud Build**, **Artifact Registry**, **IAM**, **Cloud Logging**, **`gcloud` CLI**
+  — builds, image storage, least-privilege service accounts, and one-command deploys
 
 **Cost design**
 - One Gemini call per meaningful action (not per keystroke)
 - Cheap flash-lite model tier
-- Local sample data — no database required
-- Cloud Run scales to zero when idle
+- Cloud Run and Cloud Functions both scale to zero when idle
+- Firestore/Secret Manager/Scheduler all stay within their free tiers at this scale
+
+---
+
+#### 📖 Key terms, in plain language
+
+| Term | What it means |
+|---|---|
+| **σ score (sigma / standard deviation)** | A measure of "how unusual is this compared to normal?" A σ score of 2 means a value is about twice as far from the typical/average value as most others ever get — the higher the number, the more it stands out. CivicPulse flags anything ≥ 1.5σ as worth a second look; anything above ~2.5–3σ is a genuine outlier, not just normal day-to-day variation. |
+| **Confidence score** | How much CivicPulse trusts its own numbers, based on three real signals: how much data there is, how recent it is, and how steady (vs. erratic) the daily pattern is — *not* a guess about whether the underlying problem is real. |
+| **Urgency** | How pressing the situation looks right now, blending severity, how many cases are still unresolved, and whether volume is trending up. |
+| **Impact** | How large-scale the issue is — driven by total volume and how concentrated it is in one area. |
+| **Severity index** | The average severity level (low/medium/high/critical) across all records, scaled 0–100. |
+| **Hotspot score** (on the map) | One combined score per area blending complaint volume, severity, and how many cases are still open — the number behind each map marker's size. |
         """
     )
