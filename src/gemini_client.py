@@ -451,6 +451,11 @@ def _fallback_answer(insights: dict[str, Any], question: str) -> dict[str, Any]:
             else "Gemini wasn't reachable and the uploaded data doesn't have enough "
             "structured area/category information for a rule-based summary either."
         ),
+        "suggested_follow_ups": [
+            f"What's driving the volume in {humanize(hotspot)}?" if hotspot else "Which area needs attention?",
+            f"How urgent are {humanize(top_cat)} cases?" if top_cat else "What's the most common issue type?",
+            "What should we prioritize this week?",
+        ],
         "_note": "Offline fallback (Gemini not called).",
     }
 

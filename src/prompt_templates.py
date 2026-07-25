@@ -66,7 +66,8 @@ _AGENTIC_ANSWER_SHAPE = """{
   "recommended_next_step": "one concrete action",
   "confidence": "high | medium | low",
   "executive_summary": "one crisp sentence a mayor could repeat",
-  "explanation": "a fuller 2-3 sentence plain-language paragraph walking through what the tool results show and why it leads to that recommendation -- written for someone who wants the full context, not just the bullet points"
+  "explanation": "a fuller 2-3 sentence plain-language paragraph walking through what the tool results show and why it leads to that recommendation -- written for someone who wants the full context, not just the bullet points",
+  "suggested_follow_ups": "array of 2-3 short, specific follow-up questions the user could naturally ask next, grounded in this data and conversation (not generic filler)"
 }"""
 
 

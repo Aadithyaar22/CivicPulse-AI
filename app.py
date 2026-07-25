@@ -33,18 +33,6 @@ APP_DIR = Path(__file__).parent
 SAMPLE_CSV = APP_DIR / "sample_data" / "citizen_complaints.csv"
 SCHEDULED_BRIEF_FUNCTION_URL = os.environ.get("SCHEDULED_BRIEF_FUNCTION_URL", "")
 
-# Shared dark/neon theme applied to every Plotly chart so they sit on the
-# animated dark background instead of clashing with default white chart chrome.
-DARK_CHART_LAYOUT = dict(
-    paper_bgcolor="rgba(13,18,38,0.35)",
-    plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(family="Rajdhani, sans-serif", color="#e8f6ff", size=13),
-    title_font=dict(family="Orbitron, sans-serif", color="#e8f6ff", size=15),
-    legend=dict(font=dict(color="#90a4c4"), bgcolor="rgba(0,0,0,0)"),
-    xaxis=dict(gridcolor="rgba(0,245,255,0.10)", zerolinecolor="rgba(0,245,255,0.18)", color="#90a4c4"),
-    yaxis=dict(gridcolor="rgba(0,245,255,0.10)", zerolinecolor="rgba(0,245,255,0.18)", color="#90a4c4"),
-)
-
 st.set_page_config(
     page_title="CivicPulse AI",
     page_icon="🏙️",
@@ -52,25 +40,199 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# ---------------------------------------------------------------- theme
+# Two full palettes: "dark" is the futuristic neon/glass makeover, "light" is
+# a clean professional theme (deliberately close to the pre-makeover look).
+# Every color the CSS/charts need lives here so switching themes is just
+# picking a different dict -- no separate stylesheet to keep in sync.
+THEMES: dict[str, dict[str, str | list[str]]] = {
+    "dark": {
+        "void": "#05060f", "void2": "#0a0e20", "void3": "#131a3a",
+        "panel": "rgba(13, 18, 38, 0.55)", "panel_solid": "#0c1024",
+        "border": "rgba(0, 245, 255, 0.28)",
+        "cyan": "#00f5ff", "violet": "#a742ff", "magenta": "#ff2fd0",
+        "green": "#22c55e", "amber": "#f59e0b", "red": "#ef4444",
+        "text": "#e8f6ff", "text_dim": "#90a4c4",
+        "orb1": "rgba(0,245,255,0.20)", "orb2": "rgba(167,66,255,0.18)", "orb3": "rgba(255,47,208,0.15)",
+        "grid_line": "rgba(0,245,255,0.06)",
+        "hero_bg": "linear-gradient(135deg, rgba(0,245,255,0.10), rgba(167,66,255,0.10) 45%, rgba(255,47,208,0.08) 100%)",
+        "hero_blur": "blur(18px) saturate(160%)",
+        "hero_border": "1px solid rgba(0,245,255,0.28)",
+        "hero_shadow": "0 0 40px rgba(0,245,255,0.12), 0 20px 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,245,255,0.04)",
+        "hero_text_bg": "linear-gradient(90deg, #00f5ff, #a742ff, #ff2fd0, #00f5ff)",
+        "hero_text_shadow": "drop-shadow(0 0 20px rgba(0,245,255,.35))",
+        "hero_emoji_shadow": "drop-shadow(0 0 12px rgba(0,245,255,.5))",
+        "badge_bg": "rgba(0,245,255,.08)", "badge_border": "rgba(0,245,255,.4)", "badge_fg": "#00f5ff",
+        "badge_bg_hover": "rgba(0,245,255,.18)", "badge_shadow_hover": "rgba(0,245,255,.4)",
+        "val_shadow": "0 0 14px rgba(0,245,255,.35)",
+        "section_shadow": "drop-shadow(0 0 6px rgba(0,245,255,.3))",
+        "card_hover_shadow": "0 0 26px rgba(0,245,255,.30), 0 12px 34px rgba(0,0,0,.5)",
+        "sheen": "rgba(0,245,255,.10)",
+        "btn_bg": "linear-gradient(135deg, rgba(0,245,255,.14), rgba(167,66,255,.14))",
+        "btn_shadow": "0 0 14px rgba(0,245,255,.15)", "btn_shadow_hover": "0 0 24px rgba(0,245,255,.5)",
+        "btn_primary_bg": "linear-gradient(135deg, #00f5ff, #a742ff)", "btn_primary_fg": "#05060f",
+        "btn_primary_shadow": "0 0 22px rgba(0,245,255,.45)", "btn_primary_shadow_hover": "0 0 34px rgba(0,245,255,.7)",
+        "uploader_btn_bg": "rgba(0,245,255,.10)",
+        "input_border": "rgba(0,245,255,.25)", "input_focus": "0 0 0 2px rgba(0,245,255,.25)",
+        "expander_border": "rgba(0,245,255,.18)", "expander_shadow": "0 0 18px rgba(0,245,255,.15)",
+        "alert_border": "rgba(0,245,255,.2)",
+        "tab_border": "rgba(0,245,255,.15)", "tab_hover_bg": "rgba(0,245,255,0.08)",
+        "tab_active_bg": "rgba(0,245,255,0.10)", "tab_text_shadow": "0 0 10px rgba(0,245,255,.5)",
+        "chat_user_bg": "rgba(167,66,255,0.08)", "chat_user_border": "rgba(167,66,255,.3)",
+        "chat_ai_bg": "rgba(0,245,255,0.05)", "chat_ai_border": "rgba(0,245,255,.28)",
+        "chat_hover_shadow": "0 0 20px rgba(0,245,255,.18)",
+        "sidebar_bg": "linear-gradient(180deg, #0a0e20 0%, #05060f 100%)", "sidebar_border": "rgba(0,245,255,.18)",
+        "df_border": "rgba(0,245,255,.2)",
+        "selection_bg": "rgba(0,245,255,.3)", "selection_fg": "#05060f",
+        "map_style": "carto-darkmatter",
+        "chart_paper": "rgba(13,18,38,0.35)",
+        "axis_grid": "rgba(0,245,255,0.10)", "axis_zero": "rgba(0,245,255,0.18)",
+        "bar_scale": ["#1a1f3a", "#00f5ff"],
+        "area_line": "#00f5ff", "area_fill": "rgba(0,245,255,0.15)", "area_marker": "#a742ff",
+        "pie_sequence": ["#00f5ff", "#a742ff", "#ff2fd0", "#39ff88", "#ffb84d", "#ff3860"],
+        "pie_line": "#05060f",
+        "geo_real": "#00f5ff", "geo_provided": "#a742ff", "geo_placeholder": "#ffb84d",
+        "legend_bg": "rgba(13,18,38,0.7)",
+    },
+    "light": {
+        "void": "#f4f7fc", "void2": "#eaf1fa", "void3": "#eaf3fb",
+        "panel": "rgba(255, 255, 255, 0.82)", "panel_solid": "#ffffff",
+        "border": "rgba(14, 116, 144, 0.22)",
+        "cyan": "#0e7490", "violet": "#1d4ed8", "magenta": "#be185d",
+        "green": "#22c55e", "amber": "#f59e0b", "red": "#ef4444",
+        "text": "#101828", "text_dim": "#475467",
+        "orb1": "rgba(14,116,144,0.10)", "orb2": "rgba(29,78,216,0.09)", "orb3": "rgba(190,24,93,0.07)",
+        "grid_line": "rgba(15,23,42,0.035)",
+        "hero_bg": "linear-gradient(120deg, #0f766e 0%, #0e7490 45%, #1d4ed8 100%)",
+        "hero_blur": "none",
+        "hero_border": "none",
+        "hero_shadow": "0 10px 30px rgba(13,110,110,0.22)",
+        "hero_text_bg": "linear-gradient(90deg, #ffffff, #ffffff)",
+        "hero_text_shadow": "none",
+        "hero_emoji_shadow": "none",
+        "badge_bg": "rgba(255,255,255,.18)", "badge_border": "rgba(255,255,255,.35)", "badge_fg": "#ffffff",
+        "badge_bg_hover": "rgba(255,255,255,.30)", "badge_shadow_hover": "rgba(16,24,40,.18)",
+        "val_shadow": "none",
+        "section_shadow": "none",
+        "card_hover_shadow": "0 10px 24px rgba(16,24,40,.12)",
+        "sheen": "rgba(14,116,144,.08)",
+        "btn_bg": "linear-gradient(135deg, rgba(14,116,144,.10), rgba(29,78,216,.08))",
+        "btn_shadow": "0 2px 8px rgba(16,24,40,.08)", "btn_shadow_hover": "0 6px 18px rgba(16,24,40,.14)",
+        "btn_primary_bg": "linear-gradient(135deg, #0e7490, #1d4ed8)", "btn_primary_fg": "#ffffff",
+        "btn_primary_shadow": "0 4px 14px rgba(16,24,40,.18)", "btn_primary_shadow_hover": "0 8px 22px rgba(16,24,40,.24)",
+        "uploader_btn_bg": "rgba(14,116,144,.08)",
+        "input_border": "rgba(14,116,144,.22)", "input_focus": "0 0 0 2px rgba(14,116,144,.20)",
+        "expander_border": "rgba(14,116,144,.18)", "expander_shadow": "0 4px 14px rgba(16,24,40,.08)",
+        "alert_border": "rgba(14,116,144,.18)",
+        "tab_border": "rgba(14,116,144,.18)", "tab_hover_bg": "rgba(14,116,144,.06)",
+        "tab_active_bg": "rgba(14,116,144,.08)", "tab_text_shadow": "none",
+        "chat_user_bg": "rgba(29,78,216,0.06)", "chat_user_border": "rgba(29,78,216,.22)",
+        "chat_ai_bg": "rgba(14,116,144,0.05)", "chat_ai_border": "rgba(14,116,144,.20)",
+        "chat_hover_shadow": "0 4px 14px rgba(16,24,40,.10)",
+        "sidebar_bg": "linear-gradient(180deg, #ffffff 0%, #eef2f7 100%)", "sidebar_border": "rgba(14,116,144,.15)",
+        "df_border": "rgba(14,116,144,.18)",
+        "selection_bg": "rgba(14,116,144,.25)", "selection_fg": "#ffffff",
+        "map_style": "carto-positron",
+        "chart_paper": "rgba(255,255,255,0.6)",
+        "axis_grid": "rgba(15,23,42,0.08)", "axis_zero": "rgba(15,23,42,0.15)",
+        "bar_scale": ["#dbeafe", "#0e7490"],
+        "area_line": "#0e7490", "area_fill": "rgba(14,116,144,0.12)", "area_marker": "#1d4ed8",
+        "pie_sequence": ["#0e7490", "#1d4ed8", "#be185d", "#16a34a", "#d97706", "#334155"],
+        "pie_line": "#ffffff",
+        "geo_real": "#0e7490", "geo_provided": "#1d4ed8", "geo_placeholder": "#d97706",
+        "legend_bg": "rgba(255,255,255,0.85)",
+    },
+}
+
+st.session_state.setdefault("app_theme", "🌙 Dark")
+theme: str = "dark" if str(st.session_state.app_theme).startswith("🌙") else "light"
+t = THEMES[theme]
+
+
+def get_chart_layout(theme_name: str) -> dict:
+    """Plotly layout so charts sit on the app background instead of clashing
+    with default white chart chrome, in whichever theme is active."""
+    ct = THEMES[theme_name]
+    return dict(
+        paper_bgcolor=ct["chart_paper"],
+        plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(family="Rajdhani, sans-serif", color=ct["text"], size=13),
+        title_font=dict(family="Orbitron, sans-serif", color=ct["text"], size=15),
+        legend=dict(font=dict(color=ct["text_dim"]), bgcolor="rgba(0,0,0,0)"),
+        xaxis=dict(gridcolor=ct["axis_grid"], zerolinecolor=ct["axis_zero"], color=ct["text_dim"]),
+        yaxis=dict(gridcolor=ct["axis_grid"], zerolinecolor=ct["axis_zero"], color=ct["text_dim"]),
+    )
+
+
+CHART_LAYOUT = get_chart_layout(theme)
+
 # ---------------------------------------------------------------- styling
 CSS = """
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
 
     :root {
-        --cp-void: #05060f;
-        --cp-void2: #0a0e20;
-        --cp-panel: rgba(13, 18, 38, 0.55);
-        --cp-panel-solid: #0c1024;
-        --cp-border: rgba(0, 245, 255, 0.28);
-        --cp-cyan: #00f5ff;
-        --cp-violet: #a742ff;
-        --cp-magenta: #ff2fd0;
-        --cp-green: #39ff88;
-        --cp-amber: #ffb84d;
-        --cp-red: #ff3860;
-        --cp-text: #e8f6ff;
-        --cp-text-dim: #90a4c4;
+        --cp-void: @@void@@;
+        --cp-void2: @@void2@@;
+        --cp-void3: @@void3@@;
+        --cp-panel: @@panel@@;
+        --cp-panel-solid: @@panel_solid@@;
+        --cp-border: @@border@@;
+        --cp-cyan: @@cyan@@;
+        --cp-violet: @@violet@@;
+        --cp-magenta: @@magenta@@;
+        --cp-green: @@green@@;
+        --cp-amber: @@amber@@;
+        --cp-red: @@red@@;
+        --cp-text: @@text@@;
+        --cp-text-dim: @@text_dim@@;
+        --cp-orb1: @@orb1@@;
+        --cp-orb2: @@orb2@@;
+        --cp-orb3: @@orb3@@;
+        --cp-grid-line: @@grid_line@@;
+        --cp-hero-bg: @@hero_bg@@;
+        --cp-hero-blur: @@hero_blur@@;
+        --cp-hero-border: @@hero_border@@;
+        --cp-hero-shadow: @@hero_shadow@@;
+        --cp-hero-text-bg: @@hero_text_bg@@;
+        --cp-hero-text-shadow: @@hero_text_shadow@@;
+        --cp-hero-emoji-shadow: @@hero_emoji_shadow@@;
+        --cp-badge-bg: @@badge_bg@@;
+        --cp-badge-border: @@badge_border@@;
+        --cp-badge-fg: @@badge_fg@@;
+        --cp-badge-bg-hover: @@badge_bg_hover@@;
+        --cp-badge-shadow-hover: @@badge_shadow_hover@@;
+        --cp-val-shadow: @@val_shadow@@;
+        --cp-section-shadow: @@section_shadow@@;
+        --cp-card-hover-shadow: @@card_hover_shadow@@;
+        --cp-sheen: @@sheen@@;
+        --cp-btn-bg: @@btn_bg@@;
+        --cp-btn-shadow: @@btn_shadow@@;
+        --cp-btn-shadow-hover: @@btn_shadow_hover@@;
+        --cp-btn-primary-bg: @@btn_primary_bg@@;
+        --cp-btn-primary-fg: @@btn_primary_fg@@;
+        --cp-btn-primary-shadow: @@btn_primary_shadow@@;
+        --cp-btn-primary-shadow-hover: @@btn_primary_shadow_hover@@;
+        --cp-uploader-btn-bg: @@uploader_btn_bg@@;
+        --cp-input-border: @@input_border@@;
+        --cp-input-focus: @@input_focus@@;
+        --cp-expander-border: @@expander_border@@;
+        --cp-expander-shadow: @@expander_shadow@@;
+        --cp-alert-border: @@alert_border@@;
+        --cp-tab-border: @@tab_border@@;
+        --cp-tab-hover-bg: @@tab_hover_bg@@;
+        --cp-tab-active-bg: @@tab_active_bg@@;
+        --cp-tab-text-shadow: @@tab_text_shadow@@;
+        --cp-chat-user-bg: @@chat_user_bg@@;
+        --cp-chat-user-border: @@chat_user_border@@;
+        --cp-chat-ai-bg: @@chat_ai_bg@@;
+        --cp-chat-ai-border: @@chat_ai_border@@;
+        --cp-chat-hover-shadow: @@chat_hover_shadow@@;
+        --cp-sidebar-bg: @@sidebar_bg@@;
+        --cp-sidebar-border: @@sidebar_border@@;
+        --cp-df-border: @@df_border@@;
+        --cp-selection-bg: @@selection_bg@@;
+        --cp-selection-fg: @@selection_fg@@;
         --cp-ease: cubic-bezier(0.22, 1, 0.36, 1);
         --font-display: 'Orbitron', sans-serif;
         --font-body: 'Rajdhani', sans-serif;
@@ -110,12 +272,12 @@ CSS = """
     .stApp {
         background-color: var(--cp-void) !important;
         background-image:
-            radial-gradient(circle at 20% 25%, rgba(0,245,255,0.20) 0%, transparent 30%),
-            radial-gradient(circle at 80% 18%, rgba(167,66,255,0.18) 0%, transparent 32%),
-            radial-gradient(circle at 55% 82%, rgba(255,47,208,0.15) 0%, transparent 34%),
-            repeating-linear-gradient(0deg, rgba(0,245,255,0.06) 0px, rgba(0,245,255,0.06) 1px, transparent 1px, transparent 56px),
-            repeating-linear-gradient(90deg, rgba(0,245,255,0.06) 0px, rgba(0,245,255,0.06) 1px, transparent 1px, transparent 56px),
-            radial-gradient(ellipse at 50% -10%, #131a3a 0%, var(--cp-void2) 45%, var(--cp-void) 100%) !important;
+            radial-gradient(circle at 20% 25%, var(--cp-orb1) 0%, transparent 30%),
+            radial-gradient(circle at 80% 18%, var(--cp-orb2) 0%, transparent 32%),
+            radial-gradient(circle at 55% 82%, var(--cp-orb3) 0%, transparent 34%),
+            repeating-linear-gradient(0deg, var(--cp-grid-line) 0px, var(--cp-grid-line) 1px, transparent 1px, transparent 56px),
+            repeating-linear-gradient(90deg, var(--cp-grid-line) 0px, var(--cp-grid-line) 1px, transparent 1px, transparent 56px),
+            radial-gradient(ellipse at 50% -10%, var(--cp-void3) 0%, var(--cp-void2) 45%, var(--cp-void) 100%) !important;
         background-attachment: fixed !important;
         animation: cpBgDrift 26s ease-in-out infinite;
     }
@@ -159,35 +321,40 @@ CSS = """
         color: var(--cp-cyan) !important;
     }
 
-    /* ---- Hero ---- */
+    /* ---- Hero ----
+       Text color is a fixed near-white regardless of theme: the dark theme's
+       hero is a translucent glass panel over the dark void (already reads as
+       white), and the light theme's hero is an opaque solid banner (like the
+       pre-makeover design), which also needs white text -- so this never
+       needs to track the page's flipped --cp-text value. */
     .cp-hero {
-        background: linear-gradient(135deg, rgba(0,245,255,0.10), rgba(167,66,255,0.10) 45%, rgba(255,47,208,0.08) 100%);
-        backdrop-filter: blur(18px) saturate(160%);
-        -webkit-backdrop-filter: blur(18px) saturate(160%);
-        border: 1px solid var(--cp-border);
-        color: var(--cp-text); padding: 1.6rem 1.8rem; border-radius: 18px; margin-bottom: 1.2rem;
-        box-shadow: 0 0 40px rgba(0,245,255,0.12), 0 20px 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,245,255,0.04);
+        background: var(--cp-hero-bg);
+        backdrop-filter: var(--cp-hero-blur);
+        -webkit-backdrop-filter: var(--cp-hero-blur);
+        border: var(--cp-hero-border);
+        color: #f5f9ff; padding: 1.6rem 1.8rem; border-radius: 18px; margin-bottom: 1.2rem;
+        box-shadow: var(--cp-hero-shadow);
         animation: cpFadeUp .6s var(--cp-ease) both;
         position: relative; overflow: hidden;
     }
-    .cp-hero h1 { margin: 0; font-size: 2.2rem; font-weight: 900; letter-spacing: .03em; }
-    .cp-hero-emoji { filter: drop-shadow(0 0 12px rgba(0,245,255,.5)); }
+    .cp-hero h1 { margin: 0; font-size: 2.2rem; font-weight: 900; letter-spacing: .03em; color: #f5f9ff; }
+    .cp-hero-emoji { filter: var(--cp-hero-emoji-shadow); }
     .cp-hero-text {
-        background: linear-gradient(90deg, var(--cp-cyan), var(--cp-violet), var(--cp-magenta), var(--cp-cyan));
+        background: var(--cp-hero-text-bg);
         background-size: 300% auto;
         -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
         animation: cpGradientDrift 7s linear infinite;
-        filter: drop-shadow(0 0 20px rgba(0,245,255,.35));
+        filter: var(--cp-hero-text-shadow);
     }
-    .cp-hero p { margin: .5rem 0 0; opacity: .88; font-size: 1.02rem; color: var(--cp-text); font-weight: 500; }
+    .cp-hero p { margin: .5rem 0 0; opacity: .92; font-size: 1.02rem; color: #f5f9ff; font-weight: 500; }
     .cp-badge {
-        display:inline-block; background: rgba(0,245,255,.08); border:1px solid rgba(0,245,255,.4);
-        color: var(--cp-cyan); padding: 3px 12px; border-radius: 999px; font-size:.72rem;
+        display:inline-block; background: var(--cp-badge-bg); border:1px solid var(--cp-badge-border);
+        color: var(--cp-badge-fg); padding: 3px 12px; border-radius: 999px; font-size:.72rem;
         font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase;
         margin-right:6px; margin-top:.6rem;
         transition: background .2s var(--cp-ease), transform .2s var(--cp-ease), box-shadow .2s var(--cp-ease);
     }
-    .cp-badge:hover { background: rgba(0,245,255,.18); transform: translateY(-2px); box-shadow: 0 0 14px rgba(0,245,255,.4); }
+    .cp-badge:hover { background: var(--cp-badge-bg-hover); transform: translateY(-2px); box-shadow: 0 0 14px var(--cp-badge-shadow-hover); }
 
     /* ---- Cards (glassmorphic) ---- */
     .cp-card {
@@ -202,13 +369,13 @@ CSS = """
     }
     .cp-card::before {
         content: ""; position: absolute; inset: 0;
-        background: linear-gradient(120deg, transparent 30%, rgba(0,245,255,.10) 50%, transparent 70%);
+        background: linear-gradient(120deg, transparent 30%, var(--cp-sheen) 50%, transparent 70%);
         background-size: 250% 250%; background-position: -150% -150%; opacity: 0;
     }
     .cp-card:hover {
         transform: translateY(-5px);
         border-color: var(--cp-cyan);
-        box-shadow: 0 0 26px rgba(0,245,255,.30), 0 12px 34px rgba(0,0,0,.5);
+        box-shadow: var(--cp-card-hover-shadow);
     }
     .cp-card:hover::before { opacity: 1; animation: cpSheen 1.1s ease; }
     div[data-testid="column"]:nth-of-type(1) .cp-card { animation-delay: .00s; }
@@ -220,7 +387,7 @@ CSS = """
         font-family: var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.14em;
         color: var(--cp-cyan); margin:0; opacity: .85;
     }
-    .cp-card .val { font-size:1.4rem; font-weight:700; color: var(--cp-text); margin:.2rem 0 0; text-shadow: 0 0 14px rgba(0,245,255,.35); }
+    .cp-card .val { font-size:1.4rem; font-weight:700; color: var(--cp-text); margin:.2rem 0 0; text-shadow: var(--cp-val-shadow); }
     .cp-card .sub { font-size:.8rem; color: var(--cp-text-dim); margin:.25rem 0 0; }
 
     /* ---- Decision scoreboard pills ---- */
@@ -245,12 +412,12 @@ CSS = """
         animation: cpFadeIn .4s var(--cp-ease) both;
         padding-left: .7rem; border-left: 3px solid var(--cp-cyan);
         text-transform: uppercase; letter-spacing: .06em;
-        filter: drop-shadow(0 0 6px rgba(0,245,255,.3));
+        filter: var(--cp-section-shadow);
     }
 
     /* ---- Tabs ---- */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 6px; border-bottom: 1px solid rgba(0,245,255,.15) !important;
+        gap: 6px; border-bottom: 1px solid var(--cp-tab-border) !important;
     }
     .stTabs [data-baseweb="tab"] {
         padding: 10px 18px; border-radius: 10px 10px 0 0;
@@ -259,9 +426,9 @@ CSS = """
         text-transform: uppercase; font-size: .85rem; letter-spacing: .05em;
     }
     .stTabs [data-baseweb="tab"] p { color: var(--cp-text-dim) !important; }
-    .stTabs [data-baseweb="tab"]:hover { background: rgba(0,245,255,0.08); }
-    .stTabs [aria-selected="true"] { background: rgba(0,245,255,0.10); box-shadow: inset 0 -2px 0 var(--cp-cyan); }
-    .stTabs [aria-selected="true"] p { color: var(--cp-cyan) !important; text-shadow: 0 0 10px rgba(0,245,255,.5); }
+    .stTabs [data-baseweb="tab"]:hover { background: var(--cp-tab-hover-bg); }
+    .stTabs [aria-selected="true"] { background: var(--cp-tab-active-bg); box-shadow: inset 0 -2px 0 var(--cp-cyan); }
+    .stTabs [aria-selected="true"] p { color: var(--cp-cyan) !important; text-shadow: var(--cp-tab-text-shadow); }
     .stTabs [data-baseweb="tab-highlight"] {
         background-color: var(--cp-cyan) !important; height: 3px !important;
         box-shadow: 0 0 10px var(--cp-cyan), 0 0 20px var(--cp-cyan);
@@ -271,57 +438,57 @@ CSS = """
 
     /* ---- Buttons ---- */
     .stButton > button, .stDownloadButton > button {
-        background: linear-gradient(135deg, rgba(0,245,255,.14), rgba(167,66,255,.14)) !important;
+        background: var(--cp-btn-bg) !important;
         border: 1px solid var(--cp-cyan) !important;
         color: var(--cp-text) !important;
         border-radius: 10px !important;
         text-transform: uppercase; font-size: .82rem !important;
         transition: transform .15s var(--cp-ease), box-shadow .15s var(--cp-ease), filter .15s var(--cp-ease);
-        box-shadow: 0 0 14px rgba(0,245,255,.15);
+        box-shadow: var(--cp-btn-shadow);
     }
     .stButton > button:hover, .stDownloadButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 0 24px rgba(0,245,255,.5);
+        box-shadow: var(--cp-btn-shadow-hover);
         border-color: var(--cp-cyan) !important;
     }
     .stButton > button:active, .stDownloadButton > button:active { transform: translateY(0) scale(.98); }
     .stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, var(--cp-cyan), var(--cp-violet)) !important;
-        color: #05060f !important; font-weight: 700 !important; border: none !important;
-        box-shadow: 0 0 22px rgba(0,245,255,.45);
+        background: var(--cp-btn-primary-bg) !important;
+        color: var(--cp-btn-primary-fg) !important; font-weight: 700 !important; border: none !important;
+        box-shadow: var(--cp-btn-primary-shadow);
     }
-    .stButton > button[kind="primary"]:hover { box-shadow: 0 0 34px rgba(0,245,255,.7); }
+    .stButton > button[kind="primary"]:hover { box-shadow: var(--cp-btn-primary-shadow-hover); }
 
     /* ---- Inputs, selects, file uploader ---- */
     .stTextInput input, .stTextArea textarea, .stSelectbox div[data-baseweb="select"] > div,
     [data-testid="stChatInput"] textarea, [data-testid="stFileUploaderDropzone"] {
         background: var(--cp-panel-solid) !important;
-        border: 1px solid rgba(0,245,255,.25) !important;
+        border: 1px solid var(--cp-input-border) !important;
         color: var(--cp-text) !important;
         border-radius: 10px !important;
     }
     .stTextInput input:focus, .stTextArea textarea:focus, [data-testid="stChatInput"] textarea:focus {
         border-color: var(--cp-cyan) !important;
-        box-shadow: 0 0 0 2px rgba(0,245,255,.25) !important;
+        box-shadow: var(--cp-input-focus) !important;
     }
     [data-testid="stFileUploaderDropzone"] { border-style: dashed !important; }
     [data-testid="stFileUploaderDropzone"] button {
-        background: rgba(0,245,255,.10) !important; border: 1px solid var(--cp-cyan) !important; color: var(--cp-text) !important;
+        background: var(--cp-uploader-btn-bg) !important; border: 1px solid var(--cp-cyan) !important; color: var(--cp-text) !important;
     }
 
     /* ---- Expanders, containers, alerts ---- */
     div[data-testid="stExpander"] {
         background: var(--cp-panel); backdrop-filter: blur(12px);
-        border: 1px solid rgba(0,245,255,.18) !important; border-radius: 12px !important;
+        border: 1px solid var(--cp-expander-border) !important; border-radius: 12px !important;
         transition: box-shadow .2s var(--cp-ease), border-color .2s var(--cp-ease);
     }
-    div[data-testid="stExpander"]:hover { box-shadow: 0 0 18px rgba(0,245,255,.15); border-color: var(--cp-cyan) !important; }
+    div[data-testid="stExpander"]:hover { box-shadow: var(--cp-expander-shadow); border-color: var(--cp-cyan) !important; }
     div[data-testid="stVerticalBlockBorderWrapper"] {
         animation: cpFadeIn .35s var(--cp-ease) both;
     }
     div[data-testid="stAlert"] {
         background: var(--cp-panel) !important; backdrop-filter: blur(12px);
-        border: 1px solid rgba(0,245,255,.2); border-radius: 12px;
+        border: 1px solid var(--cp-alert-border); border-radius: 12px;
         animation: cpFadeUp .35s var(--cp-ease) both;
     }
 
@@ -343,12 +510,12 @@ CSS = """
         font-family: var(--font-mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .12em; opacity: .8;
     }
     .cp-confidence .cp-conf-value { font-family: var(--font-display); font-size: 1.05rem; font-weight: 800; margin-top: .1rem; }
-    .cp-conf-high   { border: 1px solid var(--cp-green); box-shadow: 0 0 18px rgba(57,255,136,.35); }
-    .cp-conf-high .cp-conf-value   { color: var(--cp-green); text-shadow: 0 0 10px rgba(57,255,136,.6); }
-    .cp-conf-medium { border: 1px solid var(--cp-amber); box-shadow: 0 0 18px rgba(255,184,77,.35); }
-    .cp-conf-medium .cp-conf-value { color: var(--cp-amber); text-shadow: 0 0 10px rgba(255,184,77,.6); }
-    .cp-conf-low    { border: 1px solid var(--cp-red); box-shadow: 0 0 18px rgba(255,56,96,.35); }
-    .cp-conf-low .cp-conf-value    { color: var(--cp-red); text-shadow: 0 0 10px rgba(255,56,96,.6); }
+    .cp-conf-high   { border: 1px solid var(--cp-green); box-shadow: 0 0 18px rgba(34,197,94,.35); }
+    .cp-conf-high .cp-conf-value   { color: var(--cp-green); text-shadow: 0 0 10px rgba(34,197,94,.6); }
+    .cp-conf-medium { border: 1px solid var(--cp-amber); box-shadow: 0 0 18px rgba(245,158,11,.35); }
+    .cp-conf-medium .cp-conf-value { color: var(--cp-amber); text-shadow: 0 0 10px rgba(245,158,11,.6); }
+    .cp-conf-low    { border: 1px solid var(--cp-red); box-shadow: 0 0 18px rgba(239,68,68,.35); }
+    .cp-conf-low .cp-conf-value    { color: var(--cp-red); text-shadow: 0 0 10px rgba(239,68,68,.6); }
 
     /* ---- Chat (Ask AI) ---- */
     [data-testid="stChatMessage"] {
@@ -358,28 +525,28 @@ CSS = """
         transition: box-shadow .2s var(--cp-ease);
     }
     [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
-        background: rgba(167,66,255,0.08); border: 1px solid rgba(167,66,255,.3);
+        background: var(--cp-chat-user-bg); border: 1px solid var(--cp-chat-user-border);
     }
     [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]),
     [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarCustom"]) {
-        background: rgba(0,245,255,0.05); border: 1px solid rgba(0,245,255,.28);
+        background: var(--cp-chat-ai-bg); border: 1px solid var(--cp-chat-ai-border);
     }
-    [data-testid="stChatMessage"]:hover { box-shadow: 0 0 20px rgba(0,245,255,.18); }
+    [data-testid="stChatMessage"]:hover { box-shadow: var(--cp-chat-hover-shadow); }
 
     /* ---- Sidebar ---- */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0a0e20 0%, #05060f 100%) !important;
-        border-right: 1px solid rgba(0,245,255,.18);
+        background: var(--cp-sidebar-bg) !important;
+        border-right: 1px solid var(--cp-sidebar-border);
     }
     [data-testid="stSidebar"] * { color: var(--cp-text) !important; }
     [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3,
     [data-testid="stSidebar"] h4 { font-family: var(--font-display) !important; }
 
     /* ---- Dataframe ---- */
-    [data-testid="stDataFrame"] { border: 1px solid rgba(0,245,255,.2); border-radius: 10px; overflow: hidden; }
+    [data-testid="stDataFrame"] { border: 1px solid var(--cp-df-border); border-radius: 10px; overflow: hidden; }
 
     /* ---- Misc polish ---- */
-    ::selection { background: rgba(0,245,255,.3); color: #05060f; }
+    ::selection { background: var(--cp-selection-bg); color: var(--cp-selection-fg); }
     [data-testid="stMain"] { scroll-behavior: smooth; }
     ::-webkit-scrollbar { width: 10px; height: 10px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -397,6 +564,12 @@ CSS = """
     }
 </style>
 """
+# Token-replace (not str.format/f-string) because the CSS body is full of
+# literal `{`/`}` (keyframes, selectors) that would need constant escaping --
+# `@@token@@` markers can't collide with real CSS syntax, so this stays safe
+# no matter how the stylesheet above grows.
+for _k, _v in t.items():
+    CSS = CSS.replace(f"@@{_k}@@", str(_v))
 st.markdown(CSS, unsafe_allow_html=True)
 
 
@@ -443,6 +616,11 @@ def _set_data(load_result: LoadResult) -> None:
 with st.sidebar:
     st.markdown("### 🏙️ CivicPulse AI")
     st.caption("Community decision intelligence")
+    st.radio(
+        "Theme", ["🌙 Dark", "☀️ Light"], horizontal=True,
+        label_visibility="collapsed", key="app_theme",
+    )
+    st.divider()
 
     st.markdown("#### 1. Load data")
     if st.button("⚡ Load demo dataset", use_container_width=True, type="primary"):
@@ -556,10 +734,10 @@ def score_pill(label: str, value: float, color: str) -> str:
 
 def urgency_color(v: float) -> str:
     if v >= 70:
-        return "#ff3860"
+        return "#ef4444"
     if v >= 45:
-        return "#ffb84d"
-    return "#39ff88"
+        return "#f59e0b"
+    return "#22c55e"
 
 
 def confidence_badge(confidence: str | None) -> str:
@@ -750,9 +928,9 @@ with tab_overview:
         st.markdown("<div class='cp-section-title'>Decision Scoreboard</div>", unsafe_allow_html=True)
         s1, s2, s3, s4 = st.columns(4)
         s1.markdown(score_pill("Urgency", scores["urgency"], urgency_color(scores["urgency"])), unsafe_allow_html=True)
-        s2.markdown(score_pill("Impact", scores["impact"], "#00f5ff"), unsafe_allow_html=True)
-        s3.markdown(score_pill("Confidence", scores["confidence"], "#a742ff"), unsafe_allow_html=True)
-        s4.markdown(score_pill("Severity", scores["severity_index"], "#ff2fd0"), unsafe_allow_html=True)
+        s2.markdown(score_pill("Impact", scores["impact"], t["cyan"]), unsafe_allow_html=True)
+        s3.markdown(score_pill("Confidence", scores["confidence"], t["violet"]), unsafe_allow_html=True)
+        s4.markdown(score_pill("Severity", scores["severity_index"], t["magenta"]), unsafe_allow_html=True)
         st.caption(f"Open/unresolved case rate: **{d['open_rate_pct']}%**")
         cb = scores.get("confidence_breakdown")
         if cb:
@@ -766,65 +944,68 @@ with tab_overview:
                 )
 
         st.write("")
-        st.markdown("<div class='cp-section-title'>🗺️ Hotspot map</div>", unsafe_allow_html=True)
-        st.caption("Blends volume, severity, and unresolved backlog into one score per area.")
+        map_title_col, map_toggle_col = st.columns([4, 1.4])
+        with map_title_col:
+            st.markdown("<div class='cp-section-title'>🗺️ Hotspot map</div>", unsafe_allow_html=True)
+            st.caption("Blends volume, severity, and unresolved backlog into one score per area.")
         if d.get("geo_summary"):
             geo_df = pd.DataFrame(d["geo_summary"])
             geo_df["coord_label"] = geo_df["coord_source"].map({
                 "real_ward": "Real BBMP ward location", "provided": "Provided coordinates",
                 "placeholder": "Placeholder (unmatched)",
             })
+            # A plain Streamlit control instead of Plotly's own in-chart
+            # updatemenus buttons -- those used to sit top-right on the map
+            # and collided with Plotly's built-in modebar (camera/pan/zoom/
+            # fullscreen icons), which also lives top-right and can't be
+            # moved. A separate widget above the chart can never overlap it.
+            st.session_state.setdefault("map_basemap", "🌙 Dark" if theme == "dark" else "☀️ Light")
+            with map_toggle_col:
+                st.radio(
+                    "Basemap", ["🌙 Dark", "☀️ Light"], horizontal=True,
+                    label_visibility="collapsed", key="map_basemap",
+                )
+            mapbox_style = "carto-darkmatter" if "Dark" in st.session_state.map_basemap else "carto-positron"
+            map_is_dark = mapbox_style == "carto-darkmatter"
+
             fig_map = px.scatter_mapbox(
                 geo_df, lat="lat", lon="lon", size="hotspot_score", color="coord_label",
                 hover_name="area",
                 hover_data={"total_complaints": True, "open_rate_pct": True, "high_severity_rate_pct": True,
                             "lat": False, "lon": False, "hotspot_score": ":.1f", "coord_label": False},
                 color_discrete_map={
-                    "Real BBMP ward location": "#00f5ff",
-                    "Provided coordinates": "#a742ff",
-                    "Placeholder (unmatched)": "#ffb84d",
+                    "Real BBMP ward location": t["geo_real"],
+                    "Provided coordinates": t["geo_provided"],
+                    "Placeholder (unmatched)": t["geo_placeholder"],
                 },
-                size_max=32, zoom=10, mapbox_style="carto-darkmatter",
+                size_max=32, zoom=10, mapbox_style=mapbox_style,
             )
             # Auto-fit the view to the actual data instead of a fixed zoom level.
             lat_span = geo_df["lat"].max() - geo_df["lat"].min()
             lon_span = geo_df["lon"].max() - geo_df["lon"].min()
             span = max(lat_span, lon_span, 0.01)
             auto_zoom = 12 if span < 0.05 else (10 if span < 0.15 else (8 if span < 0.5 else 6))
+            # Legend styling follows the chosen BASEMAP (not the app theme)
+            # so it stays readable against whichever map tiles are showing.
+            legend_bg = "rgba(13,18,38,0.7)" if map_is_dark else "rgba(255,255,255,0.85)"
+            legend_fg = "#e8f6ff" if map_is_dark else "#101828"
             fig_map.update_layout(
-                height=520, margin=dict(l=0, r=0, t=40, b=0), legend_title_text="",
+                height=520, margin=dict(l=0, r=0, t=10, b=0), legend_title_text="",
                 paper_bgcolor="rgba(0,0,0,0)",
-                font=dict(family="Rajdhani, sans-serif", color="#e8f6ff"),
-                # Legend top-left so it doesn't collide with the dark/light
-                # toggle buttons placed top-right below.
+                font=dict(family="Rajdhani, sans-serif", color=legend_fg),
                 legend=dict(
-                    bgcolor="rgba(13,18,38,0.7)", font=dict(color="#e8f6ff"),
+                    bgcolor=legend_bg, font=dict(color=legend_fg),
                     x=0.01, y=0.99, xanchor="left", yanchor="top",
                 ),
                 mapbox=dict(
                     center=dict(lat=float(geo_df["lat"].mean()), lon=float(geo_df["lon"].mean())),
                     zoom=auto_zoom,
                 ),
-                # Native in-chart toggle -- switches the basemap instantly,
-                # client-side, no Streamlit rerun needed.
-                updatemenus=[
-                    dict(
-                        type="buttons", direction="right", showactive=True,
-                        x=1.0, y=1.10, xanchor="right", yanchor="top",
-                        bgcolor="rgba(13,18,38,0.75)", bordercolor="#00f5ff", borderwidth=1,
-                        font=dict(color="#e8f6ff", size=11),
-                        buttons=[
-                            dict(label="🌙 Dark", method="relayout", args=[{"mapbox.style": "carto-darkmatter"}]),
-                            dict(label="☀️ Light", method="relayout", args=[{"mapbox.style": "carto-positron"}]),
-                        ],
-                    )
-                ],
             )
             st.plotly_chart(
                 fig_map, use_container_width=True,
                 config={"scrollZoom": True, "displayModeBar": True, "displaylogo": False},
             )
-            st.caption("🌙☀️ Use the toggle at the top-right of the map to switch between dark and light basemap.")
             st.caption("🖱️ Scroll or pinch to zoom, drag to pan, click a legend item to filter by coordinate source.")
 
             n_real = int((geo_df["coord_source"] == "real_ward").sum())
@@ -867,11 +1048,11 @@ with tab_overview:
                     labels={"x": "Complaints", "y": ""},
                     title="Complaints by area",
                     color=list(d["by_area"].values()),
-                    color_continuous_scale=["#1a1f3a", "#00f5ff"],
+                    color_continuous_scale=t["bar_scale"],
                 )
                 fig.update_layout(
                     showlegend=False, coloraxis_showscale=False, height=340, margin=dict(l=0, r=0, t=40, b=0),
-                    **DARK_CHART_LAYOUT,
+                    **CHART_LAYOUT,
                 )
                 fig.update_yaxes(autorange="reversed")
                 st.plotly_chart(fig, use_container_width=True)
@@ -881,8 +1062,8 @@ with tab_overview:
                 fig2 = px.area(
                     tdf, x="week", y="count", title="Weekly volume trend", markers=True,
                 )
-                fig2.update_traces(line_color="#00f5ff", fillcolor="rgba(0,245,255,0.15)", marker=dict(color="#a742ff", size=7))
-                fig2.update_layout(height=340, margin=dict(l=0, r=0, t=40, b=0), **DARK_CHART_LAYOUT)
+                fig2.update_traces(line_color=t["area_line"], fillcolor=t["area_fill"], marker=dict(color=t["area_marker"], size=7))
+                fig2.update_layout(height=340, margin=dict(l=0, r=0, t=40, b=0), **CHART_LAYOUT)
                 st.plotly_chart(fig2, use_container_width=True)
 
         c_a, c_b = st.columns(2)
@@ -892,10 +1073,10 @@ with tab_overview:
                     names=[humanize(k) for k in d["by_category"].keys()],
                     values=list(d["by_category"].values()),
                     title="Category mix", hole=0.5,
-                    color_discrete_sequence=["#00f5ff", "#a742ff", "#ff2fd0", "#39ff88", "#ffb84d", "#ff3860"],
+                    color_discrete_sequence=t["pie_sequence"],
                 )
-                fig3.update_traces(marker=dict(line=dict(color="#05060f", width=2)))
-                fig3.update_layout(height=340, margin=dict(l=0, r=0, t=40, b=0), **DARK_CHART_LAYOUT)
+                fig3.update_traces(marker=dict(line=dict(color=t["pie_line"], width=2)))
+                fig3.update_layout(height=340, margin=dict(l=0, r=0, t=40, b=0), **CHART_LAYOUT)
                 st.plotly_chart(fig3, use_container_width=True)
         with c_b:
             if d["severity_distribution"]:
@@ -905,9 +1086,9 @@ with tab_overview:
                     x=[k.title() for k in sd.keys()], y=list(sd.values()),
                     title="Severity distribution", labels={"x": "", "y": "Count"},
                     color=[k.title() for k in sd.keys()],
-                    color_discrete_map={"Low": "#39ff88", "Medium": "#ffb84d", "High": "#ff7a3d", "Critical": "#ff3860"},
+                    color_discrete_map={"Low": "#22c55e", "Medium": "#f59e0b", "High": "#fb923c", "Critical": "#ef4444"},
                 )
-                fig4.update_layout(showlegend=False, height=340, margin=dict(l=0, r=0, t=40, b=0), **DARK_CHART_LAYOUT)
+                fig4.update_layout(showlegend=False, height=340, margin=dict(l=0, r=0, t=40, b=0), **CHART_LAYOUT)
                 st.plotly_chart(fig4, use_container_width=True)
 
         with st.expander("Preview raw data"):
@@ -922,23 +1103,13 @@ with tab_ask:
         "Keep asking follow-ups; CivicPulse remembers the conversation."
     )
 
-    # Suggestion chips stay available for every turn (not just the first),
-    # so there's always a quick-start option for a follow-up too.
-    suggestions = [
+    STARTER_SUGGESTIONS = [
         "Which area has the most urgent issues?",
         "What patterns are increasing this week?",
         "Compare the top two hotspot areas.",
         "What should we prioritize this week?",
     ]
     picked = None
-    cols = st.columns(len(suggestions))
-    for col, s in zip(cols, suggestions):
-        if col.button(s, use_container_width=True):
-            picked = s
-    if st.session_state.qa_history and st.button("🔄 Start a new conversation"):
-        st.session_state.qa_history = []
-        st.session_state.qa_conversation = None
-        st.rerun()
 
     # Render the full conversation BEFORE the input box, so the input always
     # ends up visually pinned below every message -- st.chat_input renders
@@ -950,6 +1121,33 @@ with tab_ask:
             st.markdown(q)
         with st.chat_message("assistant", avatar="🏙️"):
             render_qa_answer(result)
+
+    # Suggestions sit right above the input, sourced from the MOST RECENT
+    # answer only -- Gemini proposes follow-ups grounded in that answer's
+    # context, so each new turn's suggestions replace the previous turn's
+    # instead of piling up (and there's never a need to scroll back up to
+    # find a suggestion to tap).
+    if st.session_state.qa_history:
+        turn_index = len(st.session_state.qa_history)
+        last_result = st.session_state.qa_history[-1][1]
+        follow_ups = (last_result.data or {}).get("suggested_follow_ups") or []
+        follow_ups = [f for f in follow_ups if isinstance(f, str) and f.strip()][:3]
+        if follow_ups:
+            st.caption("💡 Suggested follow-ups")
+            cols = st.columns(len(follow_ups))
+            for i, (col, s) in enumerate(zip(cols, follow_ups)):
+                if col.button(s, use_container_width=True, key=f"followup_{turn_index}_{i}"):
+                    picked = s
+        if st.button("🔄 Start a new conversation"):
+            st.session_state.qa_history = []
+            st.session_state.qa_conversation = None
+            st.rerun()
+    else:
+        st.caption("💡 Try asking")
+        cols = st.columns(len(STARTER_SUGGESTIONS))
+        for i, (col, s) in enumerate(zip(cols, STARTER_SUGGESTIONS)):
+            if col.button(s, use_container_width=True, key=f"starter_{i}"):
+                picked = s
 
     typed_question = st.chat_input("Ask a follow-up — e.g. \"What about last month?\"")
     question = picked or typed_question
@@ -1145,12 +1343,15 @@ from a one-off dashboard into an automated service.
 - A Decision Scoreboard (urgency · impact · confidence) tells teams what to act on.
 
 **What's in here**
+- 🎨 **Light/dark app theme** — toggle at the top of the sidebar switches the
+  whole dashboard between a clean professional light theme and the futuristic
+  neon theme, for whichever reads best on your screen.
 - 💬 **Agentic, multi-turn chat** — Ask AI calls real query tools against your live
   data (not one static snapshot) and remembers the conversation, so follow-ups like
   *"what about the second one?"* just work. Every answer shows exactly which
-  queries ran.
+  queries ran, and suggests grounded next questions to tap.
 - 🗺️ **Real hotspot mapping** — actual BBMP ward coordinates (OpenCity's Bengaluru
-  ward dataset), with a light/dark toggle built into the map itself.
+  ward dataset), with its own dark/light basemap toggle above the map.
 - 📈 **7-day forecasting** — Holt's linear trend method flags likely spikes per
   area before they happen, not just after.
 - 📝 **One-click Executive Brief** — a complete, plain-language handoff memo
