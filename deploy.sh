@@ -21,7 +21,13 @@ gcloud config set project "${PROJECT_ID}"
 # Choose credentials mode:
 #  - If GEMINI_API_KEY is set, pass it as an env var (Gemini Developer API).
 #  - Otherwise use Vertex AI with the Cloud Run service account.
-ENV_VARS="GEMINI_MODEL=${MODEL}"
+# URL of the scheduled-brief Cloud Function (see README's "Automated weekly
+# brief" section) -- lets the "Send scheduled reports now" button in the app
+# trigger it on demand. Harmless if that function isn't deployed; the app
+# just shows the button as unavailable.
+SCHEDULED_BRIEF_FUNCTION_URL="${SCHEDULED_BRIEF_FUNCTION_URL:-https://${REGION}-${PROJECT_ID}.cloudfunctions.net/civicpulse-scheduled-brief}"
+
+ENV_VARS="GEMINI_MODEL=${MODEL},SCHEDULED_BRIEF_FUNCTION_URL=${SCHEDULED_BRIEF_FUNCTION_URL}"
 if [[ -n "${GEMINI_API_KEY:-}" ]]; then
   echo "==> Deploying with Gemini Developer API key."
   ENV_VARS="${ENV_VARS},GEMINI_API_KEY=${GEMINI_API_KEY}"

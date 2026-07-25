@@ -31,6 +31,7 @@ except Exception:
 
 APP_DIR = Path(__file__).parent
 SAMPLE_CSV = APP_DIR / "sample_data" / "citizen_complaints.csv"
+SCHEDULED_BRIEF_FUNCTION_URL = os.environ.get("SCHEDULED_BRIEF_FUNCTION_URL", "")
 
 st.set_page_config(
     page_title="CivicPulse AI",
@@ -221,6 +222,7 @@ def _init_state() -> None:
     st.session_state.setdefault("qa_history", [])
     st.session_state.setdefault("qa_conversation", None)
     st.session_state.setdefault("domain", "citizen complaints")
+    st.session_state.setdefault("trigger_result", None)
 
 
 _init_state()
@@ -482,6 +484,35 @@ def render_actions(actions: list) -> None:
             st.caption(caption)
         else:
             st.markdown(f"**{i}.** {act}")
+
+
+def trigger_scheduled_reports(url: str) -> dict:
+    """Invoke the deployed civicpulse-scheduled-brief Cloud Function directly
+    from the app, using the Cloud Run service account's identity -- the same
+    trigger Cloud Scheduler fires every Monday, just on demand. Returns a
+    dict with either the function's real JSON response or an "error" key;
+    never raises, so a demo click can't crash the app.
+
+    Note: the function pulls its own dataset (the bundled sample, or
+    CIVICPULSE_DATA_GCS_URI if configured) -- independent of whatever file is
+    loaded in this browser session.
+    """
+    if not url:
+        return {"error": "SCHEDULED_BRIEF_FUNCTION_URL is not configured for this deployment."}
+    try:
+        import google.auth.transport.requests
+        import google.oauth2.id_token
+        import requests
+
+        auth_req = google.auth.transport.requests.Request()
+        id_token = google.oauth2.id_token.fetch_id_token(auth_req, url)
+        resp = requests.post(
+            url, headers={"Authorization": f"Bearer {id_token}"}, timeout=280
+        )
+        resp.raise_for_status()
+        return resp.json()
+    except Exception as exc:  # noqa: BLE001 - surface as a message, not a crash
+        return {"error": str(exc)}
 
 
 # ---------------------------------------------------------------- tabs
@@ -845,6 +876,31 @@ with tab_reco:
                         f"{r.get('total_records', '—')} records · trend: {r.get('trend_direction', '—')}"
                     )
                     st.divider()
+
+    st.write("")
+    st.markdown("<div class='cp-section-title'>🔔 Automated Weekly Reports</div>", unsafe_allow_html=True)
+    st.caption(
+        "Every Monday, a Cloud Scheduler job runs this same pipeline automatically and emails "
+        "a citywide brief plus one department-scoped report to each configured department "
+        "contact — nobody has to open this dashboard. Trigger it now to see it live."
+    )
+    if not SCHEDULED_BRIEF_FUNCTION_URL:
+        st.info("Scheduled-report trigger isn't configured for this deployment.")
+    elif st.button("📨 Send scheduled reports now"):
+        with st.spinner("Triggering the scheduled job — generating and emailing citywide + department reports..."):
+            st.session_state.trigger_result = trigger_scheduled_reports(SCHEDULED_BRIEF_FUNCTION_URL)
+
+    trigger_result = st.session_state.get("trigger_result")
+    if trigger_result:
+        if trigger_result.get("error"):
+            st.error(f"Trigger failed: {trigger_result['error']}")
+        else:
+            fallback_note = " (offline fallback used)" if trigger_result.get("gemini_used_fallback") else ""
+            st.success(f"✅ Citywide brief: {trigger_result.get('email_status', '—')}{fallback_note}")
+            dept_reports = trigger_result.get("department_reports") or {}
+            for dept, status in dept_reports.items():
+                icon = "✅" if status.startswith("sent") else ("⏭️" if status.startswith("skipped") else "❌")
+                st.caption(f"{icon} **{dept}** — {status}")
 
 
 # ============================== ABOUT ==============================
