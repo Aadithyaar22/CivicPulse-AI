@@ -517,10 +517,29 @@ CSS = """
         background: var(--cp-tab-active-bg) !important;
         color: var(--cp-cyan) !important;
     }
+    /* The "⋮" main menu (Rerun/Settings/Print/...) is a separate, non-
+       BaseWeb popover with its own wrapper divs -- same class of bug as
+       above (an unstyled ancestor carrying a hardcoded light background
+       that the dark theme never reached), different component. */
+    .stMainMenuPopover {
+        background: var(--cp-panel-solid) !important;
+        border: 1px solid var(--cp-input-border) !important;
+    }
+    /* Defensive, not just reactive: any nested wrapper div inside these
+       three containers that ISN'T explicitly styled above falls back to
+       transparent instead of whatever default (often light) background
+       Streamlit gave it -- so a hover/open/disabled sub-state introducing
+       a new, unstyled wrapper can't reintroduce this bug. Safe because it
+       has no !important: every element with an intentional background
+       (the option/tab rules above, .cp-* components elsewhere) already
+       wins via !important regardless of source order. */
+    .stMainMenuPopover *, [data-testid="stExpander"] *, [data-testid="stChatInput"] * {
+        background-color: transparent;
+    }
 
     /* ---- Expanders, containers, alerts ---- */
     div[data-testid="stExpander"] {
-        background: var(--cp-panel); backdrop-filter: blur(12px);
+        background: var(--cp-panel) !important; backdrop-filter: blur(12px);
         border: 1px solid var(--cp-expander-border) !important; border-radius: 12px !important;
         transition: box-shadow .2s var(--cp-ease), border-color .2s var(--cp-ease);
     }
