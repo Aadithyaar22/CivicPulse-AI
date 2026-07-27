@@ -296,14 +296,17 @@ class GeminiClient:
             for fc in calls:
                 args = dict(fc.args or {})
                 result = dispatch_tool(df, fc.name, args)
-                trace.append(
-                    {
-                        "tool": fc.name,
-                        "args": args,
-                        "record_count": result.get("record_count"),
-                        "error": result.get("error"),
-                    }
-                )
+                trace_entry: dict[str, Any] = {"tool": fc.name, "args": args}
+                # Only set record_count when the tool actually reports one --
+                # get_summary_stats has no such concept (it's a whole-dataset
+                # snapshot, not a filtered count), and the app's confidence
+                # scoring treats "key absent" and "explicitly zero" as
+                # meaningfully different signals, not the same as None.
+                if "record_count" in result:
+                    trace_entry["record_count"] = result.get("record_count")
+                if result.get("error"):
+                    trace_entry["error"] = result.get("error")
+                trace.append(trace_entry)
                 response_parts.append(
                     types.Part.from_function_response(name=fc.name, response={"result": result})
                 )
@@ -436,7 +439,6 @@ def _fallback_answer(insights: dict[str, Any], question: str) -> dict[str, Any]:
         "recommended_next_step": (
             f"Focus resources on {humanize(hotspot)}." if hotspot else "Collect more data."
         ),
-        "confidence": "low",
         "executive_summary": (
             f"{humanize(hotspot)} needs attention for {humanize(top_cat)} issues."
             if hotspot and top_cat

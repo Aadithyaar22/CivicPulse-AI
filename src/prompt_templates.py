@@ -64,7 +64,6 @@ _AGENTIC_ANSWER_SHAPE = """{
   "why_it_matters": "1-2 sentences on impact",
   "where": "array of the relevant area name(s), ranked most-relevant first (e.g. [\"Koramangala\", \"Jayanagar\"]); empty array if not enough data",
   "recommended_next_step": "one concrete action",
-  "confidence": "high | medium | low",
   "executive_summary": "one crisp sentence a mayor could repeat",
   "explanation": "a fuller 2-3 sentence plain-language paragraph walking through what the tool results show and why it leads to that recommendation -- written for someone who wants the full context, not just the bullet points",
   "suggested_follow_ups": "array of 2-3 short, specific follow-up questions the user could naturally ask next, grounded in this data and conversation (not generic filler)"
@@ -141,7 +140,7 @@ matching this shape:
 {_AGENTIC_ANSWER_SHAPE}
 
 If the analytics do not contain enough information to answer, say so honestly in
-'what_is_happening' and set confidence to 'low'.
+'what_is_happening'.
 """
 
 
@@ -189,7 +188,7 @@ prose before/after) matching this shape:
 {_AGENTIC_ANSWER_SHAPE}
 
 If tool results do not contain enough information to answer, say so honestly in
-'what_is_happening' and set confidence to 'low'.
+'what_is_happening'.
 """
 
 

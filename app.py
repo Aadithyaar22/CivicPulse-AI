@@ -1026,19 +1026,54 @@ def confidence_badge(confidence: str | None) -> str:
     )
 
 
-# Categorical confidence (Gemini's own self-assessment per answer) mapped to
-# a percentage purely for the progress-bar visual -- there's no genuine
-# numeric confidence per Q&A turn, so this is a fixed, honest bucket
-# midpoint, not a computed statistic.
-_CONF_PCT = {"high": 88, "medium": 62, "low": 32}
 _CONF_COLOR_HEX = {"high": "#22c55e", "medium": "#f59e0b", "low": "#ef4444"}
 
 
-def confidence_bar(confidence: str | None) -> str:
-    level = str(confidence or "").strip().lower()
-    pct = _CONF_PCT.get(level, 62)
-    color = _CONF_COLOR_HEX.get(level, "#f59e0b")
-    label = level.title() or "—"
+def agentic_confidence_pct(trace: list[dict] | None) -> int:
+    """Deterministic 0-100 confidence for one Ask AI answer, computed from
+    the REAL tool-call results it's grounded in -- not an LLM self-report.
+    Two real signals, same "compute first, explain second" philosophy as
+    the rest of the app:
+      - sample size (0-70): the strongest evidence any successful call
+        provided. filter_records/get_top_complaints report an explicit
+        record_count (saturating at 40 matching records; a confirmed zero
+        still counts as real, if thin, evidence rather than scoring like an
+        outright error). get_summary_stats has no record_count at all --
+        it's a full-dataset snapshot (same numbers as the Overview tab), so
+        its absence means "comprehensive", not "no evidence", and it scores
+        at full sample credit.
+      - reliability (0-30): the fraction of tool calls that succeeded
+        without error (a partly-failed evidence base is less trustworthy)
+    """
+    trace = trace or []
+    if not trace:
+        return 35  # no tool calls at all (e.g. offline fallback) -- low, not zero
+    calls = len(trace)
+    errors = sum(1 for t in trace if t.get("error"))
+    successes = calls - errors
+
+    sample_scores = []
+    for t in trace:
+        if t.get("error"):
+            continue
+        if "record_count" in t:
+            n = t.get("record_count") or 0
+            sample_scores.append(25.0 if n == 0 else min(n / 40.0, 1.0) * 70.0)
+        else:
+            sample_scores.append(70.0)  # e.g. get_summary_stats: whole-dataset evidence
+
+    sample_score = max(sample_scores) if sample_scores else 0.0
+    reliability_score = (successes / calls) * 30.0
+    return round(min(100.0, sample_score + reliability_score))
+
+
+def confidence_bar(pct: int) -> str:
+    if pct >= 75:
+        label, color = "High", _CONF_COLOR_HEX["high"]
+    elif pct >= 45:
+        label, color = "Medium", _CONF_COLOR_HEX["medium"]
+    else:
+        label, color = "Low", _CONF_COLOR_HEX["low"]
     return (
         f"<div class='cp-confidence'>"
         f"<div class='cp-conf-row'><span class='icon'>🛡️</span>"
@@ -1057,7 +1092,8 @@ def render_qa_answer(result) -> None:
         st.caption("⚠️ Offline fallback answer (Gemini not called).")
 
     if "what_is_happening" in data:
-        st.markdown(confidence_bar(data.get("confidence")), unsafe_allow_html=True)
+        conf_pct = agentic_confidence_pct(data.get("_tool_trace"))
+        st.markdown(confidence_bar(conf_pct), unsafe_allow_html=True)
         if data.get("explanation"):
             st.markdown(data["explanation"])
             st.write("")
@@ -1090,9 +1126,11 @@ def render_qa_answer(result) -> None:
                 args_str = ", ".join(f"{k}={v}" for k, v in (t.get("args") or {}).items()) or "—"
                 if t.get("error"):
                     st.caption(f"❌ `{t['tool']}({args_str})` → {t['error']}")
-                else:
+                elif "record_count" in t:
                     rc = t.get("record_count")
                     st.caption(f"✅ `{t['tool']}({args_str})` → {rc} matching record{'s' if rc != 1 else ''}")
+                else:
+                    st.caption(f"✅ `{t['tool']}({args_str})` → full dataset snapshot")
 
 
 _URGENCY_ICON = {"immediate": "🔴", "high": "🟠", "normal": "⚪"}
