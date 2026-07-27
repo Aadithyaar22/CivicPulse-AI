@@ -603,6 +603,26 @@ CSS = """
     [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3,
     [data-testid="stSidebar"] h4 { font-family: var(--font-display) !important; }
 
+    /* ---- Top header bar (the "⋮" menu / Deploy button strip) ----
+       header[data-testid="stHeader"] carries its own hardcoded light
+       background (rgb(247,249,252)) completely independent of app theme --
+       it's Streamlit's own chrome, not part of .stApp -- so it stayed a
+       bright white bar even in dark theme, and the menu button's icon
+       (correctly light-colored already) went low-contrast against it. */
+    header[data-testid="stHeader"], div[data-testid="stToolbar"] {
+        background: var(--cp-void) !important;
+    }
+    [data-testid="stToolbarActions"] button, [data-testid="stMainMenu"] button {
+        background: transparent !important;
+        color: var(--cp-text) !important;
+    }
+    [data-testid="stToolbarActions"] button svg, [data-testid="stMainMenu"] button svg {
+        fill: var(--cp-text) !important;
+    }
+    [data-testid="stToolbarActions"] button:hover, [data-testid="stMainMenu"] button:hover {
+        background: var(--cp-tab-hover-bg) !important;
+    }
+
     /* ---- Dataframe ---- */
     [data-testid="stDataFrame"] { border: 1px solid var(--cp-df-border); border-radius: 10px; overflow: hidden; }
 
