@@ -62,7 +62,7 @@ _REPORT_SHAPE = {
 _AGENTIC_ANSWER_SHAPE = """{
   "what_is_happening": "1-2 sentences of factual answer grounded in tool results",
   "why_it_matters": "1-2 sentences on impact",
-  "where": "the most relevant area(s), or 'not enough data'",
+  "where": "array of the relevant area name(s), ranked most-relevant first (e.g. [\"Koramangala\", \"Jayanagar\"]); empty array if not enough data",
   "recommended_next_step": "one concrete action",
   "confidence": "high | medium | low",
   "executive_summary": "one crisp sentence a mayor could repeat",

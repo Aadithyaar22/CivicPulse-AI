@@ -432,7 +432,7 @@ def _fallback_answer(insights: dict[str, Any], question: str) -> dict[str, Any]:
             else "Not enough structured data to answer precisely."
         ),
         "why_it_matters": f"Volume trend is {trend}, affecting service planning.",
-        "where": humanize(hotspot) if hotspot else "not enough data",
+        "where": [humanize(hotspot)] if hotspot else [],
         "recommended_next_step": (
             f"Focus resources on {humanize(hotspot)}." if hotspot else "Collect more data."
         ),

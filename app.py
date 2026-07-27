@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import os
 import uuid
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -154,8 +155,8 @@ THEMES: dict[str, dict[str, str | list[str]]] = {
     },
 }
 
-st.session_state.setdefault("app_theme", "🌙 Dark")
-theme: str = "dark" if str(st.session_state.app_theme).startswith("🌙") else "light"
+st.session_state.setdefault("dark_mode", True)
+theme: str = "dark" if st.session_state.dark_mode else "light"
 t = THEMES[theme]
 
 
@@ -594,6 +595,58 @@ CSS = """
     }
     [data-testid="stChatMessage"]:hover { box-shadow: var(--cp-chat-hover-shadow); }
 
+    /* ---- Message meta row (sender + timestamp) ---- */
+    .cp-msg-meta {
+        display:flex; justify-content:space-between; align-items:baseline;
+        font-family: var(--font-mono); font-size:.7rem; color: var(--cp-text-dim);
+        margin-bottom:.35rem; letter-spacing:.02em;
+    }
+    .cp-msg-sender { font-weight:600; color: var(--cp-text); font-family: var(--font-body); }
+
+    /* ---- Confidence progress bar ---- */
+    .cp-conf-row { display:flex; align-items:center; gap:.4rem; }
+    .cp-conf-track {
+        width:100%; height:6px; border-radius:999px;
+        background: rgba(120,130,140,.22); margin-top:.5rem; overflow:hidden;
+    }
+    .cp-conf-fill { height:100%; border-radius:999px; transition: width .4s var(--cp-ease); }
+
+    /* ---- Small status/utility cards (sidebar, trust card) ---- */
+    .cp-status-card {
+        display:flex; align-items:center; gap:.6rem;
+        padding:.6rem .8rem; border-radius:12px;
+        background: var(--cp-panel); border:1px solid var(--cp-border);
+        font-size:.82rem; margin:.4rem 0;
+    }
+    .cp-status-card .icon { font-size:1.05rem; }
+    .cp-status-off { opacity:.65; }
+    .cp-trust-card {
+        display:flex; gap:.7rem; align-items:flex-start;
+        padding:.9rem 1rem; border-radius:14px;
+        background: var(--cp-panel); border:1px solid var(--cp-border);
+        font-size:.8rem; color: var(--cp-text-dim); margin-top:.8rem;
+    }
+    .cp-trust-card .icon { font-size:1.3rem; line-height:1; }
+    .cp-trust-card b { color: var(--cp-text); }
+
+    /* ---- Chat history panel entries (Ask AI, right column) ---- */
+    .cp-history-item {
+        padding:.55rem .7rem; border-radius:10px;
+        background: var(--cp-panel); border:1px solid var(--cp-border);
+        margin-bottom:.5rem; font-size:.8rem;
+        transition: border-color .2s var(--cp-ease);
+    }
+    .cp-history-item:hover { border-color: var(--cp-cyan); }
+    .cp-history-time {
+        font-family: var(--font-mono); font-size:.66rem; color: var(--cp-cyan);
+        display:block; margin-bottom:.2rem; letter-spacing:.03em;
+    }
+
+    /* ---- Map bubble-size legend ---- */
+    .cp-size-legend { display:flex; gap:1.3rem; align-items:center; flex-wrap:wrap; margin:.6rem 0 0; }
+    .cp-size-legend .item { display:flex; align-items:center; gap:.45rem; font-size:.76rem; color: var(--cp-text-dim); }
+    .cp-size-legend .dot { display:inline-block; border-radius:50%; background: var(--cp-cyan); flex:none; }
+
     /* ---- Sidebar ---- */
     [data-testid="stSidebar"] {
         background: var(--cp-sidebar-bg) !important;
@@ -739,7 +792,7 @@ def _persist_session() -> None:
         source_type=lr.source_type if lr is not None else None,
         raw_text=lr.raw_text if lr is not None else None,
         domain=st.session_state.domain,
-        qa_history=[(q, _result_to_dict(r)) for q, r in st.session_state.qa_history],
+        qa_history=[(q, _result_to_dict(r), ts) for q, r, ts in st.session_state.qa_history],
         brief=_result_to_dict(st.session_state.brief) if st.session_state.brief is not None else None,
     )
 
@@ -772,7 +825,7 @@ def _rehydrate_session() -> None:
     st.session_state.insights = compute_insights(df) if df is not None and not df.empty else None
 
     st.session_state.qa_history = [
-        (turn.get("question", ""), _dict_to_result(turn.get("result") or {}))
+        (turn.get("question", ""), _dict_to_result(turn.get("result") or {}), turn.get("time", ""))
         for turn in restored.get("qa_history") or []
     ]
     # The Gemini SDK conversation object holds live google.genai types, not
@@ -805,10 +858,13 @@ def _set_data(load_result: LoadResult) -> None:
 with st.sidebar:
     st.markdown("### 🏙️ CivicPulse AI")
     st.caption("Community decision intelligence")
-    st.radio(
-        "Theme", ["🌙 Dark", "☀️ Light"], horizontal=True,
-        label_visibility="collapsed", key="app_theme",
-    )
+    theme_l, theme_switch, theme_d = st.columns([1, 1, 1])
+    with theme_l:
+        st.caption("☀️ Light")
+    with theme_switch:
+        st.toggle("Theme", key="dark_mode", label_visibility="collapsed")
+    with theme_d:
+        st.caption("🌙 Dark")
     st.divider()
 
     st.markdown("#### 1. Load data")
@@ -861,14 +917,37 @@ with st.sidebar:
     else:
         st.warning("Gemini offline — using local fallback.")
         st.caption(gemini.status_message)
-    st.caption(
-        "🗄️ Brief history: saving to Firestore" if history.available
-        else "🗄️ Brief history: unavailable this session (not saved)"
-    )
-    st.caption(
-        "🔄 Reload-safe: your data & chat survive a page refresh" if session_store.available
-        else "🔄 Reload-safe: unavailable this session (refresh will reset)"
-    )
+
+    st.markdown("#### 4. Brief history")
+    if history.available:
+        _recent_count = len(history.list_recent(limit=50))
+        _count_label = f"{_recent_count}+ briefs available" if _recent_count >= 50 else (
+            f"{_recent_count} brief{'s' if _recent_count != 1 else ''} available"
+        )
+        st.markdown(
+            f"<div class='cp-status-card'><span class='icon'>🗄️</span><span>{_count_label}</span></div>",
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            "<div class='cp-status-card cp-status-off'><span class='icon'>🗄️</span>"
+            "<span>Unavailable this session — briefs won't be saved</span></div>",
+            unsafe_allow_html=True,
+        )
+
+    st.markdown("#### 5. Session")
+    if session_store.available:
+        st.markdown(
+            "<div class='cp-status-card'><span class='icon'>🔄</span>"
+            "<span>Reload-safe session active</span></div>",
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            "<div class='cp-status-card cp-status-off'><span class='icon'>🔄</span>"
+            "<span>Unavailable this session — a refresh will reset your data</span></div>",
+            unsafe_allow_html=True,
+        )
 
     st.divider()
     st.caption("Built with Streamlit + Gemini on Google Cloud Run.")
@@ -947,6 +1026,29 @@ def confidence_badge(confidence: str | None) -> str:
     )
 
 
+# Categorical confidence (Gemini's own self-assessment per answer) mapped to
+# a percentage purely for the progress-bar visual -- there's no genuine
+# numeric confidence per Q&A turn, so this is a fixed, honest bucket
+# midpoint, not a computed statistic.
+_CONF_PCT = {"high": 88, "medium": 62, "low": 32}
+_CONF_COLOR_HEX = {"high": "#22c55e", "medium": "#f59e0b", "low": "#ef4444"}
+
+
+def confidence_bar(confidence: str | None) -> str:
+    level = str(confidence or "").strip().lower()
+    pct = _CONF_PCT.get(level, 62)
+    color = _CONF_COLOR_HEX.get(level, "#f59e0b")
+    label = level.title() or "—"
+    return (
+        f"<div class='cp-confidence'>"
+        f"<div class='cp-conf-row'><span class='icon'>🛡️</span>"
+        f"<span class='cp-conf-label'>Confidence</span>"
+        f"<span class='cp-conf-value' style='color:{color}'>{label} · {pct}%</span></div>"
+        f"<div class='cp-conf-track'><div class='cp-conf-fill' style='width:{pct}%;background:{color}'></div></div>"
+        f"</div>"
+    )
+
+
 def render_qa_answer(result) -> None:
     """Shared renderer for one Ask AI answer -- used both for the freshly
     answered turn and for replaying prior turns in the chat history."""
@@ -955,14 +1057,23 @@ def render_qa_answer(result) -> None:
         st.caption("⚠️ Offline fallback answer (Gemini not called).")
 
     if "what_is_happening" in data:
-        st.markdown(confidence_badge(data.get("confidence")), unsafe_allow_html=True)
+        st.markdown(confidence_bar(data.get("confidence")), unsafe_allow_html=True)
         if data.get("explanation"):
             st.markdown(data["explanation"])
             st.write("")
-        st.markdown(f"**What's happening.** {data.get('what_is_happening', '')}")
-        st.markdown(f"**Why it matters.** {data.get('why_it_matters', '')}")
-        st.markdown(f"**Where.** {data.get('where', '')}")
-        st.markdown(f"**Recommended next step.** {data.get('recommended_next_step', '')}")
+        st.markdown(f"📊 **What's happening.** {data.get('what_is_happening', '')}")
+        st.markdown(f"🔷 **Why it matters.** {data.get('why_it_matters', '')}")
+
+        where = data.get("where")
+        if isinstance(where, list) and where:
+            where_str = "&nbsp;&nbsp;".join(f"{i}. {w}" for i, w in enumerate(where, 1))
+        elif isinstance(where, str) and where.strip():
+            where_str = where
+        else:
+            where_str = "not enough data"
+        st.markdown(f"📍 **Where.** {where_str}", unsafe_allow_html=True)
+
+        st.markdown(f"🎯 **Recommended next step.** {data.get('recommended_next_step', '')}")
         st.info(f"🗣️ {data.get('executive_summary', '')}")
     else:
         st.write(data.get("summary", data))
@@ -1093,26 +1204,26 @@ with tab_overview:
         k1, k2, k3, k4 = st.columns(4)
         with k1:
             st.markdown(
-                f"<div class='cp-card'><p class='lbl'>Records</p><p class='val'>{d['total_records']}</p>"
+                f"<div class='cp-card'><p class='lbl'>📄 Records</p><p class='val'>{d['total_records']}</p>"
                 f"<p class='sub'>{d['date_range'].get('start','?')} → {d['date_range'].get('end','?')}</p></div>",
                 unsafe_allow_html=True,
             )
         with k2:
             st.markdown(
-                f"<div class='cp-card'><p class='lbl'>Top hotspot</p><p class='val'>{humanize(d['hotspot_area'] or 'n/a')}</p>"
+                f"<div class='cp-card'><p class='lbl'>📍 Top hotspot</p><p class='val'>{humanize(d['hotspot_area'] or 'n/a')}</p>"
                 f"<p class='sub'>Most-affected area</p></div>",
                 unsafe_allow_html=True,
             )
         with k3:
             st.markdown(
-                f"<div class='cp-card'><p class='lbl'>Leading issue</p><p class='val'>{humanize(d['top_category'] or 'n/a')}</p>"
+                f"<div class='cp-card'><p class='lbl'>⚠️ Leading issue</p><p class='val'>{humanize(d['top_category'] or 'n/a')}</p>"
                 f"<p class='sub'>Top category</p></div>",
                 unsafe_allow_html=True,
             )
         with k4:
             arrow = {"rising": "▲", "falling": "▼", "flat": "▬"}[d["trend_direction"]]
             st.markdown(
-                f"<div class='cp-card'><p class='lbl'>Weekly trend</p><p class='val'>{arrow} {d['trend_direction'].title()}</p>"
+                f"<div class='cp-card'><p class='lbl'>📈 Weekly trend</p><p class='val'>{arrow} {d['trend_direction'].title()}</p>"
                 f"<p class='sub'>{d['trend_change_pct']:+.1f}% vs prior week</p></div>",
                 unsafe_allow_html=True,
             )
@@ -1120,10 +1231,10 @@ with tab_overview:
         st.write("")
         st.markdown("<div class='cp-section-title'>Decision Scoreboard</div>", unsafe_allow_html=True)
         s1, s2, s3, s4 = st.columns(4)
-        s1.markdown(score_pill("Urgency", scores["urgency"], urgency_color(scores["urgency"])), unsafe_allow_html=True)
-        s2.markdown(score_pill("Impact", scores["impact"], t["cyan"]), unsafe_allow_html=True)
-        s3.markdown(score_pill("Confidence", scores["confidence"], t["violet"]), unsafe_allow_html=True)
-        s4.markdown(score_pill("Severity", scores["severity_index"], t["magenta"]), unsafe_allow_html=True)
+        s1.markdown(score_pill("⚠️ Urgency", scores["urgency"], urgency_color(scores["urgency"])), unsafe_allow_html=True)
+        s2.markdown(score_pill("📈 Impact", scores["impact"], t["cyan"]), unsafe_allow_html=True)
+        s3.markdown(score_pill("🛡️ Confidence", scores["confidence"], t["violet"]), unsafe_allow_html=True)
+        s4.markdown(score_pill("🌡️ Severity", scores["severity_index"], t["magenta"]), unsafe_allow_html=True)
         st.caption(f"Open/unresolved case rate: **{d['open_rate_pct']}%**")
         cb = scores.get("confidence_breakdown")
         if cb:
@@ -1198,6 +1309,14 @@ with tab_overview:
             st.plotly_chart(
                 fig_map, use_container_width=True,
                 config={"scrollZoom": True, "displayModeBar": True, "displaylogo": False},
+            )
+            st.markdown(
+                "<div class='cp-size-legend'>"
+                "<span class='item'><span class='dot' style='width:20px;height:20px'></span>High hotspot score</span>"
+                "<span class='item'><span class='dot' style='width:13px;height:13px'></span>Medium</span>"
+                "<span class='item'><span class='dot' style='width:7px;height:7px'></span>Low</span>"
+                "</div>",
+                unsafe_allow_html=True,
             )
             st.caption("🖱️ Scroll or pinch to zoom, drag to pan, click a legend item to filter by coordinate source.")
 
@@ -1289,13 +1408,12 @@ with tab_overview:
 
 
 # ============================== ASK AI ==============================
-with tab_ask:
-    st.markdown("<div class='cp-section-title'>Ask in natural language</div>", unsafe_allow_html=True)
-    st.caption(
-        "Grounded strictly in your data — the model never invents numbers. "
-        "Keep asking follow-ups; CivicPulse remembers the conversation."
-    )
+def _msg_meta(sender: str, ts: str) -> str:
+    ts_html = f"<span>{ts}</span>" if ts else ""
+    return f"<div class='cp-msg-meta'><span class='cp-msg-sender'>{sender}</span>{ts_html}</div>"
 
+
+with tab_ask:
     STARTER_SUGGESTIONS = [
         "Which area has the most urgent issues?",
         "What patterns are increasing this week?",
@@ -1304,75 +1422,104 @@ with tab_ask:
     ]
     picked = None
 
-    # Render the full conversation BEFORE the input box, so the input always
-    # ends up visually pinned below every message -- st.chat_input renders
-    # inline exactly where it's called when used inside a tab (it only
-    # auto-floats to the page bottom at the top level), so code order here
-    # is what determines its on-screen position.
-    for q, result in st.session_state.qa_history:
-        with st.chat_message("user"):
-            st.markdown(q)
-        with st.chat_message("assistant", avatar="🏙️"):
-            render_qa_answer(result)
+    col_suggest, col_chat, col_history = st.columns([1, 2.3, 1])
 
-    # Suggestions sit right above the input, sourced from the MOST RECENT
-    # answer only -- Gemini proposes follow-ups grounded in that answer's
-    # context, so each new turn's suggestions replace the previous turn's
-    # instead of piling up (and there's never a need to scroll back up to
-    # find a suggestion to tap).
-    if st.session_state.qa_history:
-        turn_index = len(st.session_state.qa_history)
-        last_result = st.session_state.qa_history[-1][1]
-        follow_ups = (last_result.data or {}).get("suggested_follow_ups") or []
-        follow_ups = [f for f in follow_ups if isinstance(f, str) and f.strip()][:3]
-        if follow_ups:
-            st.caption("💡 Suggested follow-ups")
-            cols = st.columns(len(follow_ups))
-            for i, (col, s) in enumerate(zip(cols, follow_ups)):
-                if col.button(s, use_container_width=True, key=f"followup_{turn_index}_{i}"):
-                    picked = s
-        if st.button("🔄 Start a new conversation"):
-            st.session_state.qa_history = []
-            st.session_state.qa_conversation = None
-            _persist_session()
-            st.rerun()
-    else:
-        st.caption("💡 Try asking")
-        cols = st.columns(len(STARTER_SUGGESTIONS))
-        for i, (col, s) in enumerate(zip(cols, STARTER_SUGGESTIONS)):
-            if col.button(s, use_container_width=True, key=f"starter_{i}"):
-                picked = s
-
-    typed_question = st.chat_input("Ask a follow-up — e.g. \"What about last month?\"")
-    question = picked or typed_question
-
-    if question and question.strip():
-        if insights is not None:
-            payload = insights.to_dict()
-            # Keep the conversation going for follow-ups, but cap how long
-            # one thread can grow before starting fresh (bounds token
-            # cost/latency over a long session).
-            prior_conv = (
-                st.session_state.qa_conversation
-                if len(st.session_state.qa_history) < MAX_CONVERSATION_QUESTIONS
-                else None
-            )
-            with st.spinner("Gemini is querying the data..."):
-                result, updated_conv = gemini.answer_question_agentic(
-                    load_result.df, payload, question, st.session_state.domain,
-                    conversation=prior_conv,
-                )
-            st.session_state.qa_conversation = updated_conv
+    # ---- Left: persistent suggested-questions panel -------------------
+    with col_suggest:
+        st.markdown("<div class='cp-section-title'>💡 Suggested questions</div>", unsafe_allow_html=True)
+        if st.session_state.qa_history:
+            last_result = st.session_state.qa_history[-1][1]
+            panel_questions = (last_result.data or {}).get("suggested_follow_ups") or []
+            panel_questions = [q for q in panel_questions if isinstance(q, str) and q.strip()][:4]
+            if not panel_questions:
+                panel_questions = STARTER_SUGGESTIONS
         else:
-            raw = load_result.raw_text or ""
-            with st.spinner("Analyzing..."):
-                result = gemini.summarize_text(raw, st.session_state.domain)
-        st.session_state.qa_history.append((question, result))
-        _persist_session()
-        # Rerun so this turn renders through the history loop above (in its
-        # natural position above the input) instead of appearing transiently
-        # below the already-rendered input box for one frame.
-        st.rerun()
+            panel_questions = STARTER_SUGGESTIONS
+        for i, s in enumerate(panel_questions):
+            if st.button(s, use_container_width=True, key=f"suggest_{len(st.session_state.qa_history)}_{i}"):
+                picked = s
+        if st.session_state.qa_history:
+            st.write("")
+            if st.button("🔄 Start a new conversation", use_container_width=True):
+                st.session_state.qa_history = []
+                st.session_state.qa_conversation = None
+                _persist_session()
+                st.rerun()
+
+    # ---- Middle: the live conversation ---------------------------------
+    with col_chat:
+        st.markdown("<div class='cp-section-title'>Conversation</div>", unsafe_allow_html=True)
+        st.caption(
+            "Grounded strictly in your data — the model never invents numbers. "
+            "Keep asking follow-ups; CivicPulse remembers the conversation."
+        )
+
+        # Render the full conversation BEFORE the input box, so the input
+        # always ends up visually pinned below every message -- st.chat_input
+        # renders inline exactly where it's called when used inside a
+        # column/tab (it only auto-floats to the page bottom at the top
+        # level), so code order here is what determines its on-screen
+        # position.
+        for q, result, ts in st.session_state.qa_history:
+            with st.chat_message("user"):
+                st.markdown(_msg_meta("You", ts), unsafe_allow_html=True)
+                st.markdown(q)
+            with st.chat_message("assistant", avatar="🏙️"):
+                st.markdown(_msg_meta("CivicPulse AI (Gemini)", ts), unsafe_allow_html=True)
+                render_qa_answer(result)
+
+        if not st.session_state.qa_history:
+            st.caption("💡 Tap a suggested question on the left, or type your own below.")
+
+        typed_question = st.chat_input("Ask a question about your data...")
+        question = picked or typed_question
+
+        if question and question.strip():
+            if insights is not None:
+                payload = insights.to_dict()
+                # Keep the conversation going for follow-ups, but cap how long
+                # one thread can grow before starting fresh (bounds token
+                # cost/latency over a long session).
+                prior_conv = (
+                    st.session_state.qa_conversation
+                    if len(st.session_state.qa_history) < MAX_CONVERSATION_QUESTIONS
+                    else None
+                )
+                with st.spinner("Gemini is querying the data..."):
+                    result, updated_conv = gemini.answer_question_agentic(
+                        load_result.df, payload, question, st.session_state.domain,
+                        conversation=prior_conv,
+                    )
+                st.session_state.qa_conversation = updated_conv
+            else:
+                raw = load_result.raw_text or ""
+                with st.spinner("Analyzing..."):
+                    result = gemini.summarize_text(raw, st.session_state.domain)
+            st.session_state.qa_history.append((question, result, datetime.now().strftime("%I:%M %p")))
+            _persist_session()
+            # Rerun so this turn renders through the history loop above (in
+            # its natural position above the input) instead of appearing
+            # transiently below the already-rendered input box for one frame.
+            st.rerun()
+
+    # ---- Right: chat history log + trust card --------------------------
+    with col_history:
+        st.markdown("<div class='cp-section-title'>🕘 Chat history</div>", unsafe_allow_html=True)
+        if st.session_state.qa_history:
+            for q, _result, ts in reversed(st.session_state.qa_history):
+                preview = q if len(q) <= 60 else q[:57] + "…"
+                st.markdown(
+                    f"<div class='cp-history-item'><span class='cp-history-time'>{ts}</span>{preview}</div>",
+                    unsafe_allow_html=True,
+                )
+        else:
+            st.caption("No questions yet this session.")
+        st.markdown(
+            "<div class='cp-trust-card'><span class='icon'>🛡️</span>"
+            "<span><b>Ask AI, get grounded answers.</b><br>"
+            "CivicPulse AI uses your data + real queries. No guessing. No made-up numbers.</span></div>",
+            unsafe_allow_html=True,
+        )
 
 
 # ============================== ANOMALIES ==============================

@@ -75,7 +75,7 @@ class SessionStore:
         source_type: str | None,
         raw_text: str | None,
         domain: str,
-        qa_history: list[tuple[str, dict[str, Any]]],
+        qa_history: list[tuple[str, dict[str, Any], str]],
         brief: dict[str, Any] | None,
     ) -> None:
         """Persist the current session. Best-effort: a Firestore hiccup, or a
@@ -98,7 +98,8 @@ class SessionStore:
                     "raw_text": raw_text if (raw_text and len(raw_text) < MAX_CSV_BYTES) else None,
                     "has_dataset": df is not None and not df.empty,
                     "qa_history": [
-                        {"question": q, "result": r} for q, r in qa_history[-MAX_QA_TURNS_PERSISTED:]
+                        {"question": q, "result": r, "time": t}
+                        for q, r, t in qa_history[-MAX_QA_TURNS_PERSISTED:]
                     ],
                     "brief": brief,
                 }
