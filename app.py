@@ -642,15 +642,23 @@ CSS = """
         display:block; margin-bottom:.2rem; letter-spacing:.03em;
     }
 
-    /* ---- Map bubble-size legend ---- */
-    .cp-size-legend { display:flex; gap:1.3rem; align-items:center; flex-wrap:wrap; margin:.6rem 0 0; }
-    .cp-size-legend .item { display:flex; align-items:center; gap:.45rem; font-size:.76rem; color: var(--cp-text-dim); }
-    .cp-size-legend .dot { display:inline-block; border-radius:50%; background: var(--cp-cyan); flex:none; }
-
     /* ---- Sidebar ---- */
     [data-testid="stSidebar"] {
         background: var(--cp-sidebar-bg) !important;
         border-right: 1px solid var(--cp-sidebar-border);
+    }
+    /* Theme switch row: labels sit flush against the toggle instead of
+       spreading to their column's outer edge (Streamlit columns/widgets
+       are left-aligned by default, which pushed "Dark" far from the switch
+       while "Light" hugged the sidebar's left edge). */
+    .cp-theme-label {
+        display: flex; align-items: center; height: 2.4rem;
+        font-size: .88rem; white-space: nowrap;
+    }
+    .cp-theme-label-right { justify-content: flex-end; }
+    .cp-theme-label-left { justify-content: flex-start; }
+    [data-testid="stCheckbox"] {
+        display: flex; align-items: center; justify-content: center; height: 2.4rem;
     }
     [data-testid="stSidebar"] * { color: var(--cp-text) !important; }
     [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3,
@@ -858,13 +866,13 @@ def _set_data(load_result: LoadResult) -> None:
 with st.sidebar:
     st.markdown("### 🏙️ CivicPulse AI")
     st.caption("Community decision intelligence")
-    theme_l, theme_switch, theme_d = st.columns([1, 1, 1])
+    theme_l, theme_switch, theme_d = st.columns([1.1, 0.8, 1.1])
     with theme_l:
-        st.caption("☀️ Light")
+        st.markdown("<div class='cp-theme-label cp-theme-label-right'>☀️ Light</div>", unsafe_allow_html=True)
     with theme_switch:
         st.toggle("Theme", key="dark_mode", label_visibility="collapsed")
     with theme_d:
-        st.caption("🌙 Dark")
+        st.markdown("<div class='cp-theme-label cp-theme-label-left'>🌙 Dark</div>", unsafe_allow_html=True)
     st.divider()
 
     st.markdown("#### 1. Load data")
@@ -1347,14 +1355,6 @@ with tab_overview:
             st.plotly_chart(
                 fig_map, use_container_width=True,
                 config={"scrollZoom": True, "displayModeBar": True, "displaylogo": False},
-            )
-            st.markdown(
-                "<div class='cp-size-legend'>"
-                "<span class='item'><span class='dot' style='width:20px;height:20px'></span>High hotspot score</span>"
-                "<span class='item'><span class='dot' style='width:13px;height:13px'></span>Medium</span>"
-                "<span class='item'><span class='dot' style='width:7px;height:7px'></span>Low</span>"
-                "</div>",
-                unsafe_allow_html=True,
             )
             st.caption("🖱️ Scroll or pinch to zoom, drag to pan, click a legend item to filter by coordinate source.")
 
