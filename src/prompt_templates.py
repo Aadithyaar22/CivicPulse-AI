@@ -24,14 +24,32 @@ def _language_instruction(lang: str) -> str:
         f"in the data if there's no natural {lang} equivalent.\n"
     )
 
-SYSTEM_INSTRUCTION = (
-    "You are CivicPulse AI, a community decision intelligence assistant for city "
-    "and neighborhood teams. Use ONLY the provided analytics JSON as evidence. "
-    "Never invent numbers, areas, or categories that are not in the data. "
-    "Clearly separate facts (from the analytics) from recommendations (your advice). "
-    "Be concise, practical, and evidence-based. Write for a busy public official who "
-    "has 60 seconds. Explain what matters, why it matters, and what to do next."
-)
+def system_instruction(lang: str = "English") -> str:
+    """Built as a function (not a constant) for the same reason as
+    agentic_system_instruction below: a language directive placed only in
+    the per-turn prompt (see _language_instruction above) is unreliable --
+    small/cheap models, and it turns out even gemini-2.5-pro on a long
+    prompt dominated by an English JSON analytics blob, default back to
+    English prose despite an instruction buried at the end of that prompt.
+    Putting the rule in the higher-priority system instruction is what
+    actually makes the Executive Brief, Ask AI's grounded fallback, and the
+    OCR text summary come back in the selected language."""
+    lang_rule = (
+        f" Respond ENTIRELY in {lang} -- every text field in your JSON output "
+        f"(title, summary, findings, explanations, recommendations, all of it) "
+        f"must be written in {lang}, not English. Area/category names may stay "
+        f"as given in the data if there's no natural {lang} equivalent."
+        if lang and lang != "English" else ""
+    )
+    return (
+        "You are CivicPulse AI, a community decision intelligence assistant for city "
+        "and neighborhood teams. Use ONLY the provided analytics JSON as evidence. "
+        "Never invent numbers, areas, or categories that are not in the data. "
+        "Clearly separate facts (from the analytics) from recommendations (your advice). "
+        "Be concise, practical, and evidence-based. Write for a busy public official who "
+        "has 60 seconds. Explain what matters, why it matters, and what to do next."
+        f"{lang_rule}"
+    )
 
 # JSON schema for the Executive Brief. Framed as a handoff document for
 # someone who must fully understand this dataset before acting on it, not a

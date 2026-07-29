@@ -18,13 +18,13 @@ from dataclasses import dataclass
 from typing import Any
 
 from .prompt_templates import (
-    SYSTEM_INSTRUCTION,
     agentic_system_instruction,
     build_agentic_followup_prompt,
     build_agentic_question_prompt,
     build_brief_prompt,
     build_question_prompt,
     build_text_summary_prompt,
+    system_instruction,
 )
 from .utils import extract_json, humanize
 
@@ -118,21 +118,26 @@ class GeminiClient:
 
     # ---------- low-level generation ----------
 
-    def _generate(self, prompt: str) -> tuple[bool, str, str | None]:
+    def _generate(self, prompt: str, lang: str = "English") -> tuple[bool, str, str | None]:
         """Return (ok, text, error). Retries transient failures."""
         if not self.available:
             return False, "", self._init_error
 
         from google.genai import types
 
+        # Kannada/Hindi script costs noticeably more output tokens than
+        # English for equivalent content (observed: a Kannada Executive
+        # Brief truncated mid-JSON at 3072 and silently fell back to the
+        # English offline summary -- the language fix was working, the
+        # token budget just wasn't big enough to let it finish). The verbose
+        # Executive Brief schema (dataset_overview + full findings +
+        # peculiar_patterns + urgency-tagged actions) already needed real
+        # headroom in English; give non-English runs more still.
+        budget = 3072 if (not lang or lang == "English") else 6144
         config = types.GenerateContentConfig(
-            system_instruction=SYSTEM_INSTRUCTION,
+            system_instruction=system_instruction(lang),
             temperature=0.3,
-            # The Executive Brief schema (dataset_overview + full findings +
-            # peculiar_patterns + urgency-tagged actions) is verbose by
-            # design -- 1024 was tight enough to truncate mid-JSON on the
-            # agentic path for a smaller schema, so this needs real headroom.
-            max_output_tokens=3072,
+            max_output_tokens=budget,
             response_mime_type="application/json",
         )
 
@@ -149,14 +154,14 @@ class GeminiClient:
                     time.sleep(RETRY_BACKOFF_SEC * (attempt + 1))
         return False, "", last_error
 
-    def _run(self, prompt: str, fallback_fn) -> GeminiResult:
+    def _run(self, prompt: str, fallback_fn, lang: str = "English") -> GeminiResult:
         last_error: str | None = None
         # One retry if the model returns text that isn't valid JSON -- e.g.
         # a response cut off mid-structure by max_output_tokens. Showing
         # that raw/truncated text to the user is worse than a fresh attempt
         # (same failure mode fixed on the agentic tool-calling path).
         for _attempt in range(2):
-            ok, text, error = self._generate(prompt)
+            ok, text, error = self._generate(prompt, lang=lang)
             if not ok:
                 last_error = error
                 break  # _generate() already retried transient errors internally
@@ -177,13 +182,13 @@ class GeminiClient:
 
     def executive_brief(self, insights: dict[str, Any], domain: str, lang: str = "English") -> GeminiResult:
         prompt = build_brief_prompt(insights, domain, lang=lang)
-        return self._run(prompt, lambda: _fallback_brief(insights))
+        return self._run(prompt, lambda: _fallback_brief(insights), lang=lang)
 
     def answer_question(
         self, insights: dict[str, Any], question: str, domain: str, lang: str = "English"
     ) -> GeminiResult:
         prompt = build_question_prompt(insights, question, domain, lang=lang)
-        return self._run(prompt, lambda: _fallback_answer(insights, question))
+        return self._run(prompt, lambda: _fallback_answer(insights, question), lang=lang)
 
     def answer_question_agentic(
         self,
@@ -322,7 +327,7 @@ class GeminiClient:
 
     def summarize_text(self, raw_text: str, domain: str, lang: str = "English") -> GeminiResult:
         prompt = build_text_summary_prompt(raw_text, domain, lang=lang)
-        return self._run(prompt, lambda: _fallback_text(raw_text))
+        return self._run(prompt, lambda: _fallback_text(raw_text), lang=lang)
 
     def ocr_extract_text(self, image_bytes: bytes, mime_type: str) -> GeminiResult:
         """Transcribe a photo or scanned page (including handwriting) to
