@@ -143,9 +143,9 @@ UI_STRINGS: dict[str, dict[str, str]] = {
     },
     "feature_card_2_title": {"en": "🤖 Gemini explains", "kn": "🤖 Gemini ವಿವರಿಸುತ್ತದೆ", "hi": "🤖 Gemini समझाता है"},
     "feature_card_2_body": {
-        "en": "A small, low-cost Gemini model turns numbers into plain-language decisions.",
-        "kn": "ಒಂದು ಚಿಕ್ಕ, ಕಡಿಮೆ-ವೆಚ್ಚದ Gemini ಮಾದರಿಯು ಸಂಖ್ಯೆಗಳನ್ನು ಸರಳ-ಭಾಷೆಯ ನಿರ್ಧಾರಗಳಾಗಿ ಪರಿವರ್ತಿಸುತ್ತದೆ.",
-        "hi": "एक छोटा, कम लागत वाला Gemini मॉडल संख्याओं को सरल-भाषा के निर्णयों में बदल देता है।",
+        "en": "Gemini turns numbers into plain-language decisions.",
+        "kn": "Gemini ಸಂಖ್ಯೆಗಳನ್ನು ಸರಳ-ಭಾಷೆಯ ನಿರ್ಧಾರಗಳಾಗಿ ಪರಿವರ್ತಿಸುತ್ತದೆ.",
+        "hi": "Gemini संख्याओं को सरल-भाषा के निर्णयों में बदल देता है।",
     },
     "feature_card_3_title": {"en": "🎯 Decision Scoreboard", "kn": "🎯 ನಿರ್ಧಾರ ಸ್ಕೋರ್‌ಬೋರ್ಡ್", "hi": "🎯 निर्णय स्कोरबोर्ड"},
     "feature_card_3_body": {
@@ -537,9 +537,9 @@ UI_STRINGS: dict[str, dict[str, str]] = {
     "about_intro_md": {
         "en": """**CivicPulse AI** is a decision intelligence dashboard for cities and communities.
 It combines **deterministic Python analytics** (counts, trends, anomaly detection,
-forecasting) with a **small, low-cost Gemini model** that explains the numbers and
-recommends concrete next steps — and a set of Google Cloud services that turn it
-from a one-off dashboard into an automated service.
+forecasting) with **Gemini** that explains the numbers and recommends concrete
+next steps — and a set of Google Cloud services that turn it from a one-off
+dashboard into an automated service.
 
 **Why it's different from a chatbot**
 - Numbers are computed locally first, so the AI never hallucinates statistics.
@@ -547,7 +547,7 @@ from a one-off dashboard into an automated service.
 - A Decision Scoreboard (urgency · impact · confidence) tells teams what to act on.""",
         "kn": """**CivicPulse AI** ಎಂಬುದು ನಗರಗಳು ಮತ್ತು ಸಮುದಾಯಗಳಿಗಾಗಿ ಒಂದು ನಿರ್ಧಾರ ಬುದ್ಧಿಮತ್ತೆ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ ಆಗಿದೆ.
 ಇದು **ನಿರ್ಣಾಯಕ Python ವಿಶ್ಲೇಷಣೆ** (ಎಣಿಕೆಗಳು, ಪ್ರವೃತ್ತಿಗಳು, ಅಸಂಗತತೆ ಪತ್ತೆ, ಮುನ್ಸೂಚನೆ) ಅನ್ನು
-**ಚಿಕ್ಕ, ಕಡಿಮೆ-ವೆಚ್ಚದ Gemini ಮಾದರಿ**ಯೊಂದಿಗೆ ಸಂಯೋಜಿಸುತ್ತದೆ, ಇದು ಸಂಖ್ಯೆಗಳನ್ನು ವಿವರಿಸುತ್ತದೆ ಮತ್ತು
+**Gemini** ಯೊಂದಿಗೆ ಸಂಯೋಜಿಸುತ್ತದೆ, ಇದು ಸಂಖ್ಯೆಗಳನ್ನು ವಿವರಿಸುತ್ತದೆ ಮತ್ತು
 ನಿರ್ದಿಷ್ಟ ಮುಂದಿನ ಹಂತಗಳನ್ನು ಶಿಫಾರಸು ಮಾಡುತ್ತದೆ — ಮತ್ತು ಒಂದು ಸೆಟ್ Google Cloud ಸೇವೆಗಳು ಇದನ್ನು
 ಒಂದು-ಬಾರಿ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ನಿಂದ ಸ್ವಯಂಚಾಲಿತ ಸೇವೆಯಾಗಿ ಪರಿವರ್ತಿಸುತ್ತವೆ.
 
@@ -557,7 +557,7 @@ from a one-off dashboard into an automated service.
 - ಒಂದು ನಿರ್ಧಾರ ಸ್ಕೋರ್‌ಬೋರ್ಡ್ (ತುರ್ತು · ಪರಿಣಾಮ · ವಿಶ್ವಾಸ) ತಂಡಗಳಿಗೆ ಏನು ಕಾರ್ಯನಿರ್ವಹಿಸಬೇಕೆಂದು ತಿಳಿಸುತ್ತದೆ.""",
         "hi": """**CivicPulse AI** शहरों और समुदायों के लिए एक निर्णय बुद्धिमत्ता डैशबोर्ड है।
 यह **निर्धारक Python विश्लेषण** (गिनती, रुझान, विसंगति पहचान, पूर्वानुमान) को
-एक **छोटे, कम लागत वाले Gemini मॉडल** के साथ जोड़ता है जो संख्याओं की व्याख्या करता है और
+**Gemini** के साथ जोड़ता है जो संख्याओं की व्याख्या करता है और
 ठोस अगले कदम सुझाता है — और Google Cloud सेवाओं का एक सेट इसे
 एक बार के डैशबोर्ड से एक स्वचालित सेवा में बदल देता है।
 
@@ -645,7 +645,7 @@ from a one-off dashboard into an automated service.
     },
     "about_gcloud_heading": {"en": "**Google Cloud stack**", "kn": "**Google Cloud ಸ್ಟ್ಯಾಕ್**", "hi": "**Google Cloud स्टैक**"},
     "about_gcloud_md": {
-        "en": """- 🤖 **Vertex AI / Gemini** (`gemini-2.5-flash-lite` by default) — explanations,
+        "en": """- 🤖 **Vertex AI / Gemini** (`gemini-2.5-pro` by default) — explanations,
   agentic function calling, brief generation
 - 🚀 **Cloud Run** — hosts the app, scale-to-zero so idle cost is ~$0
 - ⚡ **Cloud Functions (2nd gen)** — the scheduled brief job
@@ -654,7 +654,7 @@ from a one-off dashboard into an automated service.
 - 🔐 **Secret Manager** — stores the Gmail app password, never in code
 - 🛠️ **Cloud Build**, **Artifact Registry**, **IAM**, **Cloud Logging**, **`gcloud` CLI**
   — builds, image storage, least-privilege service accounts, and one-command deploys""",
-        "kn": """- 🤖 **Vertex AI / Gemini** (ಡೀಫಾಲ್ಟ್ ಆಗಿ `gemini-2.5-flash-lite`) — ವಿವರಣೆಗಳು,
+        "kn": """- 🤖 **Vertex AI / Gemini** (ಡೀಫಾಲ್ಟ್ ಆಗಿ `gemini-2.5-pro`) — ವಿವರಣೆಗಳು,
   ಏಜೆಂಟಿಕ್ ಫಂಕ್ಷನ್ ಕಾಲಿಂಗ್, ಸಂಕ್ಷಿಪ್ತ ಉತ್ಪಾದನೆ
 - 🚀 **Cloud Run** — ಆ್ಯಪ್ ಅನ್ನು ಹೋಸ್ಟ್ ಮಾಡುತ್ತದೆ, ಸ್ಕೇಲ್-ಟು-ಜೀರೋ ಆದ್ದರಿಂದ ನಿಷ್ಕ್ರಿಯ ವೆಚ್ಚ ~$0
 - ⚡ **Cloud Functions (2ನೇ ಪೀಳಿಗೆ)** — ಶೆಡ್ಯೂಲ್ ಮಾಡಿದ ಸಂಕ್ಷಿಪ್ತ ಕೆಲಸ
@@ -663,7 +663,7 @@ from a one-off dashboard into an automated service.
 - 🔐 **Secret Manager** — Gmail ಆ್ಯಪ್ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಸಂಗ್ರಹಿಸುತ್ತದೆ, ಎಂದಿಗೂ ಕೋಡ್‌ನಲ್ಲಿ ಅಲ್ಲ
 - 🛠️ **Cloud Build**, **Artifact Registry**, **IAM**, **Cloud Logging**, **`gcloud` CLI**
   — ಬಿಲ್ಡ್‌ಗಳು, ಇಮೇಜ್ ಸಂಗ್ರಹಣೆ, ಕನಿಷ್ಠ-ಸವಲತ್ತು ಸೇವಾ ಖಾತೆಗಳು, ಮತ್ತು ಒಂದು-ಆಜ್ಞೆಯ ನಿಯೋಜನೆಗಳು""",
-        "hi": """- 🤖 **Vertex AI / Gemini** (डिफ़ॉल्ट रूप से `gemini-2.5-flash-lite`) — व्याख्याएँ,
+        "hi": """- 🤖 **Vertex AI / Gemini** (डिफ़ॉल्ट रूप से `gemini-2.5-pro`) — व्याख्याएँ,
   एजेंटिक फ़ंक्शन कॉलिंग, ब्रीफ़ जनरेशन
 - 🚀 **Cloud Run** — ऐप होस्ट करता है, स्केल-टू-ज़ीरो इसलिए निष्क्रिय लागत ~$0
 - ⚡ **Cloud Functions (दूसरी पीढ़ी)** — शेड्यूल्ड ब्रीफ़ जॉब
@@ -676,15 +676,15 @@ from a one-off dashboard into an automated service.
     "about_cost_heading": {"en": "**Cost design**", "kn": "**ವೆಚ್ಚ ವಿನ್ಯಾಸ**", "hi": "**लागत डिज़ाइन**"},
     "about_cost_md": {
         "en": """- One Gemini call per meaningful action (not per keystroke)
-- Cheap flash-lite model tier
+- `gemini-2.5-pro` by default — spends the quality budget where it's felt most (briefs, Ask AI), not on every keystroke
 - Cloud Run and Cloud Functions both scale to zero when idle
 - Firestore/Secret Manager/Scheduler all stay within their free tiers at this scale""",
         "kn": """- ಪ್ರತಿ ಅರ್ಥಪೂರ್ಣ ಕ್ರಿಯೆಗೆ ಒಂದು Gemini ಕರೆ (ಪ್ರತಿ ಕೀಸ್ಟ್ರೋಕ್‌ಗಲ್ಲ)
-- ಅಗ್ಗದ flash-lite ಮಾದರಿ ಶ್ರೇಣಿ
+- ಡೀಫಾಲ್ಟ್ ಆಗಿ `gemini-2.5-pro` — ಗುಣಮಟ್ಟದ ಬಜೆಟ್ ಅನ್ನು ಅತಿ ಹೆಚ್ಚು ಅನುಭವಿಸುವಲ್ಲಿ (ಸಂಕ್ಷಿಪ್ತಗಳು, Ask AI) ಖರ್ಚು ಮಾಡುತ್ತದೆ, ಪ್ರತಿ ಕೀಸ್ಟ್ರೋಕ್‌ಗಲ್ಲ
 - Cloud Run ಮತ್ತು Cloud Functions ಎರಡೂ ನಿಷ್ಕ್ರಿಯವಾದಾಗ ಶೂನ್ಯಕ್ಕೆ ಸ್ಕೇಲ್ ಆಗುತ್ತವೆ
 - Firestore/Secret Manager/Scheduler ಎಲ್ಲವೂ ಈ ಪ್ರಮಾಣದಲ್ಲಿ ಅವುಗಳ ಉಚಿತ ಶ್ರೇಣಿಗಳಲ್ಲಿ ಉಳಿಯುತ್ತವೆ""",
         "hi": """- प्रति सार्थक कार्रवाई एक Gemini कॉल (प्रति कीस्ट्रोक नहीं)
-- सस्ता flash-lite मॉडल टियर
+- डिफ़ॉल्ट रूप से `gemini-2.5-pro` — गुणवत्ता का बजट वहाँ खर्च होता है जहाँ सबसे ज़्यादा महसूस होता है (ब्रीफ़, Ask AI), हर कीस्ट्रोक पर नहीं
 - Cloud Run और Cloud Functions दोनों निष्क्रिय होने पर शून्य तक स्केल होते हैं
 - Firestore/Secret Manager/Scheduler सभी इस पैमाने पर अपने मुफ़्त टियर के भीतर रहते हैं""",
     },

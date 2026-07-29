@@ -5,8 +5,9 @@ Supports two backends via env vars (auto-detected):
   * Vertex AI              -> set GOOGLE_GENAI_USE_VERTEXAI=true,
                               GOOGLE_CLOUD_PROJECT, GOOGLE_CLOUD_LOCATION
 
-Design goals: one call per user action, cheap flash-lite model by default,
-graceful retries, and a deterministic offline fallback so the demo never dies.
+Design goals: one call per user action, the best Gemini tier this project
+actually has access to, graceful retries, and a deterministic offline
+fallback so the demo never dies.
 """
 
 from __future__ import annotations
@@ -27,8 +28,12 @@ from .prompt_templates import (
 )
 from .utils import extract_json, humanize
 
-# Smaller / cheaper Gemini tier by default. Override with GEMINI_MODEL.
-DEFAULT_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash-lite")
+# gemini-3.x variants all 404 on this project's Vertex AI despite appearing
+# in the model catalog listing (an access-tier gate, not a naming issue --
+# see git history around commit 44f0067 for the same failure mode on
+# gemini-3.1-flash-lite). gemini-2.5-pro is the strongest tier actually
+# invokable here. Override with GEMINI_MODEL.
+DEFAULT_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-pro")
 MAX_RETRIES = 2
 RETRY_BACKOFF_SEC = 1.5
 # Hard cap on tool-call round-trips per agentic question. Bounds latency/cost

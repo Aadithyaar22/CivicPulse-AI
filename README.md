@@ -9,9 +9,8 @@ sanitation, water, roads, noise, public health) and instantly get **patterns,
 anomalies, a decision scoreboard, and an auto-generated action memo**.
 
 It is **not** a generic chatbot. It computes real analytics in Python first, then
-uses a **small, low-cost Gemini model** (`gemini-2.5-flash-lite`) to explain the
-numbers and recommend concrete next steps — so the AI never hallucinates
-statistics.
+uses **Gemini** (`gemini-2.5-pro`) to explain the numbers and recommend concrete
+next steps — so the AI never hallucinates statistics.
 
 ---
 
@@ -44,7 +43,7 @@ statistics.
         │                                                               ▼
 ┌───────┴────────┐   report/JSON   ┌───────────────────┐   grounded    ┌──────────────┐
 │ Streamlit UI   │ ◀────────────── │ gemini_client.py  │ ◀──prompt───── │ prompt_      │
-│ dashboard      │                 │ (Gemini flash-lite)│               │ templates.py │
+│ dashboard      │                 │ (Gemini 2.5 pro)  │               │ templates.py │
 └────────────────┘                 └───────────────────┘               └──────────────┘
                                             │
                               Vertex AI  ──OR──  Gemini Developer API
@@ -143,7 +142,7 @@ Under the hood `deploy.sh` runs:
 gcloud run deploy civicpulse-ai \
   --source . --region us-central1 --allow-unauthenticated \
   --memory 2Gi --cpu 2 --min-instances 0 --max-instances 3 --concurrency 4 \
-  --set-env-vars GEMINI_MODEL=gemini-2.5-flash-lite,GOOGLE_GENAI_USE_VERTEXAI=true,...
+  --set-env-vars GEMINI_MODEL=gemini-2.5-pro,GOOGLE_GENAI_USE_VERTEXAI=true,...
 ```
 
 When it finishes it prints your **public URL** (e.g.
@@ -165,8 +164,10 @@ When it finishes it prints your **public URL** (e.g.
 - **Wrapper:** `src/gemini_client.py` — auto-detects Vertex AI vs. Gemini API,
   requests JSON output, retries transient errors twice, and falls back to a
   deterministic offline report if the model is unreachable.
-- **Model:** `gemini-2.5-flash-lite` by default (smallest/cheapest tier). Override
-  with the `GEMINI_MODEL` env var.
+- **Model:** `gemini-2.5-pro` by default — the strongest tier actually available
+  on this Vertex AI project (every `gemini-3.x` variant 404s despite appearing
+  in the model catalog listing, an access-tier gate rather than a naming
+  issue). Override with the `GEMINI_MODEL` env var.
 - **Grounding:** the executive brief and text-summary prompts embed the computed
   analytics JSON and instruct the model to *use only the provided numbers* — see
   `src/prompt_templates.py`.
@@ -262,7 +263,7 @@ guessed. Edit that file to point departments at real addresses.
      --gen2 --runtime=python312 --region=us-central1 \
      --source=. --entry-point=scheduled_brief --trigger-http \
      --no-allow-unauthenticated --memory=512Mi --timeout=300s \
-     --set-env-vars=GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID,GOOGLE_CLOUD_LOCATION=us-central1,ALERT_SENDER=you@gmail.com,ALERT_RECIPIENT=official@example.com,GEMINI_MODEL=gemini-2.5-flash-lite \
+     --set-env-vars=GOOGLE_GENAI_USE_VERTEXAI=true,GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID,GOOGLE_CLOUD_LOCATION=us-central1,ALERT_SENDER=you@gmail.com,ALERT_RECIPIENT=official@example.com,GEMINI_MODEL=gemini-2.5-pro \
      --set-secrets=GMAIL_APP_PASSWORD=civicpulse-gmail-app-password:latest \
      --project YOUR_PROJECT_ID
    ```
