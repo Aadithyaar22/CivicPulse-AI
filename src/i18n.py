@@ -483,6 +483,55 @@ UI_STRINGS: dict[str, dict[str, str]] = {
     "trigger_fallback_note": {"en": " (offline fallback used)", "kn": " (ಆಫ್‌ಲೈನ್ ಫಾಲ್‌ಬ್ಯಾಕ್ ಬಳಸಲಾಗಿದೆ)", "hi": " (ऑफ़लाइन फ़ॉलबैक उपयोग किया गया)"},
     "trigger_success": {"en": "✅ Citywide brief: {status}{note}", "kn": "✅ ನಗರವ್ಯಾಪ್ತಿ ಸಂಕ್ಷಿಪ್ತ: {status}{note}", "hi": "✅ शहरव्यापी ब्रीफ़: {status}{note}"},
 
+    # ---------------------------------------------------------------- real-time alert (Recommendations tab)
+    "send_realtime_alert_btn": {
+        "en": "🚨 Send Real-Time Alert ({n} urgent)",
+        "kn": "🚨 ರಿಯಲ್-ಟೈಮ್ ಎಚ್ಚರಿಕೆ ಕಳುಹಿಸಿ ({n} ತುರ್ತು)",
+        "hi": "🚨 रीयल-टाइम अलर्ट भेजें ({n} अत्यावश्यक)",
+    },
+    "realtime_alert_sending": {
+        "en": "Sending real-time alert...", "kn": "ರಿಯಲ್-ಟೈಮ್ ಎಚ್ಚರಿಕೆ ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ...", "hi": "रीयल-टाइम अलर्ट भेजा जा रहा है...",
+    },
+    "realtime_alert_sent": {
+        "en": "✅ Alert sent: {status}", "kn": "✅ ಎಚ್ಚರಿಕೆ ಕಳುಹಿಸಲಾಗಿದೆ: {status}", "hi": "✅ अलर्ट भेजा गया: {status}",
+    },
+    "realtime_alert_failed": {
+        "en": "Alert failed: {err}", "kn": "ಎಚ್ಚರಿಕೆ ವಿಫಲವಾಗಿದೆ: {err}", "hi": "अलर्ट विफल: {err}",
+    },
+    "realtime_alert_needs_config": {
+        "en": "⚠️ {n} action(s) need an immediate response, but the real-time alert trigger isn't configured for this deployment.",
+        "kn": "⚠️ {n} ಕ್ರಮ(ಗಳಿಗೆ) ತಕ್ಷಣದ ಪ್ರತಿಕ್ರಿಯೆ ಬೇಕು, ಆದರೆ ಈ ನಿಯೋಜನೆಗೆ ರಿಯಲ್-ಟೈಮ್ ಎಚ್ಚರಿಕೆ ಟ್ರಿಗರ್ ಕಾನ್ಫಿಗರ್ ಮಾಡಿಲ್ಲ.",
+        "hi": "⚠️ {n} कार्रवाई(यों) को तुरंत प्रतिक्रिया चाहिए, लेकिन इस डिप्लॉयमेंट के लिए रीयल-टाइम अलर्ट ट्रिगर कॉन्फ़िगर नहीं है।",
+    },
+
+    # ---------------------------------------------------------------- OCR scan (Recommendations tab)
+    "ocr_section_title": {
+        "en": "📷 Scan a Complaint Form (OCR)", "kn": "📷 ದೂರು ಫಾರ್ಮ್ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ (OCR)", "hi": "📷 शिकायत फ़ॉर्म स्कैन करें (OCR)",
+    },
+    "ocr_section_caption": {
+        "en": "Upload a photo or scanned copy of a paper complaint form — Gemini reads it directly "
+              "(including handwriting) and turns it into the same kind of brief as the dataset above.",
+        "kn": "ಕಾಗದದ ದೂರು ಫಾರ್ಮ್‌ನ ಫೋಟೋ ಅಥವಾ ಸ್ಕ್ಯಾನ್ ಮಾಡಿದ ಪ್ರತಿಯನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ — Gemini ಅದನ್ನು ನೇರವಾಗಿ ಓದುತ್ತದೆ "
+              "(ಕೈಬರಹ ಸೇರಿದಂತೆ) ಮತ್ತು ಮೇಲಿನ ಡೇಟಾಸೆಟ್‌ನಂತೆಯೇ ಒಂದು ಸಂಕ್ಷಿಪ್ತಕ್ಕೆ ಪರಿವರ್ತಿಸುತ್ತದೆ.",
+        "hi": "कागज़ी शिकायत फ़ॉर्म की फ़ोटो या स्कैन की गई प्रति अपलोड करें — Gemini इसे सीधे पढ़ता है "
+              "(हस्तलेख सहित) और इसे ऊपर के डेटासेट जैसा ही एक ब्रीफ़ बना देता है।",
+    },
+    "ocr_upload_label": {
+        "en": "Upload a photo or scanned PDF of a complaint form", "kn": "ದೂರು ಫಾರ್ಮ್‌ನ ಫೋಟೋ ಅಥವಾ ಸ್ಕ್ಯಾನ್ ಮಾಡಿದ PDF ಅಪ್‌ಲೋಡ್ ಮಾಡಿ", "hi": "शिकायत फ़ॉर्म की फ़ोटो या स्कैन की गई PDF अपलोड करें",
+    },
+    "ocr_scan_btn": {
+        "en": "🔍 Extract & Summarize (OCR)", "kn": "🔍 ಹೊರತೆಗೆದು ಸಾರಾಂಶಿಸಿ (OCR)", "hi": "🔍 निकालें और सारांशित करें (OCR)",
+    },
+    "ocr_extracting_spinner": {
+        "en": "Reading the image with Gemini (OCR)...", "kn": "Gemini ಮೂಲಕ ಚಿತ್ರವನ್ನು ಓದಲಾಗುತ್ತಿದೆ (OCR)...", "hi": "Gemini से छवि पढ़ी जा रही है (OCR)...",
+    },
+    "ocr_extracted_text_expander": {
+        "en": "📄 Extracted text", "kn": "📄 ಹೊರತೆಗೆದ ಪಠ್ಯ", "hi": "📄 निकाला गया टेक्स्ट",
+    },
+    "ocr_failed": {
+        "en": "OCR failed: {err}", "kn": "OCR ವಿಫಲವಾಗಿದೆ: {err}", "hi": "OCR विफल: {err}",
+    },
+
     # ---------------------------------------------------------------- about (grouped into large blocks)
     "about_title": {"en": "ℹ️ About CivicPulse AI", "kn": "ℹ️ CivicPulse AI ಬಗ್ಗೆ", "hi": "ℹ️ CivicPulse AI के बारे में"},
     "about_intro_md": {

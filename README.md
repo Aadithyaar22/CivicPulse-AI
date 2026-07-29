@@ -292,6 +292,46 @@ secrets — the only per-run cost is one small Gemini call (a fraction of a cent
 
 ---
 
+## 🚨 Real-time alerts (on-demand Gmail send)
+
+A third, minimal Cloud Function (`main.py`, entry point `send_realtime_alert`)
+backs the **Send Real-Time Alert** button that appears in the Recommendations
+tab whenever a generated brief — from the dataset or from the OCR scan below
+it — contains an action tagged `urgency: immediate`. Unlike the weekly job,
+it does no analytics or Gemini calls of its own: the app already has the
+live brief in the user's session, builds the subject/body from it, and this
+function's only job is the one thing that needs a server-side secret —
+sending the email via the same Gmail SMTP path as `scheduled_brief`. That
+keeps the button's response time to a couple of seconds, safe to click live
+in a demo.
+
+**One-time setup** (reuses the `GMAIL_APP_PASSWORD` secret and `ALERT_SENDER`
+already set up above):
+
+```bash
+gcloud functions deploy civicpulse-realtime-alert \
+  --gen2 --runtime=python312 --region=us-central1 \
+  --source=. --entry-point=send_realtime_alert --trigger-http \
+  --no-allow-unauthenticated --memory=256Mi --timeout=60s \
+  --set-env-vars=ALERT_SENDER=you@gmail.com,ALERT_RECIPIENT=official@example.com \
+  --set-secrets=GMAIL_APP_PASSWORD=civicpulse-gmail-app-password:latest \
+  --project YOUR_PROJECT_ID
+
+# Let the Cloud Run app's own service account invoke it directly (the app
+# calls this function synchronously on a button click, not via Scheduler):
+PROJECT_NUMBER=$(gcloud projects describe YOUR_PROJECT_ID --format='value(projectNumber)')
+gcloud functions add-invoker-policy-binding civicpulse-realtime-alert \
+  --region=us-central1 \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+  --project YOUR_PROJECT_ID
+```
+
+`deploy.sh` passes the function's URL to the app as `REALTIME_ALERT_FUNCTION_URL`
+automatically (same pattern as `SCHEDULED_BRIEF_FUNCTION_URL`); the button
+simply doesn't render if that env var is unset, so this is fully optional.
+
+---
+
 ## 💰 Cost design
 
 - **One Gemini call per meaningful action** (brief / question), never per keystroke.

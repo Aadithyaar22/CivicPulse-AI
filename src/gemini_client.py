@@ -319,6 +319,39 @@ class GeminiClient:
         prompt = build_text_summary_prompt(raw_text, domain, lang=lang)
         return self._run(prompt, lambda: _fallback_text(raw_text))
 
+    def ocr_extract_text(self, image_bytes: bytes, mime_type: str) -> GeminiResult:
+        """Transcribe a photo or scanned page (including handwriting) to
+        plain text using Gemini's own vision input -- no separate OCR/Vision
+        API call needed, since the model already reads images directly.
+        There's no offline fallback here (unlike the JSON-producing calls
+        above): a wrong guess at handwritten text would be worse than a
+        clear "try again" error.
+        """
+        if not self.available:
+            return GeminiResult(ok=False, data={"text": ""}, model=self.model, error=self._init_error)
+
+        from google.genai import types
+
+        prompt = (
+            "Transcribe ALL visible text in this image exactly as written, "
+            "including handwriting. Preserve line breaks and word order. "
+            "Output ONLY the transcribed text -- no commentary, no markdown, "
+            "no translation, no summary."
+        )
+        config = types.GenerateContentConfig(temperature=0.0, max_output_tokens=2048)
+        try:
+            resp = self._client.models.generate_content(
+                model=self.model,
+                contents=[types.Part.from_bytes(data=image_bytes, mime_type=mime_type), prompt],
+                config=config,
+            )
+            text = (resp.text or "").strip()
+            if not text:
+                return GeminiResult(ok=False, data={"text": ""}, model=self.model, error="No text detected in the image.")
+            return GeminiResult(ok=True, data={"text": text}, raw_text=text, model=self.model)
+        except Exception as exc:  # noqa: BLE001 - report, don't crash the demo
+            return GeminiResult(ok=False, data={"text": ""}, model=self.model, error=str(exc))
+
 
 # ---------- deterministic fallbacks (no API needed) ----------
 # These make sure the dashboard is fully usable offline / without a key.

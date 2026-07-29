@@ -38,6 +38,7 @@ except Exception:
 APP_DIR = Path(__file__).parent
 SAMPLE_CSV = APP_DIR / "sample_data" / "citizen_complaints.csv"
 SCHEDULED_BRIEF_FUNCTION_URL = os.environ.get("SCHEDULED_BRIEF_FUNCTION_URL", "")
+REALTIME_ALERT_FUNCTION_URL = os.environ.get("REALTIME_ALERT_FUNCTION_URL", "")
 
 st.set_page_config(
     page_title="CivicPulse AI",
@@ -158,8 +159,8 @@ THEMES: dict[str, dict[str, str | list[str]]] = {
     },
 }
 
-st.session_state.setdefault("dark_mode", True)
-theme: str = "dark" if st.session_state.dark_mode else "light"
+st.session_state.setdefault("theme_mode", "dark")
+theme: str = st.session_state.theme_mode
 t = THEMES[theme]
 
 # ---------------------------------------------------------------- language
@@ -668,19 +669,6 @@ CSS = """
         background: var(--cp-sidebar-bg) !important;
         border-right: 1px solid var(--cp-sidebar-border);
     }
-    /* Theme switch row: labels sit flush against the toggle instead of
-       spreading to their column's outer edge (Streamlit columns/widgets
-       are left-aligned by default, which pushed "Dark" far from the switch
-       while "Light" hugged the sidebar's left edge). */
-    .cp-theme-label {
-        display: flex; align-items: center; height: 2.4rem;
-        font-size: .88rem; white-space: nowrap;
-    }
-    .cp-theme-label-right { justify-content: flex-end; }
-    .cp-theme-label-left { justify-content: flex-start; }
-    [data-testid="stCheckbox"] {
-        display: flex; align-items: center; justify-content: center; height: 2.4rem;
-    }
     /* Streamlit sizes each stVerticalBlock as a flex item with flex-basis:0,
        relying on flex-grow to fill the remaining width. Kannada/Hindi text
        has far more line-break opportunities than English (no long
@@ -760,6 +748,8 @@ def _init_state() -> None:
     st.session_state.setdefault("qa_conversation", None)
     st.session_state.setdefault("domain", "citizen complaints")
     st.session_state.setdefault("trigger_result", None)
+    st.session_state.setdefault("ocr_text", None)
+    st.session_state.setdefault("ocr_brief", None)
 
 
 _init_state()
@@ -915,13 +905,11 @@ _DOMAIN_KEYS = {
 with st.sidebar:
     st.markdown("### 🏙️ CivicPulse AI")
     st.caption(T("sidebar_tagline"))
-    theme_l, theme_switch, theme_d = st.columns([1.1, 0.8, 1.1])
-    with theme_l:
-        st.markdown(f"<div class='cp-theme-label cp-theme-label-right'>{T('theme_light')}</div>", unsafe_allow_html=True)
-    with theme_switch:
-        st.toggle("Theme", key="dark_mode", label_visibility="collapsed")
-    with theme_d:
-        st.markdown(f"<div class='cp-theme-label cp-theme-label-left'>{T('theme_dark')}</div>", unsafe_allow_html=True)
+    st.radio(
+        "Theme", ["dark", "light"], horizontal=True,
+        format_func=lambda v: T("theme_dark") if v == "dark" else T("theme_light"),
+        label_visibility="collapsed", key="theme_mode",
+    )
     st.selectbox(
         T("language_label"), list(LANGUAGES.keys()), format_func=lambda code: LANGUAGES[code],
         key="lang", label_visibility="collapsed",
@@ -1270,6 +1258,125 @@ def trigger_scheduled_reports(url: str) -> dict:
         return resp.json()
     except Exception as exc:  # noqa: BLE001 - surface as a message, not a crash
         return {"error": str(exc)}
+
+
+def _immediate_actions(data: dict) -> list[dict]:
+    return [
+        a for a in (data.get("recommended_actions") or [])
+        if isinstance(a, dict) and str(a.get("urgency", "")).lower() == "immediate"
+    ]
+
+
+def _build_alert_email(data: dict, domain: str) -> tuple[str, str]:
+    """Compose a short, urgent-only email from a brief's immediate-urgency
+    action(s) -- deliberately narrower than the full weekly digest
+    (_brief_to_email_body in main.py) since this fires the moment something
+    needs a same-day response, not on a schedule."""
+    title = data.get("title") or "Community Alert"
+    subject = f"🚨 CivicPulse AI Real-Time Alert — {title}"
+    lines = [f"Domain: {domain}", ""]
+    if data.get("summary"):
+        lines += [data["summary"], ""]
+    lines.append("Action(s) needed TODAY:")
+    for a in _immediate_actions(data):
+        lines.append(
+            f"- {a.get('action', '')} (owner: {a.get('owner', '—')}, timeframe: {a.get('timeframe', '—')})"
+        )
+    if data.get("explanation"):
+        lines += ["", "Why:", data["explanation"]]
+    lines += ["", "-- Sent on demand from CivicPulse AI (Recommendations tab)."]
+    return subject, "\n".join(lines)
+
+
+def trigger_realtime_alert(url: str, subject: str, body: str) -> dict:
+    """Same authenticated-invoke pattern as trigger_scheduled_reports, but
+    posts one ad-hoc alert (subject/body built from THIS session's live
+    brief) to a separate, lighter Cloud Function instead of re-running the
+    full citywide+department pipeline -- a demo click fires in a couple
+    seconds, not the ~minute the full weekly job takes."""
+    if not url:
+        return {"error": "REALTIME_ALERT_FUNCTION_URL is not configured for this deployment."}
+    try:
+        import google.auth.transport.requests
+        import google.oauth2.id_token
+        import requests
+
+        auth_req = google.auth.transport.requests.Request()
+        id_token = google.oauth2.id_token.fetch_id_token(auth_req, url)
+        resp = requests.post(
+            url, headers={"Authorization": f"Bearer {id_token}"},
+            json={"subject": subject, "body": body}, timeout=60,
+        )
+        resp.raise_for_status()
+        return resp.json()
+    except Exception as exc:  # noqa: BLE001 - surface as a message, not a crash
+        return {"error": str(exc)}
+
+
+def _render_brief_block(brief, key_prefix: str) -> None:
+    """Shared renderer for one generated brief -- used for both the
+    dataset-wide Executive Brief and the OCR-derived single-form summary, so
+    the two features (recommendations + real-time alert) don't need two
+    parallel implementations. `key_prefix` keeps Streamlit widget keys
+    (download button, alert button, cached alert result) unique when both
+    briefs are rendered on the same page."""
+    data = brief.data
+    if brief.used_fallback:
+        st.warning(T("brief_fallback_warning"))
+
+    st.markdown(f"## 📝 {data.get('title', T('brief_default_title'))}")
+
+    if data.get("dataset_overview"):
+        st.markdown(f"#### {T('dataset_overview_heading')}")
+        st.markdown(data["dataset_overview"])
+        st.write("")
+
+    st.markdown(f"> {data.get('summary', '')}")
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown(f"#### {T('key_findings_heading')}")
+        for f in data.get("key_findings", []):
+            st.markdown(f"- {f}")
+        patterns = data.get("peculiar_patterns") or data.get("anomalies")
+        if patterns:
+            st.markdown(f"#### {T('peculiar_patterns_heading')}")
+            for a in patterns:
+                st.markdown(f"- {a}")
+    with col2:
+        st.markdown(f"#### {T('recommended_actions_heading')}")
+        st.caption(T("urgency_legend"))
+        render_actions(data.get("recommended_actions", []))
+        st.markdown(f"#### {T('confidence_heading')}")
+        st.markdown(confidence_badge(data.get("confidence")), unsafe_allow_html=True)
+
+    if data.get("explanation"):
+        with st.expander(T("explainability_expander")):
+            st.write(data["explanation"])
+
+    memo = _brief_to_markdown(data)
+    st.download_button(
+        T("download_memo_btn"), memo, file_name="civicpulse_action_memo.md",
+        mime="text/markdown", key=f"{key_prefix}_download_memo",
+    )
+
+    urgent = _immediate_actions(data)
+    if urgent:
+        st.write("")
+        if not REALTIME_ALERT_FUNCTION_URL:
+            st.warning(T("realtime_alert_needs_config", n=len(urgent)))
+        elif st.button(T("send_realtime_alert_btn", n=len(urgent)), key=f"{key_prefix}_alert_btn", type="primary"):
+            subject, body = _build_alert_email(data, st.session_state.domain)
+            with st.spinner(T("realtime_alert_sending")):
+                st.session_state[f"{key_prefix}_alert_result"] = trigger_realtime_alert(
+                    REALTIME_ALERT_FUNCTION_URL, subject, body,
+                )
+        alert_result = st.session_state.get(f"{key_prefix}_alert_result")
+        if alert_result:
+            if alert_result.get("error"):
+                st.error(T("realtime_alert_failed", err=alert_result["error"]))
+            else:
+                st.success(T("realtime_alert_sent", status=alert_result.get("email_status", "—")))
 
 
 # ---------------------------------------------------------------- tabs
@@ -1650,48 +1757,7 @@ with tab_reco:
 
     brief = st.session_state.brief
     if brief is not None:
-        data = brief.data
-        if brief.used_fallback:
-            st.warning(T("brief_fallback_warning"))
-
-        st.markdown(f"## 📝 {data.get('title', T('brief_default_title'))}")
-
-        if data.get("dataset_overview"):
-            st.markdown(f"#### {T('dataset_overview_heading')}")
-            st.markdown(data["dataset_overview"])
-            st.write("")
-
-        st.markdown(f"> {data.get('summary', '')}")
-
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown(f"#### {T('key_findings_heading')}")
-            for f in data.get("key_findings", []):
-                st.markdown(f"- {f}")
-            patterns = data.get("peculiar_patterns") or data.get("anomalies")
-            if patterns:
-                st.markdown(f"#### {T('peculiar_patterns_heading')}")
-                for a in patterns:
-                    st.markdown(f"- {a}")
-        with col2:
-            st.markdown(f"#### {T('recommended_actions_heading')}")
-            st.caption(T("urgency_legend"))
-            render_actions(data.get("recommended_actions", []))
-            st.markdown(f"#### {T('confidence_heading')}")
-            st.markdown(confidence_badge(data.get("confidence")), unsafe_allow_html=True)
-
-        if data.get("explanation"):
-            with st.expander(T("explainability_expander")):
-                st.write(data["explanation"])
-
-        # Downloadable memo.
-        memo = _brief_to_markdown(data)
-        st.download_button(
-            T("download_memo_btn"),
-            memo,
-            file_name="civicpulse_action_memo.md",
-            mime="text/markdown",
-        )
+        _render_brief_block(brief, key_prefix="main")
     else:
         st.info(T("brief_click_hint"))
 
@@ -1736,6 +1802,34 @@ with tab_reco:
             for dept, status in dept_reports.items():
                 icon = "✅" if status.startswith("sent") else ("⏭️" if status.startswith("skipped") else "❌")
                 st.caption(f"{icon} **{dept}** — {status}")
+
+    st.write("")
+    st.markdown(f"<div class='cp-section-title'>{T('ocr_section_title')}</div>", unsafe_allow_html=True)
+    st.caption(T("ocr_section_caption"))
+    ocr_file = st.file_uploader(
+        T("ocr_upload_label"), type=["jpg", "jpeg", "png", "pdf"], key="ocr_upload",
+    )
+    if ocr_file is not None and st.button(T("ocr_scan_btn"), key="ocr_scan_btn", type="primary"):
+        with st.spinner(T("ocr_extracting_spinner")):
+            mime = ocr_file.type or "image/jpeg"
+            ocr_result = gemini.ocr_extract_text(ocr_file.getvalue(), mime)
+        if not ocr_result.ok:
+            st.session_state.ocr_text = None
+            st.session_state.ocr_brief = None
+            st.error(T("ocr_failed", err=ocr_result.error or "—"))
+        else:
+            st.session_state.ocr_text = ocr_result.data["text"]
+            with st.spinner(T("drafting_spinner")):
+                st.session_state.ocr_brief = gemini.summarize_text(
+                    st.session_state.ocr_text, st.session_state.domain, lang=LANGUAGE_NAMES[LANG],
+                )
+
+    if st.session_state.get("ocr_text"):
+        with st.expander(T("ocr_extracted_text_expander")):
+            st.text(st.session_state.ocr_text)
+
+    if st.session_state.get("ocr_brief") is not None:
+        _render_brief_block(st.session_state.ocr_brief, key_prefix="ocr")
 
 
 # ============================== ABOUT ==============================

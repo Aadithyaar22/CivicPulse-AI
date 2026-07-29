@@ -26,8 +26,12 @@ gcloud config set project "${PROJECT_ID}"
 # trigger it on demand. Harmless if that function isn't deployed; the app
 # just shows the button as unavailable.
 SCHEDULED_BRIEF_FUNCTION_URL="${SCHEDULED_BRIEF_FUNCTION_URL:-https://${REGION}-${PROJECT_ID}.cloudfunctions.net/civicpulse-scheduled-brief}"
+# Same idea, for the "Send Real-Time Alert" button in the Recommendations
+# tab (fires the moment a brief has an immediate-urgency action, instead of
+# waiting for the weekly schedule). Harmless if that function isn't deployed.
+REALTIME_ALERT_FUNCTION_URL="${REALTIME_ALERT_FUNCTION_URL:-https://${REGION}-${PROJECT_ID}.cloudfunctions.net/civicpulse-realtime-alert}"
 
-ENV_VARS="GEMINI_MODEL=${MODEL},SCHEDULED_BRIEF_FUNCTION_URL=${SCHEDULED_BRIEF_FUNCTION_URL}"
+ENV_VARS="GEMINI_MODEL=${MODEL},SCHEDULED_BRIEF_FUNCTION_URL=${SCHEDULED_BRIEF_FUNCTION_URL},REALTIME_ALERT_FUNCTION_URL=${REALTIME_ALERT_FUNCTION_URL}"
 if [[ -n "${GEMINI_API_KEY:-}" ]]; then
   echo "==> Deploying with Gemini Developer API key."
   ENV_VARS="${ENV_VARS},GEMINI_API_KEY=${GEMINI_API_KEY}"
