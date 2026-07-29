@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import os
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -37,6 +37,10 @@ except Exception:
 
 APP_DIR = Path(__file__).parent
 SAMPLE_CSV = APP_DIR / "sample_data" / "citizen_complaints.csv"
+# Fixed +5:30 offset rather than zoneinfo("Asia/Kolkata") -- IST has no DST,
+# so this is exact, and it sidesteps python:3.12-slim not shipping the IANA
+# tzdata the stdlib zoneinfo module needs (a real footgun on Cloud Run).
+IST = timezone(timedelta(hours=5, minutes=30))
 SCHEDULED_BRIEF_FUNCTION_URL = os.environ.get("SCHEDULED_BRIEF_FUNCTION_URL", "")
 REALTIME_ALERT_FUNCTION_URL = os.environ.get("REALTIME_ALERT_FUNCTION_URL", "")
 
@@ -159,8 +163,7 @@ THEMES: dict[str, dict[str, str | list[str]]] = {
     },
 }
 
-st.session_state.setdefault("theme_mode", "dark")
-theme: str = st.session_state.theme_mode
+theme: str = st.session_state.get("theme_mode", "dark")
 t = THEMES[theme]
 
 # ---------------------------------------------------------------- language
@@ -905,15 +908,48 @@ _DOMAIN_KEYS = {
 with st.sidebar:
     st.markdown("### 🏙️ CivicPulse AI")
     st.caption(T("sidebar_tagline"))
+    _theme_opts = ["dark", "light"]
     st.radio(
-        "Theme", ["dark", "light"], horizontal=True,
+        "Theme", _theme_opts, horizontal=True,
         format_func=lambda v: T("theme_dark") if v == "dark" else T("theme_light"),
         label_visibility="collapsed", key="theme_mode",
+        # Pin the displayed selection to the backend value on every render --
+        # without this, switching language mid-session changes this radio's
+        # option LABELS (via format_func/T()), and Streamlit's frontend
+        # widget loses track of which option is selected and visually
+        # snaps back to the first one ("Dark") even though session_state
+        # still holds "light" for this run. The next rerun then reads that
+        # now-wrong frontend selection back as if the user had picked
+        # "Dark" -- so a language change silently flips the theme.
+        index=_theme_opts.index(st.session_state.get("theme_mode", "dark")),
     )
     st.selectbox(
         T("language_label"), list(LANGUAGES.keys()), format_func=lambda code: LANGUAGES[code],
         key="lang", label_visibility="collapsed",
     )
+    st.divider()
+
+    st.markdown(f"#### {T('ocr_section_title')}")
+    st.caption(T("ocr_section_caption"))
+    ocr_file = st.file_uploader(
+        T("ocr_upload_label"), type=["jpg", "jpeg", "png", "pdf"], key="ocr_upload",
+        label_visibility="collapsed",
+    )
+    if ocr_file is not None and st.button(T("ocr_scan_btn"), key="ocr_scan_btn", type="primary", use_container_width=True):
+        with st.spinner(T("ocr_extracting_spinner")):
+            mime = ocr_file.type or "image/jpeg"
+            ocr_result = gemini.ocr_extract_text(ocr_file.getvalue(), mime)
+        if not ocr_result.ok:
+            st.session_state.ocr_text = None
+            st.session_state.ocr_brief = None
+            st.error(T("ocr_failed", err=ocr_result.error or "—"))
+        else:
+            st.session_state.ocr_text = ocr_result.data["text"]
+            with st.spinner(T("drafting_spinner")):
+                st.session_state.ocr_brief = gemini.summarize_text(
+                    st.session_state.ocr_text, st.session_state.domain, lang=LANGUAGE_NAMES[LANG],
+                )
+            st.success(T("ocr_scan_done_hint"))
     st.divider()
 
     st.markdown(f"#### {T('sidebar_load_data_heading')}")
@@ -957,37 +993,6 @@ with st.sidebar:
     else:
         st.warning(T("gemini_offline_warning"))
         st.caption(gemini.status_message)
-
-    st.markdown(f"#### {T('brief_history_heading')}")
-    if history.available:
-        _recent_count = len(history.list_recent(limit=50))
-        _count_label = T("briefs_available_capped", count=_recent_count) if _recent_count >= 50 else (
-            T("briefs_available", count=_recent_count, s="s" if _recent_count != 1 else "")
-        )
-        st.markdown(
-            f"<div class='cp-status-card'><span class='icon'>🗄️</span><span>{_count_label}</span></div>",
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            f"<div class='cp-status-card cp-status-off'><span class='icon'>🗄️</span>"
-            f"<span>{T('brief_history_unavailable')}</span></div>",
-            unsafe_allow_html=True,
-        )
-
-    st.markdown(f"#### {T('session_heading')}")
-    if session_store.available:
-        st.markdown(
-            f"<div class='cp-status-card'><span class='icon'>🔄</span>"
-            f"<span>{T('session_active')}</span></div>",
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            f"<div class='cp-status-card cp-status-off'><span class='icon'>🔄</span>"
-            f"<span>{T('session_unavailable')}</span></div>",
-            unsafe_allow_html=True,
-        )
 
     st.divider()
     st.caption(T("sidebar_footer"))
@@ -1168,6 +1173,21 @@ def render_qa_answer(result) -> None:
 
 
 _URGENCY_ICON = {"immediate": "🔴", "high": "🟠", "normal": "⚪"}
+
+# Maps an anomaly's raw `dimension` (from analytics._detect_anomalies) to the
+# i18n key for a plain-language sentence explaining what that KIND of spike
+# generally implies -- deterministic and translated, not a per-anomaly Gemini
+# call, matching the "compute/explain locally first" pattern used everywhere
+# else in this app.
+_ANOMALY_MEANING_KEYS = {
+    "area": "anomaly_meaning_area",
+    "category": "anomaly_meaning_category",
+    "complaint type": "anomaly_meaning_complaint_type",
+    "time": "anomaly_meaning_time",
+}
+_ANOMALY_DIM_LABEL_KEYS = {
+    "area": "dim_area", "category": "dim_category", "time": "dim_time", "complaint type": "dim_complaint_type",
+}
 
 
 def _brief_to_markdown(data: dict) -> str:
@@ -1460,12 +1480,16 @@ with tab_overview:
             # Stored as a stable "dark"/"light" key (not translated text) so
             # the basemap-selection logic below never depends on which
             # language's label happens to be showing.
-            st.session_state.setdefault("map_basemap", "dark" if theme == "dark" else "light")
+            _basemap_opts = ["dark", "light"]
             with map_toggle_col:
                 st.radio(
-                    "Basemap", ["dark", "light"], horizontal=True,
+                    "Basemap", _basemap_opts, horizontal=True,
                     format_func=lambda v: T("theme_dark") if v == "dark" else T("theme_light"),
                     label_visibility="collapsed", key="map_basemap",
+                    # See the theme_mode radio above for why this is needed:
+                    # translated option labels desync the frontend widget's
+                    # displayed selection on a language change otherwise.
+                    index=_basemap_opts.index(st.session_state.get("map_basemap", theme)),
                 )
             mapbox_style = "carto-darkmatter" if st.session_state.map_basemap == "dark" else "carto-positron"
             map_is_dark = mapbox_style == "carto-darkmatter"
@@ -1675,7 +1699,7 @@ with tab_ask:
                 raw = load_result.raw_text or ""
                 with st.spinner(T("analyzing_spinner")):
                     result = gemini.summarize_text(raw, st.session_state.domain, lang=LANGUAGE_NAMES[LANG])
-            st.session_state.qa_history.append((question, result, datetime.now().strftime("%I:%M %p")))
+            st.session_state.qa_history.append((question, result, datetime.now(IST).strftime("%I:%M %p IST")))
             _persist_session()
             # Rerun so this turn renders through the history loop above (in
             # its natural position above the input) instead of appearing
@@ -1715,7 +1739,8 @@ with tab_anom:
         else:
             for a in anomalies:
                 sev = "🔴" if a["score"] >= 2.5 else ("🟠" if a["score"] >= 2.0 else "🟡")
-                dim_label = T(f"dim_{a['dimension']}") if a["dimension"] in ("area", "category", "time") else a["dimension"]
+                dim_label = T(_ANOMALY_DIM_LABEL_KEYS.get(a["dimension"], a["dimension"]))
+                meaning_key = _ANOMALY_MEANING_KEYS.get(a["dimension"])
                 with st.container(border=True):
                     c1, c2 = st.columns([4, 1])
                     with c1:
@@ -1726,6 +1751,8 @@ with tab_anom:
                         # untranslated for now rather than partially translating
                         # a sentence built by string interpolation in analytics.py.
                         st.caption(a["detail"])
+                        if meaning_key:
+                            st.markdown(f"💡 {T(meaning_key)}")
                     with c2:
                         st.metric(T("sigma_score_label"), f"{a['score']:.1f}")
 
@@ -1803,33 +1830,15 @@ with tab_reco:
                 icon = "✅" if status.startswith("sent") else ("⏭️" if status.startswith("skipped") else "❌")
                 st.caption(f"{icon} **{dept}** — {status}")
 
-    st.write("")
-    st.markdown(f"<div class='cp-section-title'>{T('ocr_section_title')}</div>", unsafe_allow_html=True)
-    st.caption(T("ocr_section_caption"))
-    ocr_file = st.file_uploader(
-        T("ocr_upload_label"), type=["jpg", "jpeg", "png", "pdf"], key="ocr_upload",
-    )
-    if ocr_file is not None and st.button(T("ocr_scan_btn"), key="ocr_scan_btn", type="primary"):
-        with st.spinner(T("ocr_extracting_spinner")):
-            mime = ocr_file.type or "image/jpeg"
-            ocr_result = gemini.ocr_extract_text(ocr_file.getvalue(), mime)
-        if not ocr_result.ok:
-            st.session_state.ocr_text = None
-            st.session_state.ocr_brief = None
-            st.error(T("ocr_failed", err=ocr_result.error or "—"))
-        else:
-            st.session_state.ocr_text = ocr_result.data["text"]
-            with st.spinner(T("drafting_spinner")):
-                st.session_state.ocr_brief = gemini.summarize_text(
-                    st.session_state.ocr_text, st.session_state.domain, lang=LANGUAGE_NAMES[LANG],
-                )
-
-    if st.session_state.get("ocr_text"):
-        with st.expander(T("ocr_extracted_text_expander")):
-            st.text(st.session_state.ocr_text)
-
-    if st.session_state.get("ocr_brief") is not None:
-        _render_brief_block(st.session_state.ocr_brief, key_prefix="ocr")
+    if st.session_state.get("ocr_text") or st.session_state.get("ocr_brief") is not None:
+        st.write("")
+        st.markdown(f"<div class='cp-section-title'>{T('ocr_section_title')}</div>", unsafe_allow_html=True)
+        st.caption(T("ocr_section_caption"))
+        if st.session_state.get("ocr_text"):
+            with st.expander(T("ocr_extracted_text_expander")):
+                st.text(st.session_state.ocr_text)
+        if st.session_state.get("ocr_brief") is not None:
+            _render_brief_block(st.session_state.ocr_brief, key_prefix="ocr")
 
 
 # ============================== ABOUT ==============================

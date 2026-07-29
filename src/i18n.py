@@ -364,6 +364,27 @@ UI_STRINGS: dict[str, dict[str, str]] = {
     "dim_area": {"en": "area", "kn": "ಪ್ರದೇಶ", "hi": "क्षेत्र"},
     "dim_category": {"en": "category", "kn": "ವರ್ಗ", "hi": "श्रेणी"},
     "dim_time": {"en": "time", "kn": "ಸಮಯ", "hi": "समय"},
+    "dim_complaint_type": {"en": "complaint type", "kn": "ದೂರು ಪ್ರಕಾರ", "hi": "शिकायत प्रकार"},
+    "anomaly_meaning_area": {
+        "en": "This area is drawing a disproportionate share of complaints — worth prioritizing a rapid-response team or a targeted infrastructure review there.",
+        "kn": "ಈ ಪ್ರದೇಶವು ಅಸಮಾನ ಪ್ರಮಾಣದ ದೂರುಗಳನ್ನು ಪಡೆಯುತ್ತಿದೆ — ಅಲ್ಲಿ ತ್ವರಿತ-ಪ್ರತಿಕ್ರಿಯೆ ತಂಡ ಅಥವಾ ಗುರಿಪಡಿಸಿದ ಮೂಲಸೌಕರ್ಯ ಪರಿಶೀಲನೆಗೆ ಆದ್ಯತೆ ನೀಡುವುದು ಯೋಗ್ಯ.",
+        "hi": "इस क्षेत्र में शिकायतों का असमान हिस्सा आ रहा है — वहाँ त्वरित-प्रतिक्रिया टीम या लक्षित बुनियादी ढांचा समीक्षा को प्राथमिकता देना उचित है।",
+    },
+    "anomaly_meaning_category": {
+        "en": "This category is spiking well beyond its usual share — often points to a systemic issue in that service line, not scattered one-off incidents.",
+        "kn": "ಈ ವರ್ಗವು ತನ್ನ ಸಾಮಾನ್ಯ ಪಾಲಿಗಿಂತ ಹೆಚ್ಚು ಏರುತ್ತಿದೆ — ಇದು ಸಾಮಾನ್ಯವಾಗಿ ಆ ಸೇವಾ ವಿಭಾಗದಲ್ಲಿ ವ್ಯವಸ್ಥಿತ ಸಮಸ್ಯೆಯನ್ನು ಸೂಚಿಸುತ್ತದೆ, ಚದುರಿದ ಒಂಟಿ ಘಟನೆಗಳಲ್ಲ.",
+        "hi": "यह श्रेणी अपने सामान्य हिस्से से कहीं अधिक बढ़ रही है — यह अक्सर उस सेवा क्षेत्र में एक व्यवस्थित समस्या की ओर इशारा करता है, न कि बिखरी हुई अलग-अलग घटनाओं की।",
+    },
+    "anomaly_meaning_complaint_type": {
+        "en": "This specific issue keeps recurring more than expected — worth investigating a shared root cause, like one faulty process, location, or vendor.",
+        "kn": "ಈ ನಿರ್ದಿಷ್ಟ ಸಮಸ್ಯೆ ನಿರೀಕ್ಷೆಗಿಂತ ಹೆಚ್ಚಾಗಿ ಮರುಕಳಿಸುತ್ತಿದೆ — ಒಂದು ಹಂಚಿಕೆಯ ಮೂಲ ಕಾರಣವನ್ನು (ಒಂದು ದೋಷಪೂರ್ಣ ಪ್ರಕ್ರಿಯೆ, ಸ್ಥಳ, ಅಥವಾ ಮಾರಾಟಗಾರ) ತನಿಖೆ ಮಾಡುವುದು ಯೋಗ್ಯ.",
+        "hi": "यह विशिष्ट समस्या अपेक्षा से अधिक बार दोहराई जा रही है — एक साझा मूल कारण (जैसे एक दोषपूर्ण प्रक्रिया, स्थान, या विक्रेता) की जांच करना उचित है।",
+    },
+    "anomaly_meaning_time": {
+        "en": "Total complaint volume jumped sharply in this window — check for a trigger event (weather, an outage, a policy change) before assuming it's the new normal.",
+        "kn": "ಈ ಅವಧಿಯಲ್ಲಿ ಒಟ್ಟು ದೂರುಗಳ ಪ್ರಮಾಣ ತೀವ್ರವಾಗಿ ಏರಿತು — ಇದನ್ನು ಹೊಸ ಸಾಮಾನ್ಯ ಎಂದು ಭಾವಿಸುವ ಮೊದಲು ಒಂದು ಪ್ರಚೋದಕ ಘಟನೆಗಾಗಿ (ಹವಾಮಾನ, ಸ್ಥಗಿತ, ನೀತಿ ಬದಲಾವಣೆ) ಪರಿಶೀಲಿಸಿ.",
+        "hi": "इस अवधि में कुल शिकायत मात्रा तेज़ी से बढ़ी — इसे नया सामान्य मान लेने से पहले किसी ट्रिगर घटना (मौसम, आउटेज, नीति परिवर्तन) की जांच करें।",
+    },
     "conf_high": {"en": "High", "kn": "ಹೆಚ್ಚು", "hi": "उच्च"},
     "conf_medium": {"en": "Medium", "kn": "ಮಧ್ಯಮ", "hi": "मध्यम"},
     "conf_low": {"en": "Low", "kn": "ಕಡಿಮೆ", "hi": "कम"},
@@ -504,17 +525,17 @@ UI_STRINGS: dict[str, dict[str, str]] = {
         "hi": "⚠️ {n} कार्रवाई(यों) को तुरंत प्रतिक्रिया चाहिए, लेकिन इस डिप्लॉयमेंट के लिए रीयल-टाइम अलर्ट ट्रिगर कॉन्फ़िगर नहीं है।",
     },
 
-    # ---------------------------------------------------------------- OCR scan (Recommendations tab)
+    # ---------------------------------------------------------------- OCR scan (sidebar trigger + Recommendations result)
     "ocr_section_title": {
         "en": "📷 Scan a Complaint Form (OCR)", "kn": "📷 ದೂರು ಫಾರ್ಮ್ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ (OCR)", "hi": "📷 शिकायत फ़ॉर्म स्कैन करें (OCR)",
     },
     "ocr_section_caption": {
         "en": "Upload a photo or scanned copy of a paper complaint form — Gemini reads it directly "
-              "(including handwriting) and turns it into the same kind of brief as the dataset above.",
+              "(including handwriting) and turns it into a brief, shown in the Recommendations tab.",
         "kn": "ಕಾಗದದ ದೂರು ಫಾರ್ಮ್‌ನ ಫೋಟೋ ಅಥವಾ ಸ್ಕ್ಯಾನ್ ಮಾಡಿದ ಪ್ರತಿಯನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ — Gemini ಅದನ್ನು ನೇರವಾಗಿ ಓದುತ್ತದೆ "
-              "(ಕೈಬರಹ ಸೇರಿದಂತೆ) ಮತ್ತು ಮೇಲಿನ ಡೇಟಾಸೆಟ್‌ನಂತೆಯೇ ಒಂದು ಸಂಕ್ಷಿಪ್ತಕ್ಕೆ ಪರಿವರ್ತಿಸುತ್ತದೆ.",
+              "(ಕೈಬರಹ ಸೇರಿದಂತೆ) ಮತ್ತು ಅದನ್ನು ಒಂದು ಸಂಕ್ಷಿಪ್ತಕ್ಕೆ ಪರಿವರ್ತಿಸುತ್ತದೆ, ಇದನ್ನು ಶಿಫಾರಸುಗಳು ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತದೆ.",
         "hi": "कागज़ी शिकायत फ़ॉर्म की फ़ोटो या स्कैन की गई प्रति अपलोड करें — Gemini इसे सीधे पढ़ता है "
-              "(हस्तलेख सहित) और इसे ऊपर के डेटासेट जैसा ही एक ब्रीफ़ बना देता है।",
+              "(हस्तलेख सहित) और इसे एक ब्रीफ़ में बदल देता है, जो सिफ़ारिशें टैब में दिखाया जाता है।",
     },
     "ocr_upload_label": {
         "en": "Upload a photo or scanned PDF of a complaint form", "kn": "ದೂರು ಫಾರ್ಮ್‌ನ ಫೋಟೋ ಅಥವಾ ಸ್ಕ್ಯಾನ್ ಮಾಡಿದ PDF ಅಪ್‌ಲೋಡ್ ಮಾಡಿ", "hi": "शिकायत फ़ॉर्म की फ़ोटो या स्कैन की गई PDF अपलोड करें",
@@ -524,6 +545,11 @@ UI_STRINGS: dict[str, dict[str, str]] = {
     },
     "ocr_extracting_spinner": {
         "en": "Reading the image with Gemini (OCR)...", "kn": "Gemini ಮೂಲಕ ಚಿತ್ರವನ್ನು ಓದಲಾಗುತ್ತಿದೆ (OCR)...", "hi": "Gemini से छवि पढ़ी जा रही है (OCR)...",
+    },
+    "ocr_scan_done_hint": {
+        "en": "✅ Scanned! See the result in the Recommendations tab.",
+        "kn": "✅ ಸ್ಕ್ಯಾನ್ ಮಾಡಲಾಗಿದೆ! ಫಲಿತಾಂಶವನ್ನು ಶಿಫಾರಸುಗಳು ಟ್ಯಾಬ್‌ನಲ್ಲಿ ನೋಡಿ.",
+        "hi": "✅ स्कैन हो गया! परिणाम सिफ़ारिशें टैब में देखें।",
     },
     "ocr_extracted_text_expander": {
         "en": "📄 Extracted text", "kn": "📄 ಹೊರತೆಗೆದ ಪಠ್ಯ", "hi": "📄 निकाला गया टेक्स्ट",
