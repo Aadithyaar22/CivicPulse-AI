@@ -17,8 +17,8 @@ from dataclasses import dataclass
 from typing import Any
 
 from .prompt_templates import (
-    AGENTIC_SYSTEM_INSTRUCTION,
     SYSTEM_INSTRUCTION,
+    agentic_system_instruction,
     build_agentic_followup_prompt,
     build_agentic_question_prompt,
     build_brief_prompt,
@@ -170,14 +170,14 @@ class GeminiClient:
 
     # ---------- public high-level calls ----------
 
-    def executive_brief(self, insights: dict[str, Any], domain: str) -> GeminiResult:
-        prompt = build_brief_prompt(insights, domain)
+    def executive_brief(self, insights: dict[str, Any], domain: str, lang: str = "English") -> GeminiResult:
+        prompt = build_brief_prompt(insights, domain, lang=lang)
         return self._run(prompt, lambda: _fallback_brief(insights))
 
     def answer_question(
-        self, insights: dict[str, Any], question: str, domain: str
+        self, insights: dict[str, Any], question: str, domain: str, lang: str = "English"
     ) -> GeminiResult:
-        prompt = build_question_prompt(insights, question, domain)
+        prompt = build_question_prompt(insights, question, domain, lang=lang)
         return self._run(prompt, lambda: _fallback_answer(insights, question))
 
     def answer_question_agentic(
@@ -187,6 +187,7 @@ class GeminiClient:
         question: str,
         domain: str,
         conversation: list | None = None,
+        lang: str = "English",
     ) -> tuple[GeminiResult, list]:
         """Agentic Q&A: Gemini calls real query tools (see qa_tools.py) against
         the live DataFrame instead of reasoning over one static analytics
@@ -212,24 +213,24 @@ class GeminiClient:
         less reliable than before it existed.
         """
         if not self.available or df is None or getattr(df, "empty", True):
-            return self.answer_question(insights, question, domain), (conversation or [])
+            return self.answer_question(insights, question, domain, lang=lang), (conversation or [])
 
         last_error: str | None = None
         for _attempt in range(2):
             try:
-                result, new_conversation = self._run_agentic_once(df, question, domain, conversation)
+                result, new_conversation = self._run_agentic_once(df, question, domain, conversation, lang=lang)
             except Exception as exc:  # noqa: BLE001 - the agentic path must never crash the app
                 last_error = str(exc)
                 result, new_conversation = None, None
             if result is not None:
                 return result, new_conversation
 
-        fallback = self.answer_question(insights, question, domain)
+        fallback = self.answer_question(insights, question, domain, lang=lang)
         fallback.error = last_error or "Agentic Q&A produced no usable answer after retry; used grounded fallback."
         return fallback, (conversation or [])
 
     def _run_agentic_once(
-        self, df: Any, question: str, domain: str, conversation: list | None
+        self, df: Any, question: str, domain: str, conversation: list | None, lang: str = "English"
     ) -> tuple[GeminiResult | None, list | None]:
         """One attempt at the tool-calling loop. Returns (None, None) (rather
         than a hollow ok=True with blank content) if the model produced an
@@ -244,7 +245,7 @@ class GeminiClient:
 
         tool = types.Tool(function_declarations=TOOL_DECLARATIONS)
         config = types.GenerateContentConfig(
-            system_instruction=AGENTIC_SYSTEM_INSTRUCTION,
+            system_instruction=agentic_system_instruction(lang),
             temperature=0.2,
             # The answer schema includes a 2-3 sentence "explanation" paragraph
             # on top of the other fields; 1024 was tight enough to sometimes
@@ -255,9 +256,9 @@ class GeminiClient:
         )
         is_followup = bool(conversation)
         prompt = (
-            build_agentic_followup_prompt(question)
+            build_agentic_followup_prompt(question, lang=lang)
             if is_followup
-            else build_agentic_question_prompt(question, domain)
+            else build_agentic_question_prompt(question, domain, lang=lang)
         )
         contents = list(conversation or [])
         contents.append(types.Content(role="user", parts=[types.Part.from_text(text=prompt)]))
@@ -314,8 +315,8 @@ class GeminiClient:
 
         return None, None  # exhausted MAX_TOOL_TURNS without a final answer
 
-    def summarize_text(self, raw_text: str, domain: str) -> GeminiResult:
-        prompt = build_text_summary_prompt(raw_text, domain)
+    def summarize_text(self, raw_text: str, domain: str, lang: str = "English") -> GeminiResult:
+        prompt = build_text_summary_prompt(raw_text, domain, lang=lang)
         return self._run(prompt, lambda: _fallback_text(raw_text))
 
 

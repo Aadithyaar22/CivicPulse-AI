@@ -9,6 +9,21 @@ from __future__ import annotations
 import json
 from typing import Any
 
+
+def _language_instruction(lang: str) -> str:
+    """Gemini already writes fluent Kannada/Hindi, so the UI's language
+    toggle is threaded straight into the prompt rather than machine-
+    translating English output after the fact -- more natural phrasing,
+    and it's a single line, not a second pipeline stage."""
+    if not lang or lang == "English":
+        return ""
+    return (
+        f"\n\nRespond entirely in {lang}. Every text field in the JSON output "
+        f"must be written in {lang} (not English) -- explanations, findings, "
+        f"recommendations, all of it. Area/category names may stay as given "
+        f"in the data if there's no natural {lang} equivalent.\n"
+    )
+
 SYSTEM_INSTRUCTION = (
     "You are CivicPulse AI, a community decision intelligence assistant for city "
     "and neighborhood teams. Use ONLY the provided analytics JSON as evidence. "
@@ -74,7 +89,7 @@ def _analytics_block(insights: dict[str, Any]) -> str:
     return json.dumps(insights, indent=2, default=str)
 
 
-def build_brief_prompt(insights: dict[str, Any], domain: str = "citizen complaints") -> str:
+def build_brief_prompt(insights: dict[str, Any], domain: str = "citizen complaints", lang: str = "English") -> str:
     """One-click executive brief over the whole dataset.
 
     Framed as a handoff document, not a 60-second skim: the reader is
@@ -115,13 +130,14 @@ Rules:
 - Ground every finding in the analytics above; cite specific counts/areas/categories.
 - If a field has no data, say so rather than guessing.
 - Do not invent patterns that aren't supported by the analytics.
-"""
+{_language_instruction(lang)}"""
 
 
 def build_question_prompt(
     insights: dict[str, Any],
     question: str,
     domain: str = "citizen complaints",
+    lang: str = "English",
 ) -> str:
     """Answer a specific natural-language question over the analytics."""
     return f"""Domain context: {domain}.
@@ -141,36 +157,53 @@ matching this shape:
 
 If the analytics do not contain enough information to answer, say so honestly in
 'what_is_happening'.
-"""
+{_language_instruction(lang)}"""
 
 
-AGENTIC_SYSTEM_INSTRUCTION = (
-    "You are CivicPulse AI, a community decision intelligence assistant for city "
-    "and neighborhood teams. You have tools that query the REAL uploaded dataset "
-    "(get_summary_stats, filter_records, get_top_complaints). You must call one or "
-    "more tools to gather evidence before answering -- never answer from memory or "
-    "general knowledge about cities. "
-    "To compare two areas, categories, or time periods, call filter_records "
-    "once per side and compare the real numbers returned. If asked to "
-    "compare the top two but the question does not name them, first call "
-    "get_summary_stats to find out which two, then call filter_records once "
-    "for each before answering. Do not answer a comparison using only one "
-    "tool call. "
-    "If a tool returns an 'error' field (e.g. an area/category that doesn't exist), "
-    "do not guess a substitute value -- either try a corrected argument once, or "
-    "tell the user honestly that it wasn't found, using the 'available_values' the "
-    "tool gave you. "
-    "If a tool returns record_count: 0, that is a real zero -- report it as 'no "
-    "matching records', not as missing data. "
-    "Once you have enough tool results to answer, STOP calling tools and write the "
-    "final answer using ONLY numbers that appeared in tool results. Never invent "
-    "a count, percentage, area, or category that didn't come from a tool call. "
-    "Clearly separate facts (from tool results) from recommendations (your advice). "
-    "Be concise and practical -- write for a busy public official who has 60 seconds."
-)
+def agentic_system_instruction(lang: str = "English") -> str:
+    """Built as a function (not a constant) so the language directive can
+    live in the SYSTEM instruction rather than only the per-turn prompt --
+    a small model like flash-lite follows a directive in the higher-
+    priority system instruction far more reliably than one appended after
+    the task description in an ordinary user-turn prompt, which is where
+    an earlier version of this put it and Gemini would often just answer
+    in English anyway despite the reminder."""
+    lang_rule = (
+        f"Respond ENTIRELY in {lang} -- every field in your final JSON answer "
+        f"(what_is_happening, why_it_matters, recommended_next_step, executive_summary, "
+        f"explanation, suggested_follow_ups) must be written in {lang}, not English. "
+        f"Area/category names may stay as given in the data if there's no natural "
+        f"{lang} equivalent. "
+        if lang and lang != "English" else ""
+    )
+    return (
+        "You are CivicPulse AI, a community decision intelligence assistant for city "
+        "and neighborhood teams. You have tools that query the REAL uploaded dataset "
+        "(get_summary_stats, filter_records, get_top_complaints). You must call one or "
+        "more tools to gather evidence before answering -- never answer from memory or "
+        "general knowledge about cities. "
+        "To compare two areas, categories, or time periods, call filter_records "
+        "once per side and compare the real numbers returned. If asked to "
+        "compare the top two but the question does not name them, first call "
+        "get_summary_stats to find out which two, then call filter_records once "
+        "for each before answering. Do not answer a comparison using only one "
+        "tool call. "
+        "If a tool returns an 'error' field (e.g. an area/category that doesn't exist), "
+        "do not guess a substitute value -- either try a corrected argument once, or "
+        "tell the user honestly that it wasn't found, using the 'available_values' the "
+        "tool gave you. "
+        "If a tool returns record_count: 0, that is a real zero -- report it as 'no "
+        "matching records', not as missing data. "
+        "Once you have enough tool results to answer, STOP calling tools and write the "
+        "final answer using ONLY numbers that appeared in tool results. Never invent "
+        "a count, percentage, area, or category that didn't come from a tool call. "
+        "Clearly separate facts (from tool results) from recommendations (your advice). "
+        "Be concise and practical -- write for a busy public official who has 60 seconds. "
+        f"{lang_rule}"
+    )
 
 
-def build_agentic_question_prompt(question: str, domain: str = "citizen complaints") -> str:
+def build_agentic_question_prompt(question: str, domain: str = "citizen complaints", lang: str = "English") -> str:
     """Kick off a tool-calling turn for a natural-language question.
 
     Unlike build_question_prompt, this does NOT embed a precomputed analytics
@@ -189,10 +222,10 @@ prose before/after) matching this shape:
 
 If tool results do not contain enough information to answer, say so honestly in
 'what_is_happening'.
-"""
+{_language_instruction(lang)}"""
 
 
-def build_agentic_followup_prompt(question: str) -> str:
+def build_agentic_followup_prompt(question: str, lang: str = "English") -> str:
     """Continue an existing agentic conversation with a follow-up question.
 
     Deliberately lighter than build_agentic_question_prompt: the full
@@ -201,17 +234,18 @@ def build_agentic_followup_prompt(question: str) -> str:
     new question and remind the model to fetch fresh evidence rather than
     assume the previous answer's numbers still apply.
     """
+    lang_reminder = f" Keep responding in {lang}." if lang and lang != "English" else ""
     return f"""Follow-up question in this same conversation: "{question}"
 
 This may be about a different area, category, time range, or comparison than
 before -- call tools again to get evidence specific to THIS question rather
 than reusing the previous answer's numbers, unless the question is clearly
 still about the same thing. Return ONLY valid JSON in the exact same shape as
-your previous answer (no markdown fences, no prose before/after).
+your previous answer (no markdown fences, no prose before/after).{lang_reminder}
 """
 
 
-def build_text_summary_prompt(raw_text: str, domain: str = "citizen complaints") -> str:
+def build_text_summary_prompt(raw_text: str, domain: str = "citizen complaints", lang: str = "English") -> str:
     """Summarize pasted text or extracted PDF content (no numeric analytics)."""
     snippet = raw_text[:6000]
     return f"""Domain context: {domain}.
@@ -233,4 +267,4 @@ Summarize it for a decision-maker. Return ONLY valid JSON (no markdown fences):
 }}
 
 Do not invent statistics that are not stated in the text.
-"""
+{_language_instruction(lang)}"""

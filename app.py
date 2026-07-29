@@ -21,6 +21,9 @@ from src.analytics import compute_insights, filter_dataframe
 from src.data_loader import LoadResult, _coerce_types, load_sample, load_text, load_uploaded_file
 from src.gemini_client import MAX_CONVERSATION_QUESTIONS, GeminiClient, GeminiResult
 from src.history_store import HistoryStore
+from src.i18n import LANGUAGE_NAMES, LANGUAGES
+from src.i18n import L as _L
+from src.i18n import T as _T
 from src.session_store import SessionStore
 from src.utils import humanize
 
@@ -158,6 +161,24 @@ THEMES: dict[str, dict[str, str | list[str]]] = {
 st.session_state.setdefault("dark_mode", True)
 theme: str = "dark" if st.session_state.dark_mode else "light"
 t = THEMES[theme]
+
+# ---------------------------------------------------------------- language
+# UI chrome is pre-translated (src/i18n.py) and swapped by key -- no runtime
+# translation calls. T() is for CivicPulse's own static text; L() is for
+# categorical values that come from the uploaded dataset (area/category/
+# severity/status/department), translated only for display -- the
+# underlying dataframe stays untouched so analytics/filtering/Gemini's tool
+# calls keep working on the original values. Numbers are never touched.
+st.session_state.setdefault("lang", "en")
+LANG: str = st.session_state.lang
+
+
+def T(key: str, **kwargs) -> str:
+    return _T(LANG, key, **kwargs)
+
+
+def L(value):
+    return _L(LANG, value)
 
 
 def get_chart_layout(theme_name: str) -> dict:
@@ -660,6 +681,21 @@ CSS = """
     [data-testid="stCheckbox"] {
         display: flex; align-items: center; justify-content: center; height: 2.4rem;
     }
+    /* Streamlit sizes each stVerticalBlock as a flex item with flex-basis:0,
+       relying on flex-grow to fill the remaining width. Kannada/Hindi text
+       has far more line-break opportunities than English (no long
+       unbreakable "words"), so its intrinsic min-content width can shrink
+       to near zero -- and without an explicit flex-grow, native
+       st.caption()/st.markdown() text blocks were collapsing to a ~60px
+       sliver and wrapping one grapheme per line instead of using the
+       available width. Applies app-wide (sidebar AND main content both use
+       plain st.caption/markdown calls in Kannada/Hindi), excluding blocks
+       inside an actual st.columns() row so their intentional proportions
+       (like the theme switch) aren't overridden. */
+    [data-testid="stVerticalBlock"]:not([data-testid="stHorizontalBlock"] [data-testid="stVerticalBlock"]) {
+        flex-grow: 1 !important;
+        min-width: 0 !important;
+    }
     [data-testid="stSidebar"] * { color: var(--cp-text) !important; }
     [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3,
     [data-testid="stSidebar"] h4 { font-family: var(--font-display) !important; }
@@ -863,74 +899,82 @@ def _set_data(load_result: LoadResult) -> None:
 
 
 # ---------------------------------------------------------------- sidebar
+DOMAIN_OPTIONS = [
+    "citizen complaints", "waste & sanitation", "water supply",
+    "road & infrastructure", "public health access", "neighborhood wellness",
+]
+_DOMAIN_KEYS = {
+    "citizen complaints": "domain_citizen_complaints",
+    "waste & sanitation": "domain_waste_sanitation",
+    "water supply": "domain_water_supply",
+    "road & infrastructure": "domain_road_infra",
+    "public health access": "domain_public_health",
+    "neighborhood wellness": "domain_neighborhood_wellness",
+}
+
 with st.sidebar:
     st.markdown("### 🏙️ CivicPulse AI")
-    st.caption("Community decision intelligence")
+    st.caption(T("sidebar_tagline"))
     theme_l, theme_switch, theme_d = st.columns([1.1, 0.8, 1.1])
     with theme_l:
-        st.markdown("<div class='cp-theme-label cp-theme-label-right'>☀️ Light</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='cp-theme-label cp-theme-label-right'>{T('theme_light')}</div>", unsafe_allow_html=True)
     with theme_switch:
         st.toggle("Theme", key="dark_mode", label_visibility="collapsed")
     with theme_d:
-        st.markdown("<div class='cp-theme-label cp-theme-label-left'>🌙 Dark</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='cp-theme-label cp-theme-label-left'>{T('theme_dark')}</div>", unsafe_allow_html=True)
+    st.selectbox(
+        T("language_label"), list(LANGUAGES.keys()), format_func=lambda code: LANGUAGES[code],
+        key="lang", label_visibility="collapsed",
+    )
     st.divider()
 
-    st.markdown("#### 1. Load data")
-    if st.button("⚡ Load demo dataset", use_container_width=True, type="primary"):
+    st.markdown(f"#### {T('sidebar_load_data_heading')}")
+    if st.button(T("load_demo_dataset_btn"), use_container_width=True, type="primary"):
         if SAMPLE_CSV.exists():
             _set_data(load_sample(str(SAMPLE_CSV)))
-            st.success("Demo dataset loaded.")
+            st.success(T("demo_dataset_loaded"))
         else:
-            st.error("Sample file missing. Run sample_data/generate_sample.py.")
+            st.error(T("sample_file_missing"))
 
     uploaded = st.file_uploader(
-        "Upload CSV / JSON / PDF / Excel", type=["csv", "json", "pdf", "xlsx", "xls"], accept_multiple_files=False
+        T("upload_file_label"), type=["csv", "json", "pdf", "xlsx", "xls"], accept_multiple_files=False
     )
     if uploaded is not None:
-        if st.button("Analyze uploaded file", use_container_width=True):
+        if st.button(T("analyze_uploaded_file_btn"), use_container_width=True):
             _set_data(load_uploaded_file(uploaded))
-            st.success(f"Loaded {uploaded.name}")
+            st.success(T("loaded_file_msg", name=uploaded.name))
 
-    with st.expander("Or paste text / report"):
-        pasted = st.text_area("Paste community report text", height=120, label_visibility="collapsed")
-        if st.button("Analyze pasted text", use_container_width=True) and pasted.strip():
+    with st.expander(T("paste_text_expander")):
+        pasted = st.text_area(T("paste_text_placeholder"), height=120, label_visibility="collapsed")
+        if st.button(T("analyze_pasted_text_btn"), use_container_width=True) and pasted.strip():
             _set_data(load_text(pasted))
-            st.success("Text captured.")
+            st.success(T("text_captured"))
 
     _lr = st.session_state.load_result
     if _lr is not None and getattr(_lr, "column_matches", None):
-        with st.expander("🔍 Detected columns"):
+        with st.expander(T("detected_columns_expander")):
             for m in _lr.column_matches:
                 icon = {"exact": "✅", "token": "🟢", "fuzzy": "🟡", "content": "🔵"}.get(m.method, "⚪")
-                label = "value-based" if m.method == "content" else f"{m.score:.0%} match"
+                label = T("value_based") if m.method == "content" else T("pct_match", score=f"{m.score:.0%}")
                 st.caption(f"{icon} **{m.source_column}** → `{m.canonical}` ({label})")
 
-    st.markdown("#### 2. Domain framing")
+    st.markdown(f"#### {T('domain_framing_heading')}")
     st.session_state.domain = st.selectbox(
-        "Domain",
-        [
-            "citizen complaints",
-            "waste & sanitation",
-            "water supply",
-            "road & infrastructure",
-            "public health access",
-            "neighborhood wellness",
-        ],
-        label_visibility="collapsed",
+        "Domain", DOMAIN_OPTIONS, format_func=lambda v: T(_DOMAIN_KEYS[v]), label_visibility="collapsed",
     )
 
-    st.markdown("#### 3. AI status")
+    st.markdown(f"#### {T('ai_status_heading')}")
     if gemini.available:
         st.success(gemini.status_message)
     else:
-        st.warning("Gemini offline — using local fallback.")
+        st.warning(T("gemini_offline_warning"))
         st.caption(gemini.status_message)
 
-    st.markdown("#### 4. Brief history")
+    st.markdown(f"#### {T('brief_history_heading')}")
     if history.available:
         _recent_count = len(history.list_recent(limit=50))
-        _count_label = f"{_recent_count}+ briefs available" if _recent_count >= 50 else (
-            f"{_recent_count} brief{'s' if _recent_count != 1 else ''} available"
+        _count_label = T("briefs_available_capped", count=_recent_count) if _recent_count >= 50 else (
+            T("briefs_available", count=_recent_count, s="s" if _recent_count != 1 else "")
         )
         st.markdown(
             f"<div class='cp-status-card'><span class='icon'>🗄️</span><span>{_count_label}</span></div>",
@@ -938,40 +982,40 @@ with st.sidebar:
         )
     else:
         st.markdown(
-            "<div class='cp-status-card cp-status-off'><span class='icon'>🗄️</span>"
-            "<span>Unavailable this session — briefs won't be saved</span></div>",
+            f"<div class='cp-status-card cp-status-off'><span class='icon'>🗄️</span>"
+            f"<span>{T('brief_history_unavailable')}</span></div>",
             unsafe_allow_html=True,
         )
 
-    st.markdown("#### 5. Session")
+    st.markdown(f"#### {T('session_heading')}")
     if session_store.available:
         st.markdown(
-            "<div class='cp-status-card'><span class='icon'>🔄</span>"
-            "<span>Reload-safe session active</span></div>",
+            f"<div class='cp-status-card'><span class='icon'>🔄</span>"
+            f"<span>{T('session_active')}</span></div>",
             unsafe_allow_html=True,
         )
     else:
         st.markdown(
-            "<div class='cp-status-card cp-status-off'><span class='icon'>🔄</span>"
-            "<span>Unavailable this session — a refresh will reset your data</span></div>",
+            f"<div class='cp-status-card cp-status-off'><span class='icon'>🔄</span>"
+            f"<span>{T('session_unavailable')}</span></div>",
             unsafe_allow_html=True,
         )
 
     st.divider()
-    st.caption("Built with Streamlit + Gemini on Google Cloud Run.")
+    st.caption(T("sidebar_footer"))
 
 
 # ---------------------------------------------------------------- hero
 st.markdown(
-    """
+    f"""
     <div class="cp-hero">
         <h1><span class="cp-hero-emoji">🏙️</span> <span class="cp-hero-text">CivicPulse AI</span></h1>
-        <p>Ask your community data anything — get patterns, anomalies, and decisions.
-        <b>Not just answers — better decisions.</b></p>
-        <span class="cp-badge">Natural-language analytics</span>
-        <span class="cp-badge">Anomaly detection</span>
-        <span class="cp-badge">Action generator</span>
-        <span class="cp-badge">Gemini-powered</span>
+        <p>{T('hero_tagline')}
+        <b>{T('hero_tagline_bold')}</b></p>
+        <span class="cp-badge">{T('badge_nlp')}</span>
+        <span class="cp-badge">{T('badge_anomaly')}</span>
+        <span class="cp-badge">{T('badge_action')}</span>
+        <span class="cp-badge">{T('badge_gemini')}</span>
     </div>
     """,
     unsafe_allow_html=True,
@@ -981,22 +1025,19 @@ load_result: LoadResult | None = st.session_state.load_result
 insights = st.session_state.insights
 
 if load_result is None:
-    st.info(
-        "👈 Start by clicking **Load demo dataset** in the sidebar, or upload your own "
-        "CSV/JSON/PDF. CivicPulse turns raw community data into a decision-ready snapshot."
-    )
+    st.info(T("empty_state_info"))
     c1, c2, c3 = st.columns(3)
-    for col, (title, body) in zip(
+    for col, (title_key, body_key) in zip(
         (c1, c2, c3),
         [
-            ("📊 Deterministic first", "Python computes counts, trends & anomalies before any AI call — cheap and reliable."),
-            ("🤖 Gemini explains", "A small, low-cost Gemini model turns numbers into plain-language decisions."),
-            ("🎯 Decision Scoreboard", "Urgency, impact & confidence scores so teams know what to do next."),
+            ("feature_card_1_title", "feature_card_1_body"),
+            ("feature_card_2_title", "feature_card_2_body"),
+            ("feature_card_3_title", "feature_card_3_body"),
         ],
     ):
         with col:
             st.markdown(
-                f"<div class='cp-card'><p class='val'>{title}</p><p class='sub'>{body}</p></div>",
+                f"<div class='cp-card'><p class='val'>{T(title_key)}</p><p class='sub'>{T(body_key)}</p></div>",
                 unsafe_allow_html=True,
             )
     st.stop()
@@ -1025,10 +1066,10 @@ def confidence_badge(confidence: str | None) -> str:
     css_class = {"high": "cp-conf-high", "medium": "cp-conf-medium", "low": "cp-conf-low"}.get(
         level, "cp-conf-medium"
     )
-    label = level.title() or "—"
+    label = T(f"conf_{level}") if level in ("high", "medium", "low") else "—"
     return (
         f"<div class='cp-confidence {css_class}'>"
-        f"<span class='cp-conf-label'>Confidence</span>"
+        f"<span class='cp-conf-label'>{T('confidence_label')}</span>"
         f"<span class='cp-conf-value'>{label}</span>"
         f"</div>"
     )
@@ -1077,15 +1118,15 @@ def agentic_confidence_pct(trace: list[dict] | None) -> int:
 
 def confidence_bar(pct: int) -> str:
     if pct >= 75:
-        label, color = "High", _CONF_COLOR_HEX["high"]
+        label, color = T("conf_high"), _CONF_COLOR_HEX["high"]
     elif pct >= 45:
-        label, color = "Medium", _CONF_COLOR_HEX["medium"]
+        label, color = T("conf_medium"), _CONF_COLOR_HEX["medium"]
     else:
-        label, color = "Low", _CONF_COLOR_HEX["low"]
+        label, color = T("conf_low"), _CONF_COLOR_HEX["low"]
     return (
         f"<div class='cp-confidence'>"
         f"<div class='cp-conf-row'><span class='icon'>🛡️</span>"
-        f"<span class='cp-conf-label'>Confidence</span>"
+        f"<span class='cp-conf-label'>{T('confidence_label')}</span>"
         f"<span class='cp-conf-value' style='color:{color}'>{label} · {pct}%</span></div>"
         f"<div class='cp-conf-track'><div class='cp-conf-fill' style='width:{pct}%;background:{color}'></div></div>"
         f"</div>"
@@ -1097,7 +1138,7 @@ def render_qa_answer(result) -> None:
     answered turn and for replaying prior turns in the chat history."""
     data = result.data
     if result.used_fallback:
-        st.caption("⚠️ Offline fallback answer (Gemini not called).")
+        st.caption(T("offline_fallback_caption"))
 
     if "what_is_happening" in data:
         conf_pct = agentic_confidence_pct(data.get("_tool_trace"))
@@ -1105,8 +1146,8 @@ def render_qa_answer(result) -> None:
         if data.get("explanation"):
             st.markdown(data["explanation"])
             st.write("")
-        st.markdown(f"📊 **What's happening.** {data.get('what_is_happening', '')}")
-        st.markdown(f"🔷 **Why it matters.** {data.get('why_it_matters', '')}")
+        st.markdown(f"📊 **{T('field_whats_happening')}** {data.get('what_is_happening', '')}")
+        st.markdown(f"🔷 **{T('field_why_it_matters')}** {data.get('why_it_matters', '')}")
 
         where = data.get("where")
         if isinstance(where, list) and where:
@@ -1114,10 +1155,10 @@ def render_qa_answer(result) -> None:
         elif isinstance(where, str) and where.strip():
             where_str = where
         else:
-            where_str = "not enough data"
-        st.markdown(f"📍 **Where.** {where_str}", unsafe_allow_html=True)
+            where_str = T("not_enough_data")
+        st.markdown(f"📍 **{T('field_where')}** {where_str}", unsafe_allow_html=True)
 
-        st.markdown(f"🎯 **Recommended next step.** {data.get('recommended_next_step', '')}")
+        st.markdown(f"🎯 **{T('field_recommended_next_step')}** {data.get('recommended_next_step', '')}")
         st.info(f"🗣️ {data.get('executive_summary', '')}")
     else:
         st.write(data.get("summary", data))
@@ -1125,62 +1166,63 @@ def render_qa_answer(result) -> None:
     trace = data.get("_tool_trace")
     if trace:
         n = len(trace)
-        with st.expander(f"🔧 How CivicPulse checked this ({n} data quer{'y' if n == 1 else 'ies'})"):
-            st.caption(
-                "Every number above came from one of these real queries against your "
-                "dataset — Gemini chose what to look up, not what the numbers say."
-            )
+        with st.expander(T("tool_trace_expander", n=n, y="y" if n == 1 else "ies")):
+            st.caption(T("tool_trace_caption"))
             for t in trace:
                 args_str = ", ".join(f"{k}={v}" for k, v in (t.get("args") or {}).items()) or "—"
                 if t.get("error"):
                     st.caption(f"❌ `{t['tool']}({args_str})` → {t['error']}")
                 elif "record_count" in t:
                     rc = t.get("record_count")
-                    st.caption(f"✅ `{t['tool']}({args_str})` → {rc} matching record{'s' if rc != 1 else ''}")
+                    st.caption(f"✅ `{t['tool']}({args_str})` → {T('tool_trace_matching_records', rc=rc, s='s' if rc != 1 else '')}")
                 else:
-                    st.caption(f"✅ `{t['tool']}({args_str})` → full dataset snapshot")
+                    st.caption(f"✅ `{t['tool']}({args_str})` → {T('tool_trace_full_snapshot')}")
 
 
 _URGENCY_ICON = {"immediate": "🔴", "high": "🟠", "normal": "⚪"}
 
 
 def _brief_to_markdown(data: dict) -> str:
-    lines = [f"# {data.get('title', 'CivicPulse Action Memo')}", ""]
+    lines = [f"# {data.get('title', T('memo_default_title'))}", ""]
     if data.get("dataset_overview"):
-        lines.append("## Dataset overview")
+        lines.append(f"## {T('dataset_overview_heading').replace('📖 ', '')}")
         lines.append(data["dataset_overview"])
         lines.append("")
     lines.append(f"_{data.get('summary', '')}_\n")
     if data.get("key_findings"):
-        lines.append("## Key findings")
+        lines.append(f"## {T('key_findings_heading')}")
         lines += [f"- {f}" for f in data["key_findings"]]
         lines.append("")
     patterns = data.get("peculiar_patterns") or data.get("anomalies")
     if patterns:
-        lines.append("## Peculiar patterns")
+        lines.append(f"## {T('peculiar_patterns_heading').replace('🔎 ', '')}")
         lines += [f"- {a}" for a in patterns]
         lines.append("")
     if data.get("recommended_actions"):
-        lines.append("## Recommended actions — respond by urgency")
+        lines.append(f"## {T('recommended_actions_heading')}")
         for i, act in enumerate(data["recommended_actions"], 1):
             if isinstance(act, dict):
                 urgency = str(act.get("urgency", "")).lower()
                 icon = _URGENCY_ICON.get(urgency, "")
+                urgency_label = T(f"urgency_{urgency}") if urgency in ("immediate", "high", "normal") else urgency
                 lines.append(
-                    f"{i}. {icon} {act.get('action', '')} "
-                    f"(owner: {act.get('owner', '—')}, timeframe: {act.get('timeframe', '—')}"
-                    + (f", urgency: {urgency}" if urgency else "")
-                    + ")"
+                    T(
+                        "memo_action_line", i=i, icon=icon, action=act.get('action', ''),
+                        owner=act.get('owner', '—'), timeframe=act.get('timeframe', '—'),
+                        urgency_part=T("memo_urgency_part", u=urgency_label) if urgency else "",
+                    )
                 )
             else:
                 lines.append(f"{i}. {act}")
         lines.append("")
     if data.get("explanation"):
-        lines.append("## Why this recommendation")
+        lines.append(f"## {T('why_this_recommendation')}")
         lines.append(data["explanation"])
         lines.append("")
-    lines.append(f"**Confidence:** {str(data.get('confidence', '—')).title()}")
-    lines.append("\n---\n_Generated by CivicPulse AI._")
+    conf = str(data.get('confidence', '')).lower()
+    conf_label = T(f"conf_{conf}") if conf in ("high", "medium", "low") else "—"
+    lines.append(f"**{T('confidence_heading')}:** {conf_label}")
+    lines.append(f"\n---\n_{T('memo_generated_by')}_")
     return "\n".join(lines)
 
 
@@ -1192,9 +1234,10 @@ def render_actions(actions: list) -> None:
             urgency = str(act.get("urgency", "")).lower()
             icon = _URGENCY_ICON.get(urgency, "")
             st.markdown(f"**{i}. {icon} {act.get('action', '')}**")
-            caption = f"Owner: {owner}  ·  Timeframe: {tf}"
+            caption = T("action_owner_timeframe", owner=owner, tf=tf)
             if urgency:
-                caption += f"  ·  Urgency: {urgency}"
+                urgency_label = T(f"urgency_{urgency}") if urgency in ("immediate", "high", "normal") else urgency
+                caption += T("action_urgency_suffix", u=urgency_label)
             st.caption(caption)
         else:
             st.markdown(f"**{i}.** {act}")
@@ -1231,91 +1274,93 @@ def trigger_scheduled_reports(url: str) -> dict:
 
 # ---------------------------------------------------------------- tabs
 tab_overview, tab_ask, tab_anom, tab_reco, tab_about = st.tabs(
-    ["📊 Overview", "💬 Ask AI", "🚨 Anomalies", "✅ Recommendations", "ℹ️ About"]
+    [T("tab_overview"), T("tab_ask_ai"), T("tab_anomalies"), T("tab_recommendations"), T("tab_about")]
 )
 
 
 # ============================== OVERVIEW ==============================
 with tab_overview:
     if insights is None:
-        st.warning(
-            "This source is unstructured (text/PDF). Head to **Ask AI** or "
-            "**Recommendations** for an AI summary of the content."
-        )
+        st.warning(T("unstructured_warning"))
     else:
         d = insights.to_dict()
         scores = d["scores"]
 
-        st.markdown("<div class='cp-section-title'>Community Snapshot</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='cp-section-title'>{T('community_snapshot')}</div>", unsafe_allow_html=True)
         k1, k2, k3, k4 = st.columns(4)
         with k1:
             st.markdown(
-                f"<div class='cp-card'><p class='lbl'>📄 Records</p><p class='val'>{d['total_records']}</p>"
+                f"<div class='cp-card'><p class='lbl'>{T('card_records')}</p><p class='val'>{d['total_records']}</p>"
                 f"<p class='sub'>{d['date_range'].get('start','?')} → {d['date_range'].get('end','?')}</p></div>",
                 unsafe_allow_html=True,
             )
         with k2:
             st.markdown(
-                f"<div class='cp-card'><p class='lbl'>📍 Top hotspot</p><p class='val'>{humanize(d['hotspot_area'] or 'n/a')}</p>"
-                f"<p class='sub'>Most-affected area</p></div>",
+                f"<div class='cp-card'><p class='lbl'>{T('card_top_hotspot')}</p><p class='val'>{L(humanize(d['hotspot_area'] or 'n/a'))}</p>"
+                f"<p class='sub'>{T('card_most_affected')}</p></div>",
                 unsafe_allow_html=True,
             )
         with k3:
             st.markdown(
-                f"<div class='cp-card'><p class='lbl'>⚠️ Leading issue</p><p class='val'>{humanize(d['top_category'] or 'n/a')}</p>"
-                f"<p class='sub'>Top category</p></div>",
+                f"<div class='cp-card'><p class='lbl'>{T('card_leading_issue')}</p><p class='val'>{L(humanize(d['top_category'] or 'n/a'))}</p>"
+                f"<p class='sub'>{T('card_top_category')}</p></div>",
                 unsafe_allow_html=True,
             )
         with k4:
             arrow = {"rising": "▲", "falling": "▼", "flat": "▬"}[d["trend_direction"]]
+            trend_label = T(f"trend_{d['trend_direction']}")
+            trend_pct_str = f"{d['trend_change_pct']:+.1f}%"
             st.markdown(
-                f"<div class='cp-card'><p class='lbl'>📈 Weekly trend</p><p class='val'>{arrow} {d['trend_direction'].title()}</p>"
-                f"<p class='sub'>{d['trend_change_pct']:+.1f}% vs prior week</p></div>",
+                f"<div class='cp-card'><p class='lbl'>{T('card_weekly_trend')}</p><p class='val'>{arrow} {trend_label}</p>"
+                f"<p class='sub'>{T('vs_prior_week', pct=trend_pct_str)}</p></div>",
                 unsafe_allow_html=True,
             )
 
         st.write("")
-        st.markdown("<div class='cp-section-title'>Decision Scoreboard</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='cp-section-title'>{T('decision_scoreboard')}</div>", unsafe_allow_html=True)
         s1, s2, s3, s4 = st.columns(4)
-        s1.markdown(score_pill("⚠️ Urgency", scores["urgency"], urgency_color(scores["urgency"])), unsafe_allow_html=True)
-        s2.markdown(score_pill("📈 Impact", scores["impact"], t["cyan"]), unsafe_allow_html=True)
-        s3.markdown(score_pill("🛡️ Confidence", scores["confidence"], t["violet"]), unsafe_allow_html=True)
-        s4.markdown(score_pill("🌡️ Severity", scores["severity_index"], t["magenta"]), unsafe_allow_html=True)
-        st.caption(f"Open/unresolved case rate: **{d['open_rate_pct']}%**")
+        s1.markdown(score_pill(T("pill_urgency"), scores["urgency"], urgency_color(scores["urgency"])), unsafe_allow_html=True)
+        s2.markdown(score_pill(T("pill_impact"), scores["impact"], t["cyan"]), unsafe_allow_html=True)
+        s3.markdown(score_pill(T("pill_confidence"), scores["confidence"], t["violet"]), unsafe_allow_html=True)
+        s4.markdown(score_pill(T("pill_severity"), scores["severity_index"], t["magenta"]), unsafe_allow_html=True)
+        st.caption(T("open_case_rate", pct=d["open_rate_pct"]))
         cb = scores.get("confidence_breakdown")
         if cb:
-            with st.expander("Why this confidence score?"):
+            with st.expander(T("why_confidence_expander")):
                 st.caption(
-                    f"Sample size: **{cb['sample_size_score']:.0f}**/40 · "
-                    f"Recency: **{cb['recency_score']:.0f}**/30 · "
-                    f"Stability: **{cb['stability_score']:.0f}**/30 "
-                    "— more reports, more recent data, and a steadier day-to-day pattern "
-                    "all raise confidence."
+                    T(
+                        "confidence_breakdown_caption",
+                        n=f"{cb['sample_size_score']:.0f}", r=f"{cb['recency_score']:.0f}", s=f"{cb['stability_score']:.0f}",
+                    )
                 )
 
         st.write("")
         map_title_col, map_toggle_col = st.columns([4, 1.4])
         with map_title_col:
-            st.markdown("<div class='cp-section-title'>🗺️ Hotspot map</div>", unsafe_allow_html=True)
-            st.caption("Blends volume, severity, and unresolved backlog into one score per area.")
+            st.markdown(f"<div class='cp-section-title'>{T('hotspot_map_title')}</div>", unsafe_allow_html=True)
+            st.caption(T("hotspot_map_caption"))
         if d.get("geo_summary"):
             geo_df = pd.DataFrame(d["geo_summary"])
-            geo_df["coord_label"] = geo_df["coord_source"].map({
-                "real_ward": "Real BBMP ward location", "provided": "Provided coordinates",
-                "placeholder": "Placeholder (unmatched)",
-            })
+            _coord_labels = {
+                "real_ward": T("coord_real_ward"), "provided": T("coord_provided"), "placeholder": T("coord_placeholder"),
+            }
+            geo_df["coord_label"] = geo_df["coord_source"].map(_coord_labels)
             # A plain Streamlit control instead of Plotly's own in-chart
             # updatemenus buttons -- those used to sit top-right on the map
             # and collided with Plotly's built-in modebar (camera/pan/zoom/
             # fullscreen icons), which also lives top-right and can't be
             # moved. A separate widget above the chart can never overlap it.
-            st.session_state.setdefault("map_basemap", "🌙 Dark" if theme == "dark" else "☀️ Light")
+            # Stored as a stable "dark"/"light" key (not translated text) so
+            # the basemap-selection logic below never depends on which
+            # language's label happens to be showing.
+            st.session_state.setdefault("map_basemap", "dark" if theme == "dark" else "light")
             with map_toggle_col:
                 st.radio(
-                    "Basemap", ["🌙 Dark", "☀️ Light"], horizontal=True,
+                    "Basemap", ["dark", "light"], horizontal=True,
+                    format_func=lambda v: T("theme_dark") if v == "dark" else T("theme_light"),
                     label_visibility="collapsed", key="map_basemap",
                 )
-            mapbox_style = "carto-darkmatter" if "Dark" in st.session_state.map_basemap else "carto-positron"
+            mapbox_style = "carto-darkmatter" if st.session_state.map_basemap == "dark" else "carto-positron"
             map_is_dark = mapbox_style == "carto-darkmatter"
 
             fig_map = px.scatter_mapbox(
@@ -1324,9 +1369,9 @@ with tab_overview:
                 hover_data={"total_complaints": True, "open_rate_pct": True, "high_severity_rate_pct": True,
                             "lat": False, "lon": False, "hotspot_score": ":.1f", "coord_label": False},
                 color_discrete_map={
-                    "Real BBMP ward location": t["geo_real"],
-                    "Provided coordinates": t["geo_provided"],
-                    "Placeholder (unmatched)": t["geo_placeholder"],
+                    _coord_labels["real_ward"]: t["geo_real"],
+                    _coord_labels["provided"]: t["geo_provided"],
+                    _coord_labels["placeholder"]: t["geo_placeholder"],
                 },
                 size_max=32, zoom=10, mapbox_style=mapbox_style,
             )
@@ -1356,35 +1401,31 @@ with tab_overview:
                 fig_map, use_container_width=True,
                 config={"scrollZoom": True, "displayModeBar": True, "displaylogo": False},
             )
-            st.caption("🖱️ Scroll or pinch to zoom, drag to pan, click a legend item to filter by coordinate source.")
+            st.caption(T("map_scroll_caption"))
 
             n_real = int((geo_df["coord_source"] == "real_ward").sum())
             n_placeholder = int((geo_df["coord_source"] == "placeholder").sum())
             n_total = len(geo_df)
-            st.caption(
-                f"📍 {n_real}/{n_total} areas use real BBMP ward coordinates "
-                f"(OpenCity ward office dataset). {n_placeholder} unmatched area(s) use a "
-                "deterministic placeholder position instead of a guess."
-            )
+            st.caption(T("map_coord_caption", n_real=n_real, n_total=n_total, n_placeholder=n_placeholder))
         else:
-            st.info("Not enough area data to build a hotspot map.")
+            st.info(T("map_insufficient_data"))
 
         st.write("")
-        st.markdown("<div class='cp-section-title'>📈 7-day forecast</div>", unsafe_allow_html=True)
-        st.caption("Trend-aware forecasting (Holt's linear method) — predicts likely spikes before they happen, not just after.")
+        st.markdown(f"<div class='cp-section-title'>{T('forecast_title')}</div>", unsafe_allow_html=True)
+        st.caption(T("forecast_caption"))
         if d.get("forecasts"):
             fc_df = pd.DataFrame(d["forecasts"])
             for _, row in fc_df.iterrows():
                 icon = "🔴" if row["will_likely_spike"] else "🟢"
                 fc1, fc2, fc3 = st.columns([2, 2, 1])
                 with fc1:
-                    st.markdown(f"{icon} **{humanize(row['area'])}**")
+                    st.markdown(f"{icon} **{L(humanize(row['area']))}**")
                 with fc2:
-                    st.caption(f"{row['last_7day_avg']:.1f}/day → {row['forecast_7day_avg']:.1f}/day predicted")
+                    st.caption(T("forecast_row_detail", last=f"{row['last_7day_avg']:.1f}", forecast=f"{row['forecast_7day_avg']:.1f}"))
                 with fc3:
                     st.markdown(f"**{row['pct_change']:+.1f}%**")
         else:
-            st.info("Not enough daily history yet to forecast (needs 7+ days of dated records).")
+            st.info(T("forecast_insufficient"))
 
         st.write("")
         df = load_result.df
@@ -1393,10 +1434,10 @@ with tab_overview:
             if d["by_area"]:
                 fig = px.bar(
                     x=list(d["by_area"].values()),
-                    y=[humanize(a) for a in d["by_area"].keys()],
+                    y=[L(humanize(a)) for a in d["by_area"].keys()],
                     orientation="h",
-                    labels={"x": "Complaints", "y": ""},
-                    title="Complaints by area",
+                    labels={"x": T("chart_complaints_axis"), "y": ""},
+                    title=T("chart_complaints_by_area"),
                     color=list(d["by_area"].values()),
                     color_continuous_scale=t["bar_scale"],
                 )
@@ -1410,7 +1451,7 @@ with tab_overview:
             if d["weekly_trend"]:
                 tdf = pd.DataFrame(d["weekly_trend"])
                 fig2 = px.area(
-                    tdf, x="week", y="count", title="Weekly volume trend", markers=True,
+                    tdf, x="week", y="count", title=T("chart_weekly_trend"), markers=True,
                 )
                 fig2.update_traces(line_color=t["area_line"], fillcolor=t["area_fill"], marker=dict(color=t["area_marker"], size=7))
                 fig2.update_layout(height=340, margin=dict(l=0, r=0, t=40, b=0), **CHART_LAYOUT)
@@ -1420,9 +1461,9 @@ with tab_overview:
         with c_a:
             if d["by_category"]:
                 fig3 = px.pie(
-                    names=[humanize(k) for k in d["by_category"].keys()],
+                    names=[L(humanize(k)) for k in d["by_category"].keys()],
                     values=list(d["by_category"].values()),
-                    title="Category mix", hole=0.5,
+                    title=T("chart_category_mix"), hole=0.5,
                     color_discrete_sequence=t["pie_sequence"],
                 )
                 fig3.update_traces(marker=dict(line=dict(color=t["pie_line"], width=2)))
@@ -1432,16 +1473,18 @@ with tab_overview:
             if d["severity_distribution"]:
                 order = ["low", "medium", "high", "critical"]
                 sd = {k: d["severity_distribution"].get(k, 0) for k in order if k in d["severity_distribution"]}
+                sev_colors = {"low": "#22c55e", "medium": "#f59e0b", "high": "#fb923c", "critical": "#ef4444"}
+                sev_labels = [L(humanize(k)) for k in sd.keys()]
                 fig4 = px.bar(
-                    x=[k.title() for k in sd.keys()], y=list(sd.values()),
-                    title="Severity distribution", labels={"x": "", "y": "Count"},
-                    color=[k.title() for k in sd.keys()],
-                    color_discrete_map={"Low": "#22c55e", "Medium": "#f59e0b", "High": "#fb923c", "Critical": "#ef4444"},
+                    x=sev_labels, y=list(sd.values()),
+                    title=T("chart_severity_distribution"), labels={"x": "", "y": T("chart_count_axis")},
+                    color=sev_labels,
+                    color_discrete_map={L(humanize(k)): v for k, v in sev_colors.items()},
                 )
                 fig4.update_layout(showlegend=False, height=340, margin=dict(l=0, r=0, t=40, b=0), **CHART_LAYOUT)
                 st.plotly_chart(fig4, use_container_width=True)
 
-        with st.expander("Preview raw data"):
+        with st.expander(T("preview_raw_data")):
             st.dataframe(df.head(50), use_container_width=True)
 
 
@@ -1452,19 +1495,14 @@ def _msg_meta(sender: str, ts: str) -> str:
 
 
 with tab_ask:
-    STARTER_SUGGESTIONS = [
-        "Which area has the most urgent issues?",
-        "What patterns are increasing this week?",
-        "Compare the top two hotspot areas.",
-        "What should we prioritize this week?",
-    ]
+    STARTER_SUGGESTIONS = [T("starter_q1"), T("starter_q2"), T("starter_q3"), T("starter_q4")]
     picked = None
 
     col_suggest, col_chat, col_history = st.columns([1, 2.3, 1])
 
     # ---- Left: persistent suggested-questions panel -------------------
     with col_suggest:
-        st.markdown("<div class='cp-section-title'>💡 Suggested questions</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='cp-section-title'>{T('ask_suggested_questions')}</div>", unsafe_allow_html=True)
         if st.session_state.qa_history:
             last_result = st.session_state.qa_history[-1][1]
             panel_questions = (last_result.data or {}).get("suggested_follow_ups") or []
@@ -1478,7 +1516,7 @@ with tab_ask:
                 picked = s
         if st.session_state.qa_history:
             st.write("")
-            if st.button("🔄 Start a new conversation", use_container_width=True):
+            if st.button(T("new_conversation_btn"), use_container_width=True):
                 st.session_state.qa_history = []
                 st.session_state.qa_conversation = None
                 _persist_session()
@@ -1486,11 +1524,8 @@ with tab_ask:
 
     # ---- Middle: the live conversation ---------------------------------
     with col_chat:
-        st.markdown("<div class='cp-section-title'>Conversation</div>", unsafe_allow_html=True)
-        st.caption(
-            "Grounded strictly in your data — the model never invents numbers. "
-            "Keep asking follow-ups; CivicPulse remembers the conversation."
-        )
+        st.markdown(f"<div class='cp-section-title'>{T('conversation_title')}</div>", unsafe_allow_html=True)
+        st.caption(T("ask_ai_caption"))
 
         # Render the full conversation BEFORE the input box, so the input
         # always ends up visually pinned below every message -- st.chat_input
@@ -1500,16 +1535,16 @@ with tab_ask:
         # position.
         for q, result, ts in st.session_state.qa_history:
             with st.chat_message("user"):
-                st.markdown(_msg_meta("You", ts), unsafe_allow_html=True)
+                st.markdown(_msg_meta(T("sender_you"), ts), unsafe_allow_html=True)
                 st.markdown(q)
             with st.chat_message("assistant", avatar="🏙️"):
-                st.markdown(_msg_meta("CivicPulse AI (Gemini)", ts), unsafe_allow_html=True)
+                st.markdown(_msg_meta(T("sender_civicpulse"), ts), unsafe_allow_html=True)
                 render_qa_answer(result)
 
         if not st.session_state.qa_history:
-            st.caption("💡 Tap a suggested question on the left, or type your own below.")
+            st.caption(T("ask_ai_empty_hint"))
 
-        typed_question = st.chat_input("Ask a question about your data...")
+        typed_question = st.chat_input(T("chat_input_placeholder"))
         question = picked or typed_question
 
         if question and question.strip():
@@ -1523,16 +1558,16 @@ with tab_ask:
                     if len(st.session_state.qa_history) < MAX_CONVERSATION_QUESTIONS
                     else None
                 )
-                with st.spinner("Gemini is querying the data..."):
+                with st.spinner(T("gemini_querying_spinner")):
                     result, updated_conv = gemini.answer_question_agentic(
                         load_result.df, payload, question, st.session_state.domain,
-                        conversation=prior_conv,
+                        conversation=prior_conv, lang=LANGUAGE_NAMES[LANG],
                     )
                 st.session_state.qa_conversation = updated_conv
             else:
                 raw = load_result.raw_text or ""
-                with st.spinner("Analyzing..."):
-                    result = gemini.summarize_text(raw, st.session_state.domain)
+                with st.spinner(T("analyzing_spinner")):
+                    result = gemini.summarize_text(raw, st.session_state.domain, lang=LANGUAGE_NAMES[LANG])
             st.session_state.qa_history.append((question, result, datetime.now().strftime("%I:%M %p")))
             _persist_session()
             # Rerun so this turn renders through the history loop above (in
@@ -1542,7 +1577,7 @@ with tab_ask:
 
     # ---- Right: chat history log + trust card --------------------------
     with col_history:
-        st.markdown("<div class='cp-section-title'>🕘 Chat history</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='cp-section-title'>{T('chat_history_title')}</div>", unsafe_allow_html=True)
         if st.session_state.qa_history:
             for q, _result, ts in reversed(st.session_state.qa_history):
                 preview = q if len(q) <= 60 else q[:57] + "…"
@@ -1551,59 +1586,57 @@ with tab_ask:
                     unsafe_allow_html=True,
                 )
         else:
-            st.caption("No questions yet this session.")
+            st.caption(T("chat_history_empty"))
         st.markdown(
-            "<div class='cp-trust-card'><span class='icon'>🛡️</span>"
-            "<span><b>Ask AI, get grounded answers.</b><br>"
-            "CivicPulse AI uses your data + real queries. No guessing. No made-up numbers.</span></div>",
+            f"<div class='cp-trust-card'><span class='icon'>🛡️</span>"
+            f"<span><b>{T('trust_card_title')}</b><br>"
+            f"{T('trust_card_body')}</span></div>",
             unsafe_allow_html=True,
         )
 
 
 # ============================== ANOMALIES ==============================
 with tab_anom:
-    st.markdown("<div class='cp-section-title'>🚨 Emerging anomalies</div>", unsafe_allow_html=True)
-    st.caption(
-        "Flagged by simple statistical thresholds (σ, \"sigma\" ≥ 1.5) — transparent and cheap. "
-        "**What's a σ score?** It's how far a number is from what's typical, measured in "
-        "\"standard deviations.\" σ ≈ 1.5–2 is worth a look; above ~2.5–3 is a real outlier, "
-        "not just normal day-to-day variation."
-    )
+    st.markdown(f"<div class='cp-section-title'>{T('anomalies_title')}</div>", unsafe_allow_html=True)
+    st.caption(T("anomalies_caption"))
     if insights is None:
-        st.info("Anomaly detection needs structured (CSV/JSON) data.")
+        st.info(T("anomalies_needs_structured"))
     else:
         anomalies = insights.to_dict()["anomalies"]
         if not anomalies:
-            st.success("No significant anomalies detected in this dataset.")
+            st.success(T("anomalies_none"))
         else:
             for a in anomalies:
                 sev = "🔴" if a["score"] >= 2.5 else ("🟠" if a["score"] >= 2.0 else "🟡")
+                dim_label = T(f"dim_{a['dimension']}") if a["dimension"] in ("area", "category", "time") else a["dimension"]
                 with st.container(border=True):
                     c1, c2 = st.columns([4, 1])
                     with c1:
-                        st.markdown(f"{sev} **{a['label']}**  ·  _{a['dimension']}_")
+                        st.markdown(f"{sev} **{L(a['label'])}**  ·  _{dim_label}_")
+                        # a["detail"] is a deterministically-assembled English
+                        # sentence (counts + sigma + the dimension word), not a
+                        # simple categorical value or static UI text -- left
+                        # untranslated for now rather than partially translating
+                        # a sentence built by string interpolation in analytics.py.
                         st.caption(a["detail"])
                     with c2:
-                        st.metric("σ score", f"{a['score']:.1f}")
+                        st.metric(T("sigma_score_label"), f"{a['score']:.1f}")
 
 
 # ============================== RECOMMENDATIONS ==============================
 with tab_reco:
-    st.markdown("<div class='cp-section-title'>✅ One-click Executive Brief</div>", unsafe_allow_html=True)
-    st.caption(
-        "The wow feature: a complete, plain-language handoff memo — written for whoever has "
-        "to act on this data, even if they've never seen it before. One Gemini call, fully grounded."
-    )
+    st.markdown(f"<div class='cp-section-title'>{T('brief_title')}</div>", unsafe_allow_html=True)
+    st.caption(T("brief_caption"))
 
-    if st.button("🧠 Generate Executive Brief", type="primary"):
-        with st.spinner("Gemini is drafting your decision memo..."):
+    if st.button(T("generate_brief_btn"), type="primary"):
+        with st.spinner(T("drafting_spinner")):
             if insights is not None:
                 st.session_state.brief = gemini.executive_brief(
-                    insights.to_dict(), st.session_state.domain
+                    insights.to_dict(), st.session_state.domain, lang=LANGUAGE_NAMES[LANG],
                 )
             else:
                 st.session_state.brief = gemini.summarize_text(
-                    load_result.raw_text or "", st.session_state.domain
+                    load_result.raw_text or "", st.session_state.domain, lang=LANGUAGE_NAMES[LANG],
                 )
         _fresh_brief = st.session_state.brief
         if _fresh_brief.ok and insights is not None:
@@ -1619,12 +1652,12 @@ with tab_reco:
     if brief is not None:
         data = brief.data
         if brief.used_fallback:
-            st.warning("Showing offline fallback brief (Gemini not called). Set a key for full AI output.")
+            st.warning(T("brief_fallback_warning"))
 
-        st.markdown(f"## 📝 {data.get('title', 'Executive Brief')}")
+        st.markdown(f"## 📝 {data.get('title', T('brief_default_title'))}")
 
         if data.get("dataset_overview"):
-            st.markdown("#### 📖 What this dataset is")
+            st.markdown(f"#### {T('dataset_overview_heading')}")
             st.markdown(data["dataset_overview"])
             st.write("")
 
@@ -1632,75 +1665,73 @@ with tab_reco:
 
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown("#### Key findings")
+            st.markdown(f"#### {T('key_findings_heading')}")
             for f in data.get("key_findings", []):
                 st.markdown(f"- {f}")
             patterns = data.get("peculiar_patterns") or data.get("anomalies")
             if patterns:
-                st.markdown("#### 🔎 Peculiar patterns")
+                st.markdown(f"#### {T('peculiar_patterns_heading')}")
                 for a in patterns:
                     st.markdown(f"- {a}")
         with col2:
-            st.markdown("#### Recommended actions — respond by urgency")
-            st.caption("🔴 immediate (ASAP) · 🟠 high (this week) · ⚪ normal (this month)")
+            st.markdown(f"#### {T('recommended_actions_heading')}")
+            st.caption(T("urgency_legend"))
             render_actions(data.get("recommended_actions", []))
-            st.markdown("#### Confidence")
+            st.markdown(f"#### {T('confidence_heading')}")
             st.markdown(confidence_badge(data.get("confidence")), unsafe_allow_html=True)
 
         if data.get("explanation"):
-            with st.expander("🔍 Explainability — why this recommendation?"):
+            with st.expander(T("explainability_expander")):
                 st.write(data["explanation"])
 
         # Downloadable memo.
         memo = _brief_to_markdown(data)
         st.download_button(
-            "⬇️ Download memo (Markdown)",
+            T("download_memo_btn"),
             memo,
             file_name="civicpulse_action_memo.md",
             mime="text/markdown",
         )
     else:
-        st.info("Click **Generate Executive Brief** to produce a decision-ready memo.")
+        st.info(T("brief_click_hint"))
 
     if history.available:
         recent = history.list_recent(limit=5)
         if recent:
             st.write("")
-            with st.expander(f"📜 Recent briefs ({len(recent)}) — trend across past uploads"):
-                st.caption(
-                    "Every generated brief is saved automatically, so a team can see how a "
-                    "location trends across sessions instead of only today's snapshot."
-                )
+            with st.expander(T("recent_briefs_expander", n=len(recent))):
+                st.caption(T("recent_briefs_caption"))
                 for r in recent:
                     ts = r.get("created_at")
                     ts_str = ts.strftime("%b %d, %Y %H:%M UTC") if hasattr(ts, "strftime") else str(ts or "—")
-                    st.markdown(f"**{r.get('brief_title') or 'Untitled brief'}** · {ts_str}")
+                    st.markdown(f"**{r.get('brief_title') or T('untitled_brief')}** · {ts_str}")
                     st.caption(
-                        f"{humanize(r.get('hotspot_area') or '—')} · {humanize(r.get('top_category') or '—')} · "
-                        f"{r.get('total_records', '—')} records · trend: {r.get('trend_direction', '—')}"
+                        T(
+                            "brief_record_summary",
+                            area=L(humanize(r.get('hotspot_area') or '—')),
+                            category=L(humanize(r.get('top_category') or '—')),
+                            records=r.get('total_records', '—'),
+                            trend=T(f"trend_{r.get('trend_direction')}") if r.get('trend_direction') in ("rising", "falling", "flat") else r.get('trend_direction', '—'),
+                        )
                     )
                     st.divider()
 
     st.write("")
-    st.markdown("<div class='cp-section-title'>🔔 Automated Weekly Reports</div>", unsafe_allow_html=True)
-    st.caption(
-        "Every Monday, a Cloud Scheduler job runs this same pipeline automatically and emails "
-        "a citywide brief plus one department-scoped report to each configured department "
-        "contact — nobody has to open this dashboard. Trigger it now to see it live."
-    )
+    st.markdown(f"<div class='cp-section-title'>{T('automated_reports_title')}</div>", unsafe_allow_html=True)
+    st.caption(T("automated_reports_caption"))
     if not SCHEDULED_BRIEF_FUNCTION_URL:
-        st.info("Scheduled-report trigger isn't configured for this deployment.")
-    elif st.button("📨 Send scheduled reports now"):
-        with st.spinner("Triggering the scheduled job — generating and emailing citywide + department reports..."):
+        st.info(T("scheduled_not_configured"))
+    elif st.button(T("send_reports_btn")):
+        with st.spinner(T("triggering_spinner")):
             st.session_state.trigger_result = trigger_scheduled_reports(SCHEDULED_BRIEF_FUNCTION_URL)
 
     trigger_result = st.session_state.get("trigger_result")
     if trigger_result:
         if trigger_result.get("error"):
-            st.error(f"Trigger failed: {trigger_result['error']}")
+            st.error(T("trigger_failed", err=trigger_result['error']))
         else:
-            fallback_note = " (offline fallback used)" if trigger_result.get("gemini_used_fallback") else ""
-            st.success(f"✅ Citywide brief: {trigger_result.get('email_status', '—')}{fallback_note}")
+            fallback_note = T("trigger_fallback_note") if trigger_result.get("gemini_used_fallback") else ""
+            st.success(T("trigger_success", status=trigger_result.get('email_status', '—'), note=fallback_note))
             dept_reports = trigger_result.get("department_reports") or {}
             for dept, status in dept_reports.items():
                 icon = "✅" if status.startswith("sent") else ("⏭️" if status.startswith("skipped") else "❌")
@@ -1709,73 +1740,28 @@ with tab_reco:
 
 # ============================== ABOUT ==============================
 with tab_about:
-    st.markdown("<div class='cp-section-title'>ℹ️ About CivicPulse AI</div>", unsafe_allow_html=True)
-    st.markdown(
-        """
-**CivicPulse AI** is a decision intelligence dashboard for cities and communities.
-It combines **deterministic Python analytics** (counts, trends, anomaly detection,
-forecasting) with a **small, low-cost Gemini model** that explains the numbers and
-recommends concrete next steps — and a set of Google Cloud services that turn it
-from a one-off dashboard into an automated service.
+    st.markdown(f"<div class='cp-section-title'>{T('about_title')}</div>", unsafe_allow_html=True)
+    st.markdown(T("about_intro_md"))
+    st.markdown("")
+    st.markdown(T("about_features_heading"))
+    st.markdown(T("about_features_md"))
+    st.markdown("")
+    st.markdown(T("about_gcloud_heading"))
+    st.markdown(T("about_gcloud_md"))
+    st.markdown("")
+    st.markdown(T("about_cost_heading"))
+    st.markdown(T("about_cost_md"))
+    st.markdown("---")
+    st.markdown(f"#### {T('about_glossary_heading')}")
 
-**Why it's different from a chatbot**
-- Numbers are computed locally first, so the AI never hallucinates statistics.
-- Every answer maps to a decision: *what / why / where / next step / confidence*.
-- A Decision Scoreboard (urgency · impact · confidence) tells teams what to act on.
-
-**What's in here**
-- 🎨 **Light/dark app theme** — toggle at the top of the sidebar switches the
-  whole dashboard between a clean professional light theme and the futuristic
-  neon theme, for whichever reads best on your screen.
-- 💬 **Agentic, multi-turn chat** — Ask AI calls real query tools against your live
-  data (not one static snapshot) and remembers the conversation, so follow-ups like
-  *"what about the second one?"* just work. Every answer shows exactly which
-  queries ran, and suggests grounded next questions to tap.
-- 🗺️ **Real hotspot mapping** — actual BBMP ward coordinates (OpenCity's Bengaluru
-  ward dataset), with its own dark/light basemap toggle above the map.
-- 📈 **7-day forecasting** — Holt's linear trend method flags likely spikes per
-  area before they happen, not just after.
-- 📝 **One-click Executive Brief** — a complete, plain-language handoff memo
-  (dataset overview, every notable pattern, urgency-tagged next steps) from a
-  single grounded Gemini call.
-- 🗄️ **Persistent brief history** — every generated brief saves to Firestore, so
-  a team can see trends across sessions, not just today's upload.
-- 🔄 **Reload-safe sessions** — your loaded data and chat history survive a page
-  refresh, restored from Firestore via a session id kept in the URL; stale
-  sessions auto-expire after 24h.
-- 🔔 **Automated, department-routed email** — a Cloud Scheduler job runs the same
-  pipeline on a cron and emails a citywide brief *plus* a separate brief per
-  department, scoped to only that department's data, to that department's own
-  contacts — with an in-app button to trigger it on demand.
-
-**Google Cloud stack**
-- 🤖 **Vertex AI / Gemini** (`gemini-2.5-flash-lite` by default) — explanations,
-  agentic function calling, brief generation
-- 🚀 **Cloud Run** — hosts the app, scale-to-zero so idle cost is ~$0
-- ⚡ **Cloud Functions (2nd gen)** — the scheduled brief job
-- ⏰ **Cloud Scheduler** — triggers the weekly automated run
-- 🗄️ **Firestore** — brief history + reload-safe session persistence
-- 🔐 **Secret Manager** — stores the Gmail app password, never in code
-- 🛠️ **Cloud Build**, **Artifact Registry**, **IAM**, **Cloud Logging**, **`gcloud` CLI**
-  — builds, image storage, least-privilege service accounts, and one-command deploys
-
-**Cost design**
-- One Gemini call per meaningful action (not per keystroke)
-- Cheap flash-lite model tier
-- Cloud Run and Cloud Functions both scale to zero when idle
-- Firestore/Secret Manager/Scheduler all stay within their free tiers at this scale
-
----
-
-#### 📖 Key terms, in plain language
-
-| Term | What it means |
-|---|---|
-| **σ score (sigma / standard deviation)** | A measure of "how unusual is this compared to normal?" A σ score of 2 means a value is about twice as far from the typical/average value as most others ever get — the higher the number, the more it stands out. CivicPulse flags anything ≥ 1.5σ as worth a second look; anything above ~2.5–3σ is a genuine outlier, not just normal day-to-day variation. |
-| **Confidence score** | How much CivicPulse trusts its own numbers, based on three real signals: how much data there is, how recent it is, and how steady (vs. erratic) the daily pattern is — *not* a guess about whether the underlying problem is real. |
-| **Urgency** | How pressing the situation looks right now, blending severity, how many cases are still unresolved, and whether volume is trending up. |
-| **Impact** | How large-scale the issue is — driven by total volume and how concentrated it is in one area. |
-| **Severity index** | The average severity level (low/medium/high/critical) across all records, scaled 0–100. |
-| **Hotspot score** (on the map) | One combined score per area blending complaint volume, severity, and how many cases are still open — the number behind each map marker's size. |
-        """
-    )
+    _glossary_rows = [
+        ("glossary_sigma_term", "glossary_sigma_meaning"),
+        ("glossary_confidence_term", "glossary_confidence_meaning"),
+        ("glossary_urgency_term", "glossary_urgency_meaning"),
+        ("glossary_impact_term", "glossary_impact_meaning"),
+        ("glossary_severity_term", "glossary_severity_meaning"),
+        ("glossary_hotspot_term", "glossary_hotspot_meaning"),
+    ]
+    _glossary_md = f"| {T('glossary_term')} | {T('glossary_meaning')} |\n|---|---|\n"
+    _glossary_md += "\n".join(f"| **{T(term_key)}** | {T(meaning_key)} |" for term_key, meaning_key in _glossary_rows)
+    st.markdown(_glossary_md)
