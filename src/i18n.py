@@ -41,8 +41,11 @@ UI_STRINGS: dict[str, dict[str, str]] = {
         "kn": "ಸಮುದಾಯ ನಿರ್ಧಾರ ಬುದ್ಧಿಮತ್ತೆ",
         "hi": "सामुदायिक निर्णय बुद्धिमत्ता",
     },
-    "theme_light": {"en": "☀️ Light", "kn": "☀️ ಬೆಳಕು", "hi": "☀️ हल्का"},
-    "theme_dark": {"en": "🌙 Dark", "kn": "🌙 ಕತ್ತಲೆ", "hi": "🌙 गहरा"},
+    # Hindi uses the common tech loanwords "डार्क"/"लाइट" rather than a
+    # literal translation (गहरा/हल्का reads as "heavy/light in WEIGHT" to a
+    # reader, not "dark/light in brightness" -- ambiguous for a theme toggle).
+    "theme_light": {"en": "☀️ Light", "kn": "☀️ ಬೆಳಕು", "hi": "☀️ लाइट"},
+    "theme_dark": {"en": "🌙 Dark", "kn": "🌙 ಕತ್ತಲೆ", "hi": "🌙 डार्क"},
     "sidebar_load_data_heading": {"en": "1. Load data", "kn": "1. ಡೇಟಾ ಲೋಡ್ ಮಾಡಿ", "hi": "1. डेटा लोड करें"},
     "load_demo_dataset_btn": {
         "en": "⚡ Load demo dataset", "kn": "⚡ ಡೆಮೊ ಡೇಟಾಸೆಟ್ ಲೋಡ್ ಮಾಡಿ", "hi": "⚡ डेमो डेटासेट लोड करें",

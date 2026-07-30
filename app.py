@@ -8,6 +8,7 @@ Philosophy: "Not just answers - better decisions."
 
 from __future__ import annotations
 
+import html
 import os
 import uuid
 from datetime import datetime, timedelta, timezone
@@ -570,6 +571,21 @@ CSS = """
         transition: box-shadow .2s var(--cp-ease), border-color .2s var(--cp-ease);
     }
     div[data-testid="stExpander"]:hover { box-shadow: var(--cp-expander-shadow); border-color: var(--cp-cyan) !important; }
+
+    /* OCR-extracted text: a fully opaque block instead of the expander's
+       translucent panel, which lets the animated background grid/glow
+       bleed through enough in spots to wash out near-white text in dark
+       mode. !important because the defensive rule above forces every
+       expander descendant's background to transparent. */
+    .cp-ocr-text {
+        background: var(--cp-panel-solid) !important;
+        color: var(--cp-text) !important;
+        padding: .9rem 1rem; border-radius: 10px;
+        border: 1px solid var(--cp-expander-border);
+        white-space: pre-wrap; overflow-wrap: anywhere;
+        max-height: 420px; overflow-y: auto;
+        font-family: var(--font-mono, monospace); font-size: .92rem; line-height: 1.5;
+    }
     div[data-testid="stVerticalBlockBorderWrapper"] {
         animation: cpFadeIn .35s var(--cp-ease) both;
     }
@@ -1836,7 +1852,18 @@ with tab_reco:
         st.caption(T("ocr_section_caption"))
         if st.session_state.get("ocr_text"):
             with st.expander(T("ocr_extracted_text_expander")):
-                st.text(st.session_state.ocr_text)
+                # st.text() inherits the expander's translucent (55%-opacity)
+                # panel background -- fine over the app's usual dark solid
+                # areas, but the animated hero-style background grid/glow
+                # bleeds through enough in spots to wash out near-white text
+                # in dark mode. A near-opaque block of our own guarantees
+                # contrast regardless of what's behind it. escape() because
+                # this is Gemini's OCR transcription of arbitrary uploaded
+                # text, not app-authored copy.
+                st.markdown(
+                    f"<pre class='cp-ocr-text'>{html.escape(st.session_state.ocr_text)}</pre>",
+                    unsafe_allow_html=True,
+                )
         if st.session_state.get("ocr_brief") is not None:
             _render_brief_block(st.session_state.ocr_brief, key_prefix="ocr")
 
